@@ -1,10 +1,10 @@
 import './App.css';
-import NavbarSidebar from './Composants/ApprenantsComposants/NavbarSidebar';
+import Layout from './Composants/ApprenantsComposants/Layout';
 
 function App() {
   return (
     <div className="App">
-   <NavbarSidebar/>
+   <Layout/>
     </div>
   );
 }
