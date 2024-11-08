@@ -1,4 +1,3 @@
-
 import './App.css';
 import NavbarSidebar from './Composants/ApprenantsComposants/NavbarSidebar';
 
