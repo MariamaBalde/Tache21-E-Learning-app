@@ -1,9 +1,9 @@
 import React from 'react';
 import Cours from './Cours';
-import htmlcssImage from '../../Images/ImageCours/htmlcss.webp'; 
-import imageBootstrap from '../../Images/ImageCours/imageBootstrap.png'; 
-import imageJs from '../../Images/ImageCours/imageJs.webp'; 
-import imageReact from '../../Images/ImageCours/imageReact.webp'; 
+import htmlcssImage from '../../Images/ImageCours/htmlcssImage.jpg';
+import bootstrapImage from '../../Images/ImageCours/bootstrapImage.jpg'; 
+import jsImage from '../../Images/ImageCours/jsImage.jpg'; 
+import reactImage from '../../Images/ImageCours/reactjsImage.jpg'; 
 
 
 
@@ -11,9 +11,9 @@ import imageReact from '../../Images/ImageCours/imageReact.webp';
 const CoursApp = () => {
   const courses = [
     { title: 'HTML/CSS', description: 'Un cours pour débutants sur HTML/CSS', image: htmlcssImage },
-    { title: 'BOOTSTRAP', description: 'Approfondissez vos connaissances en BOOTSTRAP', image: imageBootstrap },
-    { title: 'JAVASCRIPT', description: 'Apprenez les dernières techniques en JAVASCRIPT', image: imageJs },
-    { title: 'ReactJS', description: 'Un cours pour maîtriser ReactJS', image: imageReact }
+    { title: 'BOOTSTRAP', description: 'Approfondissez vos connaissances en BOOTSTRAP', image: bootstrapImage },
+    { title: 'JAVASCRIPT', description: 'Apprenez les dernières techniques en JAVASCRIPT', image: jsImage },
+    { title: 'ReactJS', description: 'Un cours pour maîtriser ReactJS', image: reactImage }
   ];
 
   return (
