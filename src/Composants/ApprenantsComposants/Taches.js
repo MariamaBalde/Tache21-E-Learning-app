@@ -130,4 +130,3 @@ export const Taches = () => {
     </div>
   );
 };
->>>>>>> b1c9f7bd8e0c323d8326d53a76c2b5b147e71050
