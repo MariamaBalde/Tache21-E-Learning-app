@@ -7,8 +7,7 @@ import Cours from './Composants/ApprenantsComposants/Cours';
 import Livraisons from './Composants/ApprenantsComposants/Livraisons';
 import Taches from './Composants/ApprenantsComposants/Taches';
 
-
-function App() {
+function App() { 
   return (
     <Router>
       <div className="App">
