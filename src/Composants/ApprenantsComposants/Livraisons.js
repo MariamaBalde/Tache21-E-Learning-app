@@ -23,7 +23,7 @@ const Modal = ({ show, onClose, taskTitle }) => {
         <div className="flex justify-end mt-4">
           <button
             onClick={onClose}
-            className="bg-orange-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#4169E1] transition duration-300"
+            className="bg-[#4169E1] text-white font-semibold py-2 px-4 rounded-lg hover:bg-orange-500 transition duration-300"
           >
             Soumettre
           </button>
@@ -57,16 +57,8 @@ const Livraisons = () => {
     { id: 20, titleText: "Tâche 20", description: "Configurer la surveillance et les logs pour votre application." },
   ];
 
-  const [clickedHeaders, setClickedHeaders] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
-
-  const handleHeaderClick = (id) => {
-    setClickedHeaders((prevState) => ({
-      ...prevState,
-      [id]: !prevState[id]
-    }));
-  };
 
   const handleModalOpen = (task) => {
     setSelectedTask(task);
@@ -79,13 +71,11 @@ const Livraisons = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6">
       {tasks.map((task) => (
-        <div key={task.id} className="bg-white border rounded-lg shadow-md p-4 flex flex-col justify-between">
+        <div key={task.id} className="bg-white border rounded-lg shadow-md p-4 flex flex-col justify-between h-full">
           <h3
-            className={`text-lg font-semibold mb-4 text-center border-2 rounded-md py-2 px-4 cursor-pointer ${clickedHeaders[task.id] ? 'bg-orange-500 text-white' : 'bg-white text-black'
-              }`}
-            onClick={() => handleHeaderClick(task.id)}
+            className="text-lg font-semibold mb-4 text-center border-2 rounded-md py-2 px-4 cursor-pointer bg-[#4169E1] text-white"
           >
             {task.titleText}
           </h3>
@@ -93,22 +83,23 @@ const Livraisons = () => {
           <div className="flex justify-center mb-4">
             <img
               src=""
-              alt="Delivery icon"
+              alt="Icône de livraison"
               className="w-10 h-10"
             />
           </div>
 
           <p className="text-gray-600 text-center mb-6">{task.description}</p>
 
-          <div className="border-2 rounded-md py-2 px-4 mt-4 flex justify-between items-center">
+          {/* Conteneur pour les boutons */}
+          <div className="border-2 rounded-md py-2 px-4 mt-4 flex flex-col sm:flex-row justify-between items-center gap-2">
             <button
               onClick={() => handleModalOpen(task)}
-              className="bg-[#4169E1] text-black font-semibold py-2 px-4 rounded-lg hover:bg-orange-500 hover:text-white transition duration-300"
+              className="bg-[#4169E1] text-white font-semibold py-2 px-4 rounded-lg hover:bg-orange-500 transition duration-300 w-full sm:w-auto"
             >
               Commentaires
             </button>
             <button
-              className="bg-white text-black font-semibold py-2 px-4 rounded-lg hover:bg-green-500 hover:text-white transition duration-300"
+              className="bg-[#4169E1] text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-500 transition duration-300 w-full sm:w-auto"
             >
               Livrables
             </button>
