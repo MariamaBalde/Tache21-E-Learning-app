@@ -85,41 +85,9 @@ export const Taches = () => {
             </button>
           </div>
         </div>
-
-        {/* Deuxième carte de tâche */}
-        <div className="bg-white rounded-lg shadow-md p-6 flex flex-col md:flex-row gap-4">
-          {/* Section gauche */}
-          <div className="w-full md:w-1/5 text-textDark">
-            <p className="text-lg font-bold text-primaryGreen">Tâches N° {task.number}</p>
-            <p>Durée: {task.duration}</p>
-            <p className="mt-4 font-semibold text-primaryGreen">{task.syllabus}</p>
-            <p>{task.category}</p>
-            <p>{task.year}</p>
-          </div>
-
-          {/* Ligne de séparation verticale */}
-          <div className="border-l border-gray-300 mx-4 hidden md:block"></div>
-
-          {/* Section centrale */}
-          <div className="flex-1 flex flex-col justify-between">
-            <div>
-              <h3 className="text-xl font-semibold text-textDark">{task.title}</h3>
-              <p className="text-textLight mt-2">{task.description}</p>
-            </div>
-            <div className="mt-4">
-              <p className="font-semibold text-left">Liens utiles</p>
-              <p className="text-left text-primaryGreen">{task.usefulLinks}</p>
-            </div>
-          </div>
-
-          {/* Section droite */}
-          <div className="flex flex-col items-end">
-            <button className="bg-primaryGreen text-white font-semibold py-2 px-6 rounded-lg hover:bg-green-700 mt-4 md:mt-auto">
-              Démarrer
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   );
 };
+
+export default Taches;
