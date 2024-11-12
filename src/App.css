@@ -1,4 +1,4 @@
-.App {
+/* .App {
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -13,14 +13,14 @@
   flex: 1;
   padding: 20px;
   overflow-y: auto;
-}
+} */
 
 /* -------------------------------- Navbar Composant Début ------------------------- */
 
 /* -------------------------------- Navbar Composant Fin ------------------------- */
 
 /* -------------------------------- Sidebar Composant Début ------------------------- */
-.sidebar {
+/* .sidebar {
   width: 200px;
   background-color: #f8f8f8;
   padding: 20px;
@@ -38,7 +38,7 @@
 .sidebar ul li a {
   text-decoration: none;
   color: #333;
-}
+} */
 /* --------------------------------Sidebar Composant Fin------------------------- */
 
 /* -------------------------------- Cours Composant Début ------------------------- */
