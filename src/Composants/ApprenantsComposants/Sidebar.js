@@ -1,63 +1,171 @@
-// import React from 'react'
-// import  {Link} from 'react-router-dom'
+import React from 'react';
+import { FaCog, FaHome, FaPoll, FaRegEnvelope, FaRegFileAlt } from "react-icons/fa";
 
-// function Sidebar() {
+const Sidebar = ({ sidebarToggle }) => {
+  return (
+    // Sidebar container
+    <div className={`${sidebarToggle ? "block" : "hidden"} md:block w-64 bg-gray-800 fixed h-full px-4 py-2 transition-all duration-300`}>
+      
+      {/* Sidebar Header */}
+      <div className='my-2 mb-4'>
+        <h1 className='text-2xl text-white font-bold'>Admin Apprenant</h1>
+      </div>
+
+      <hr />
+      
+      {/* Sidebar Links */}
+      <ul className='mt-3 text-white font-bold'>
+        
+        {/* Dashboard */}
+        <li className='mb-2 rounded py-2 hover:shadow hover:bg-blue-500'>
+          <a href='' className='px-3'>
+            <FaHome className='inline-block w-6 h-6 mr-2 mt-2' />
+            Dhasbord
+          </a>
+        </li>
+        
+        {/* Cours */}
+        <li className='mb-2 rounded py-2 hover:shadow hover:bg-blue-500'>
+          <a href='' className='px-3'>
+            <FaRegFileAlt className='inline-block w-6 h-6 mr-2 mt-2' />
+            Cours
+          </a>
+        </li>
+
+        {/* Livraison */}
+        <li className='mb-2 rounded py-2 hover:shadow hover:bg-blue-500'>
+          <a href='' className='px-3'>
+            <FaPoll className='inline-block w-6 h-6 mr-2 mt-2' />
+            Livraison
+          </a>
+        </li>
+
+        {/* Demande */}
+        <li className='mb-2 rounded py-2 hover:shadow hover:bg-blue-500'>
+          <a href='' className='px-3'>
+            <FaRegEnvelope className='inline-block w-6 h-6 mr-2 mt-2' />
+            Demande
+          </a>
+        </li>
+
+        {/* Settings */}
+        <li className='mb-2 rounded py-2 hover:shadow hover:bg-blue-500'>
+          <a href='' className='px-3'>
+            <FaCog className='inline-block w-6 h-6 mr-2 mt-2' />
+            Setting
+          </a>
+        </li>
+      </ul>
+    </div>
+  );
+};
+
+export default Sidebar;
+
+
+// import React from 'react'
+// import { FaCog, FaHome, FaPoll, FaRegEnvelope, FaRegFileAlt } from "react-icons/fa";
+
+// const Sidebar = ({sidebarToggle}) => {
 //   return (
-//       <aside className="sidebar">
-//           <ul>
-//               <li><Link to="/dashboard">Dashboard</Link></li>
-//               <li><Link to="/cours">Cours</Link></li>
-//               <li><Link to="/livraisons">Livraisons</Link></li>
-//               <li><Link to="/tache">Taches</Link></li>
-//           </ul>
-//       </aside>
+//     <div className={`${sidebarToggle? " hidden " : " block "} w-64 bg-gray-800 fixed h-full px-4 py-2`}>
+//         <div className='my-2 mb-4'>
+//             <h1 className='text-2x text-white font-bold'>Admin Apprenant</h1>
+//         </div>
+//         <hr />
+//         <ul className='mt-3 text-white font-bold'>
+//             <li className='mb-2 rounded py-2 hover:shadow hover:bg-blue-500'>
+//                 <a href='' className='px-3'>
+//                     <FaHome className='inline-block w-6 h-6 mr-2 mt-2'></FaHome>
+//                     Dhasbord
+//                 </a>
+//             </li>
+//             <li className='mb-2 rounded py-2 hover:shadow hover:bg-blue-500'>
+//                 <a href='' className='px-3'>
+//                     <FaRegFileAlt className='inline-block w-6 h-6 mr-2 mt-2' />
+//                     Cours
+//                 </a>
+//             </li>
+//             <li className='mb-2 rounded py-2 hover:shadow hover:bg-blue-500'>
+//                 <a href='' className='px-3'>
+//                     <FaPoll className='inline-block w-6 h-6 mr-2 mt-2' />
+//                     Livraison
+//                 </a>
+//             </li>
+//             <li className='mb-2 rounded py-2 hover:shadow hover:bg-blue-500'>
+//                 <a href='' className='px-3'>
+//                     <FaRegEnvelope className='inline-block w-6 h-6 mr-2 mt-2' />
+//                     Demande
+//                 </a>
+//             </li>
+//             <li className='mb-2 rounded py-2 hover:shadow hover:bg-blue-500'>
+//                 <a href='' className='px-3'>
+//                     <FaCog className='inline-block w-6 h-6 mr-2 mt-2' />
+//                     Setting
+//                 </a>
+//             </li>
+//         </ul>
+//     </div>
 //   )
 // }
 
 // export default Sidebar
 
+// import React from 'react';
+// import { FaCog, FaHome, FaFolder, FaRegEnvelope, FaRegFileAlt } from "react-icons/fa";
+// import { BsFillGridFill } from "react-icons/bs";
 
-import React from 'react'
-import { BsFillGridFill } from "react-icons/bs";
-import { FaHome, FaFolder, FaFileAlt  } from "react-icons/fa";
+// const Sidebar = ({ sidebarToggle }) => {
+//   return (
+//     <div className={`${sidebarToggle ? "block" : "hidden"} md:block w-64 bg-gray-800 fixed h-full px-4 py-2 transition-all duration-300`}>
+      
+      
+//       <div className='my-2 mb-4'>
+//         <h1 className='text-2xl text-white font-bold'>Admin Apprenant</h1>
+//       </div>
 
+//       <hr />
+      
+//       {/* Sidebar Links */}
+//       <ul className='mt-3 text-white font-bold'>
+        
+//         <li className='mb-2 rounded py-2 hover:shadow hover:bg-blue-500'>
+//           <a href='' className='px-3'>
+//             <FaHome className='inline-block w-6 h-6 mr-2 mt-2' />
+//             Dhasbord
+//           </a>
+//         </li>
+        
+//         <li className='mb-2 rounded py-2 hover:shadow hover:bg-blue-500'>
+//           <a href='' className='px-3'>
+//             <FaRegFileAlt className='inline-block w-6 h-6 mr-2 mt-2' />
+//             Cours
+//           </a>
+//         </li>
 
-const NavbarSidebar = ({ openNavbarSidebar}) => {
-  return (
-    <aside id='sidebar' className={openNavbarSidebar ? "navbarSidebar-responsive" : ""}>
-        <div className='sidebar-title'>
-            {/* <div className='sidebar-brand'>
-                <BsCart3 className='icon_header'/>SHOP
-            </div> */}
-            <span className='icon close_icon'>x</span>
-        </div>
+//         <li className='mb-2 rounded py-2 hover:shadow hover:bg-blue-500'>
+//           <a href='' className='px-3'>
+//             <FaFolder className='inline-block w-6 h-6 mr-2 mt-2' />
+//             Livraison
+//           </a>
+//         </li>
 
-        <ul className='sidebar-list'>
-           <li className='sidebar-list-item'>
-           <a href=''>
-                <FaHome className='icon' /> Dashboard
-            </a>
-           </li>
+//         <li className='mb-2 rounded py-2 hover:shadow hover:bg-blue-500'>
+//           <a href='' className='px-3'>
+//             <BsFillGridFill className='inline-block w-6 h-6 mr-2 mt-2' />
+//             Taches
+//           </a>
+//         </li>
 
-           <li className='sidebar-list-item'>
-           <a href=''>
-                < FaFileAlt className='icon' /> Cours
-            </a>
-           </li>
-          
-           <li className='sidebar-list-item'>
-           <a href=''>
-                <BsFillGridFill className='icon' /> Taches
-            </a>
-           </li>
-           <li className='sidebar-list-item'>
-           <a href=''>
-                <FaFolder className='icon' /> Livraison
-            </a>
-           </li>
-        </ul>
-    </aside>
-  )
-}
+//         <li className='mb-2 rounded py-2 hover:shadow hover:bg-blue-500'>
+//           <a href='' className='px-3'>
+//             <FaCog className='inline-block w-6 h-6 mr-2 mt-2' />
+//             Setting
+//           </a>
+//         </li>
+//       </ul>
+//     </div>
+//   );
+// };
 
-export default NavbarSidebar
+// export default Sidebar;
