@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Navbar from "./Composants/ApprenantsComposants/Navbar";
@@ -7,13 +9,17 @@ import CoursApp from './Composants/ApprenantsComposants/CoursApp';
 import Livraisons from './Composants/ApprenantsComposants/Livraisons';
 import Taches from './Composants/ApprenantsComposants/Taches';
 
-function App() { 
+function App() {
+  // Déclarez l'état sidebarToggle ici
+  const [sidebarToggle, setSidebarToggle] = useState(false);
+
   return (
     <Router>
       <div className="App">
-        {/* <Navbar/> */}
+        {/* Passez setSidebarToggle en tant que prop */}
+        <Navbar sidebarToggle={sidebarToggle} setSidebarToggle={setSidebarToggle} />
         <div className="main-content">
-          {/* <Sidebar/> */}
+          <Sidebar sidebarToggle={sidebarToggle} />
           <div className="page-content">
             <Routes>
               <Route path='/' element={<Dashboard />} />
@@ -28,4 +34,9 @@ function App() {
     </Router>
   );
 }
+
 export default App;
+
+
+
+
