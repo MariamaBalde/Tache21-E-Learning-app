@@ -23,7 +23,7 @@ const Modal = ({ show, onClose, taskTitle }) => {
         <div className="flex justify-end mt-4">
           <button
             onClick={onClose}
-            className="bg-orange-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-orange-600 transition duration-300"
+            className="bg-orange-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#4169E1] transition duration-300"
           >
             Soumettre
           </button>
@@ -92,7 +92,7 @@ const Livraisons = () => {
 
           <div className="flex justify-center mb-4">
             <img
-              src="URL_TO_YOUR_IMAGE"
+              src=""
               alt="Delivery icon"
               className="w-10 h-10"
             />
@@ -103,7 +103,7 @@ const Livraisons = () => {
           <div className="border-2 rounded-md py-2 px-4 mt-4 flex justify-between items-center">
             <button
               onClick={() => handleModalOpen(task)}
-              className="bg-white text-black font-semibold py-2 px-4 rounded-lg hover:bg-orange-500 hover:text-white transition duration-300"
+              className="bg-[#4169E1] text-black font-semibold py-2 px-4 rounded-lg hover:bg-orange-500 hover:text-white transition duration-300"
             >
               Commentaires
             </button>
