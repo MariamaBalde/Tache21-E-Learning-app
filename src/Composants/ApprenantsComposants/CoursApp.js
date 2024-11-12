@@ -1,12 +1,11 @@
+// CoursApp.js
 import React from 'react';
 import Cours from './Cours';
+
 import htmlcssImage from '../../Images/ImageCours/htmlcssImage.jpg';
-import bootstrapImage from '../../Images/ImageCours/bootstrapImage.jpg'; 
-import jsImage from '../../Images/ImageCours/jsImage.jpg'; 
-import reactImage from '../../Images/ImageCours/reactjsImage.jpg'; 
-
-
-
+import bootstrapImage from '../../Images/ImageCours/bootstrapImage.jpg';
+import jsImage from '../../Images/ImageCours/jsImage.jpg';
+import reactImage from '../../Images/ImageCours/reactjsImage.jpg';
 
 const CoursApp = () => {
   const courses = [
