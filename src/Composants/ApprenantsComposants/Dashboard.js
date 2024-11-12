@@ -1,48 +1,38 @@
 import React, { useState } from 'react';
 import { Calendar } from 'primereact/calendar';
 import Navbar from './Navbar';
-import { FaSearch } from 'react-icons/fa'; // Icône de recherche
+import { FaSearch } from 'react-icons/fa';
 
-<<<<<<< HEAD
-import React, { useState } from 'react'
-import { FiList } from "react-icons/fi";
-import { FaCheck, FaFile } from "react-icons/fa";
-const Dashbord = () => {
-    
-  return (
-    <div>
-        {/* Main Content */}
-        <main className='main-container mt-16 mr-80'>
-            <div className='main-title'>
-                <h3>Dashboard</h3>
-=======
+
 const Dashbord = ({ sidebarToggle, setSidebarToggle }) => {
   const [date, setDate] = useState(null);
 
   return (
     <div>
-      <div className={`${sidebarToggle ? 'ml-64' : ''} w-full`}>
+      {/* Sidebar et Navbar */}
+      <div className={`${sidebarToggle ? 'ml-64' : 'ml-0'} transition-all w-full`}>
         <Navbar sidebarToggle={sidebarToggle} setSidebarToggle={setSidebarToggle} />
       </div>
-      {/* Main Content */}
-      <main className="flex-1 p-8 mt-20 ml-80 w-full">
-        {/* Dashboard Section */}
-        <div className="grid lg:grid-cols-3 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          <div className="bg-[#f8492a] rounded-2xl w-full h-40 flex flex-col gap-4 items-center justify-center p-4">
-            <h1 className="text-lg font-semibold">Card 1</h1>
+
+      {/* Contenu principal */}
+      <main className={`p-8 mt-20 w-full ${sidebarToggle ? 'ml-64' : 'ml-0'} transition-all`}>
+        {/* Section Dashboard */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
+          <div className="bg-[#f8492a] rounded-2xl h-40 flex flex-col gap-4 items-center justify-center p-4">
+            <h1 className="text-lg font-semibold text-white">Card 1</h1>
           </div>
-          <div className="bg-[#478b56] rounded-2xl w-full h-40 flex flex-col gap-4 items-center justify-center p-4">
-            <h1 className="text-lg font-semibold">Card 2</h1>
+          <div className="bg-[#478b56] rounded-2xl h-40 flex flex-col gap-4 items-center justify-center p-4">
+            <h1 className="text-lg font-semibold text-white">Card 2</h1>
           </div>
-          <div className="bg-[#d16923] rounded-2xl w-full h-40 flex flex-col gap-4 items-center justify-center p-4">
-            <h1 className="text-lg font-semibold">Card 3</h1>
+          <div className="bg-[#d16923] rounded-2xl h-40 flex flex-col gap-4 items-center justify-center p-4">
+            <h1 className="text-lg font-semibold text-white">Card 3</h1>
           </div>
         </div>
 
-        {/* Search Section */}
+        {/* Section Recherche */}
         <div className="bg-[#e2d9d7] w-full mt-7 p-5 rounded-lg">
           <div className="flex flex-col lg:flex-row items-center justify-between space-x-4">
-            {/* Left side: Icon and Input */}
+            {/* Partie gauche: Icône et Input */}
             <div className="flex items-center gap-x-3 w-full lg:w-auto mb-4 lg:mb-0">
               <FaSearch className="text-gray-600 w-5 h-5" />
               <input
@@ -50,9 +40,9 @@ const Dashbord = ({ sidebarToggle, setSidebarToggle }) => {
                 className="font-semibold p-2 bg-[#e2d9d7] placeholder-black rounded-md w-full"
                 placeholder="Recherche une livraison"
               />
->>>>>>> 8093bd2ab5be819b2291a596216afb303f6acbce
             </div>
-            {/* Right side: Calendar */}
+
+            {/* Partie droite: Calendrier */}
             <div className="relative ml-auto w-full lg:w-auto">
               <Calendar
                 value={date}
@@ -62,10 +52,6 @@ const Dashbord = ({ sidebarToggle, setSidebarToggle }) => {
                 style={{ display: 'inline-block' }}
               />
             </div>
-<<<<<<< HEAD
-        </main>
-  </div>
-=======
           </div>
         </div>
       </main>
@@ -74,6 +60,7 @@ const Dashbord = ({ sidebarToggle, setSidebarToggle }) => {
 };
 
 export default Dashbord;
+
 
 
 // import React, { useState } from 'react';
@@ -266,3 +253,5 @@ export default Dashbord;
 // export default Dashbord;
 
 
+=======
+>>>>>>> 9d01442b2ff637daaefa3744666d1d56b6ff75ea
