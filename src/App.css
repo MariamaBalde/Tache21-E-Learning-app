@@ -1,16 +1,10 @@
+
 .App {
   display: flex;
   flex-direction: column;
   height: 100vh;
   overflow: hidden; /* Empêche le déplacement du contenu global */
 }
-
-/* .main-content {
-  display: flex;
-  flex: 1;
-  margin-top: 64px; 
-  min-width: 100vw; 
-} */
 
 /* Assurez-vous que le conteneur de la page prend toute la hauteur de l'écran */
 .main-content {
@@ -27,52 +21,6 @@
   overflow-y: auto; /* Permet un défilement vertical local */
   transition: margin-left 0.3s ease; /* Transition fluide pour le contenu */
 }
-
-
-
-
-
-
-
-
-/* .App {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-.main-content {
-  display: flex;
-  flex: 1;
-}
-
-.page-content {
-  flex: 1;
-  padding: 20px;
-  overflow-y: auto;
-} */
-
-/* .App {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-.main-content {
-  display: flex;
-  flex: 1;
-  margin-top: 64px; 
-}
-
-.page-content {
-  flex: 1;
-  padding: 20px;
-  overflow-y: auto;
-} */
-
-
-
-
 /* -------------------------------- Navbar Composant Début ------------------------- */
 
 /* -------------------------------- Navbar Composant Fin ------------------------- */
@@ -96,5 +44,4 @@
 /* -------------------------------- Taches Composant Début------------------------- */
 
 /* -------------------------------- Taches Composant Fin ------------------------- */
-
 

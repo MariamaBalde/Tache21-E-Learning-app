@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { FaBars, FaBell, FaUserCircle, FaEnvelope } from 'react-icons/fa';
 
@@ -26,5 +25,3 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
 };
 
 export default Navbar;
-
-
