@@ -1,191 +1,94 @@
 import React, { useState } from 'react';
 import { Calendar } from 'primereact/calendar';
-import Navbar from './Navbar';
 import { FaSearch } from 'react-icons/fa';
 
-
-const Dashbord = ({ sidebarToggle, setSidebarToggle }) => {
+const Dashboard = () => {
   const [date, setDate] = useState(null);
 
   return (
-    <div>
-      {/* Sidebar et Navbar */}
-      <div className={`${sidebarToggle ? 'ml-64' : 'ml-0'} transition-all w-full`}>
-        <Navbar sidebarToggle={sidebarToggle} setSidebarToggle={setSidebarToggle} />
+    <div className="flex flex-col lg:flex-row">
+      {/* Contenu Principal */}
+      <div className="flex-1 min-h-screen ml-0 lg:ml-64 transition-all">
+        {/* Contenu Principal du Dashboard */}
+        <main className="p-8 mt-20">
+  {/* Dashboard Cards */}
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    <div className="bg-[#f8492a] rounded-2xl h-40 flex items-center justify-center p-4">
+      <h1 className="text-lg font-semibold text-white">Card 1</h1>
+    </div>
+    <div className="bg-[#478b56] rounded-2xl h-40 flex items-center justify-center p-4">
+      <h1 className="text-lg font-semibold text-white">Card 2</h1>
+    </div>
+    <div className="bg-[#d16923] rounded-2xl h-40 flex items-center justify-center p-4">
+      <h1 className="text-lg font-semibold text-white">Card 3</h1>
+    </div>
+  </div>
+
+  {/* Recherche Section */}
+          <div className="recherche-section bg-[#e2d9d7] mt-7 p-5 rounded-lg">
+            <div className="flex flex-col lg:flex-row items-center justify-between space-y-4 lg:space-y-0 lg:space-x-4">
+              <div className="flex items-center gap-x-3 w-full lg:w-auto">
+                <FaSearch className="text-gray-600 w-5 h-5" />
+                <input
+                  type="text"
+                  className="font-semibold p-2 bg-[#e2d9d7] placeholder-black rounded-md w-full lg:w-auto"
+                  placeholder="Recherche une livraison"
+                />
+              </div>
+              <div className="relative w-full lg:w-auto">
+                {/* <Calendar
+                  value={date}
+                  onChange={(e) => setDate(e.value)}
+                  showIcon
+                  className="w-full lg:w-auto"
+                /> */}
+              </div>
+            </div>
+          </div>
+
+</main>
+
+        {/* <main className="p-8 mt-20">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div className="bg-[#f8492a] rounded-2xl h-40 flex items-center justify-center p-4">
+              <h1 className="text-lg font-semibold text-white">Card 1</h1>
+            </div>
+            <div className="bg-[#478b56] rounded-2xl h-40 flex items-center justify-center p-4">
+              <h1 className="text-lg font-semibold text-white">Card 2</h1>
+            </div>
+            <div className="bg-[#d16923] rounded-2xl h-40 flex items-center justify-center p-4">
+              <h1 className="text-lg font-semibold text-white">Card 3</h1>
+            </div>
+          </div>
+
+          <div className="bg-[#e2d9d7] mt-7 p-5 rounded-lg">
+            <div className="flex flex-col lg:flex-row items-center justify-between space-y-4 lg:space-y-0 lg:space-x-4">
+              <div className="flex items-center gap-x-3 w-full lg:w-auto">
+                <FaSearch className="text-gray-600 w-5 h-5" />
+                <input
+                  type="text"
+                  className="font-semibold p-2 bg-[#e2d9d7] placeholder-black rounded-md w-full lg:w-auto"
+                  placeholder="Recherche une livraison"
+                />
+              </div>
+              <div className="relative w-full lg:w-auto">
+                <Calendar
+                  value={date}
+                  onChange={(e) => setDate(e.value)}
+                  showIcon
+                  className="w-full lg:w-auto"
+                />
+              </div>
+            </div>
+          </div>
+
+        </main> */}
       </div>
-
-      {/* Contenu principal */}
-      <main className={`p-8 mt-20 w-full ${sidebarToggle ? 'ml-64' : 'ml-0'} transition-all`}>
-        {/* Section Dashboard */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
-          <div className="bg-[#f8492a] rounded-2xl h-40 flex flex-col gap-4 items-center justify-center p-4">
-            <h1 className="text-lg font-semibold text-white">Card 1</h1>
-          </div>
-          <div className="bg-[#478b56] rounded-2xl h-40 flex flex-col gap-4 items-center justify-center p-4">
-            <h1 className="text-lg font-semibold text-white">Card 2</h1>
-          </div>
-          <div className="bg-[#d16923] rounded-2xl h-40 flex flex-col gap-4 items-center justify-center p-4">
-            <h1 className="text-lg font-semibold text-white">Card 3</h1>
-          </div>
-        </div>
-
-        {/* Section Recherche */}
-        <div className="bg-[#e2d9d7] w-full mt-7 p-5 rounded-lg">
-          <div className="flex flex-col lg:flex-row items-center justify-between space-x-4">
-            {/* Partie gauche: Icône et Input */}
-            <div className="flex items-center gap-x-3 w-full lg:w-auto mb-4 lg:mb-0">
-              <FaSearch className="text-gray-600 w-5 h-5" />
-              <input
-                type="text"
-                className="font-semibold p-2 bg-[#e2d9d7] placeholder-black rounded-md w-full"
-                placeholder="Recherche une livraison"
-              />
-            </div>
-
-            {/* Partie droite: Calendrier */}
-            <div className="relative ml-auto w-full lg:w-auto">
-              <Calendar
-                value={date}
-                onChange={(e) => setDate(e.value)}
-                showIcon
-                className="mt-0 w-full lg:w-auto"
-                style={{ display: 'inline-block' }}
-              />
-            </div>
-          </div>
-        </div>
-      </main>
     </div>
   );
 };
 
-export default Dashbord;
-
-
-
-// import React, { useState } from 'react';
-// import { Calendar } from 'primereact/calendar';
-// import Navbar from './Navbar';
-// import { FaSearch } from 'react-icons/fa'; // Icône de recherche
-
-// const Dashbord = ({ sidebarToggle, setSidebarToggle }) => {
-//   const [date, setDate] = useState(null);
-
-//   return (
-//     <div>
-//       <div className={`${sidebarToggle ? 'ml-64' : ''} w-full`}>
-//         <Navbar sidebarToggle={sidebarToggle} setSidebarToggle={setSidebarToggle} />
-//       </div>
-//       {/* Main Content */}
-//       <main className="flex-1 p-8 mt-20 ml-80 w-full">
-//         {/* Dashboard Section */}
-//         <div className="grid lg:grid-cols-3 sm:grid-cols-2 md:grid-cols-3 gap-6">
-//           <div className="bg-[#f8492a] rounded-2xl w-full h-40 flex flex-col gap-4 items-center justify-center p-4">
-//             <h1 className="text-lg font-semibold"></h1>
-//           </div>
-//           <div className="bg-[#478b56] rounded-2xl w-full h-40 flex flex-col gap-4 items-center justify-center p-4">
-//             <h1 className="text-lg font-semibold"></h1>
-//           </div>
-//           <div className="bg-[#d16923] rounded-2xl w-full h-40 flex flex-col gap-4 items-center justify-center p-4">
-//             <h1 className="text-lg font-semibold"></h1>
-//           </div>
-//         </div>
-
-//         {/* Search Section */}
-//         <div className="bg-[#e2d9d7] w-full mt-7 p-5 rounded-lg">
-//           <div className="flex items-center justify-between space-x-4">
-//             {/* Left side: Icon and Input */}
-//             <div className="flex items-center gap-x-3">
-//               <FaSearch className="text-gray-600 w-5 h-5" />
-//               <input
-//                 type="text"
-//                 className="font-semibold p-2 bg-[#e2d9d7] placeholder-black rounded-md"
-//                 placeholder="Recherche une livraison"
-//               />
-//             </div>
-//             {/* Right side: Calendar */}
-//             <div className="relative flex ml-auto">
-//             <p>jj/mm/aaaa</p>
-//               <Calendar
-//                 value={date}
-//                 onChange={(e) => setDate(e.value)}
-//                 showIcon
-//                 className="mt-0"
-//                 style={{ display: 'inline-block' }}
-//               />
-//             </div>
-//           </div>
-//         </div>
-//       </main>
-//     </div>
-//   );
-// };
-
-// export default Dashbord;
-
-
-
-// import React, { useState } from 'react'
-// import { Calendar } from 'primereact/calendar';
-// import Navbar from './Navbar';
-
-
-// const Dashbord = ({sidebarToggle, setSidebarToggle}) => {
-//     const [date, setDate] = useState(null);
-//   return (
-//     <div>
-//         <div className={`${sidebarToggle ? "ml-64" : ""}w-full`}>
-//         <Navbar
-//         sidebarToggle={sidebarToggle}
-//         setSidebarToggle={setSidebarToggle} />
-//         </div>
-//     {/* Dhasbord */}
-//         <div className='container p-10 pt-16 mt-5 ml-64'>
-//     <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-72'>
-//         <div
-//             className='bg-[#f8492a] rounded-2xl w-64 h-40 flex flex-col gap-4 items-center justify-center p-4 py-7'>
-//             <div className='text-4xl mb-4'></div>
-//             <h1 className='text-lg font-semibold text-center px-3'>
-//             </h1>
-//         </div>
-//         <div
-//             className='bg-[#478b56] rounded-2xl w-64 h-40 flex flex-col gap-4 items-center justify-center p-4 py-7'>
-//             <div className='text-4xl mb-4'></div>
-//             <h1 className='text-lg font-semibold text-center px-3'>
-//             </h1>
-//         </div>
-//         <div
-//             className='bg-[#d16923] rounded-2xl w-64 h-40 flex flex-col gap-4 items-center justify-center p-4 py-7'>
-//             <div className='text-4xl mb-4'></div>
-//             <h1 className='text-lg font-semibold text-center px-3'>
-//             </h1>
-//         </div>
-//     </div>
-
-//     <div className="bg-[#e2d9d7] w-full mt-7 p-3">
-//     <div className="flex items-center justify-between space-x-4">
-//     <h1 className='text-lg font-semibold p-3'>
-//          <span className="pi pi-search"></span> Recherche une livraison
-//          </h1>
-//     <div className="relative">
-//              <Calendar
-//           value={date}
-//           onChange={(e) => setDate(e.value)}
-//           showIcon
-//           className="mt-0"
-//           style={{ display: 'inline-block' }} />
-//         </div>
-//     </div>
-//     </div>
-
-//   </div>
-//   </div>
->>>>>>> 8093bd2ab5be819b2291a596216afb303f6acbce
-    
-//   )
-// }
-
-// export default Dashbord
+export default Dashboard;
 
 
 
@@ -193,65 +96,3 @@ export default Dashbord;
 
 
 
-// import React, { useState } from 'react';
-// import { Calendar } from 'primereact/calendar';
-// import Navbar from './Navbar';
-// import { FaSearch } from 'react-icons/fa';
-
-// const Dashbord = ({ sidebarToggle, setSidebarToggle }) => {
-//   const [date, setDate] = useState(null);
-
-//   return (
-//     <div>
-//       <div className={`${sidebarToggle ? 'ml-64' : ''} w-full`}>
-//         <Navbar sidebarToggle={sidebarToggle} setSidebarToggle={setSidebarToggle} />
-//       </div>
-//       {/* Main Content */}
-//       <main className="flex-1 p-8 mt-20 ml-80 w-92">
-//         {/* Dashboard Section */}
-//         <div className="grid lg:grid-cols-3 sm:grid-cols-2 md:grid-cols-3 gap-6">
-//           <div className="bg-[#f8492a] rounded-2xl w-full h-40 flex flex-col gap-4 items-center justify-center p-4">
-//             <h1 className="text-lg font-semibold">Card 1</h1>
-//           </div>
-//           <div className="bg-[#478b56] rounded-2xl w-full h-40 flex flex-col gap-4 items-center justify-center p-4">
-//             <h1 className="text-lg font-semibold">Card 2</h1>
-//           </div>
-//           <div className="bg-[#d16923] rounded-2xl w-full h-40 flex flex-col gap-4 items-center justify-center p-4">
-//             <h1 className="text-lg font-semibold">Card 3</h1>
-//           </div>
-//         </div>
-
-//         {/* Search Section */}
-//         <div className="bg-[#e2d9d7] w-full mt-7 p-5 rounded-lg">
-//           <div className="flex flex-col lg:flex-row items-center justify-between space-x-4">
-//             {/* Left side: Icon and Input */}
-//             <div className="flex items-center gap-x-3 w-full lg:w-auto mb-4 lg:mb-0">
-//               <FaSearch className="text-gray-600 w-5 h-5" />
-//               <input
-//                 type="text"
-//                 className="font-semibold p-2 bg-[#e2d9d7] placeholder-black rounded-md w-full"
-//                 placeholder="Recherche une livraison"
-//               />
-//             </div>
-//             {/* Right side: Calendar */}
-//             <div className="relative ml-auto w-full lg:w-auto">
-//               <Calendar
-//                 value={date}
-//                 onChange={(e) => setDate(e.value)}
-//                 showIcon
-//                 className="mt-0 w-full lg:w-auto"
-//                 style={{ display: 'inline-block' }}
-//               />
-//             </div>
-//           </div>
-//         </div>
-//       </main>
-//     </div>
-//   );
-// };
-
-// export default Dashbord;
-
-
-=======
->>>>>>> 9d01442b2ff637daaefa3744666d1d56b6ff75ea
