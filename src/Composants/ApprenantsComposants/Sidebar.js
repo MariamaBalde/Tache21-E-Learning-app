@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { FaCog, FaHome, FaFolder, FaRegEnvelope, FaRegFileAlt } from "react-icons/fa";
 import { BsFillGridFill } from "react-icons/bs";
@@ -49,3 +48,4 @@ const Sidebar = ({ sidebarToggle }) => {
 };
 
 export default Sidebar;
+
