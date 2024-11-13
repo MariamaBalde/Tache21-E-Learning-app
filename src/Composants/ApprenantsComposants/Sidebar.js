@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { FaCog, FaHome, FaFolder, FaRegEnvelope, FaRegFileAlt } from "react-icons/fa";
 import { BsFillGridFill } from "react-icons/bs";
 
@@ -13,28 +14,27 @@ const Sidebar = ({ sidebarToggle }) => {
       {/* Sidebar Links */}
       <ul className="mt-3 text-white font-bold">
         <li className="mb-2 rounded py-2 hover:shadow hover:bg-blue-500">
-          <a href="" className="px-3">
+          <Link className="px-3" to="/dashboard">
             <FaHome className="inline-block w-6 h-6 mr-2 mt-2" />
-            Dashboard
-          </a>
+          Dashboard</Link>
         </li>
         <li className="mb-2 rounded py-2 hover:shadow hover:bg-blue-500">
-          <a href="" className="px-3">
+          <Link to="/coursapp" className="px-3">
             <FaRegFileAlt className="inline-block w-6 h-6 mr-2 mt-2" />
             Cours
-          </a>
+          </Link>
         </li>
         <li className="mb-2 rounded py-2 hover:shadow hover:bg-blue-500">
-          <a href="" className="px-3">
+          <Link to="/livraisons" className="px-3">
             <FaFolder className="inline-block w-6 h-6 mr-2 mt-2" />
             Livraison
-          </a>
+          </Link>
         </li>
         <li className="mb-2 rounded py-2 hover:shadow hover:bg-blue-500">
-          <a href="" className="px-3">
+          <Link to="/taches" href="" className="px-3">
             <BsFillGridFill className="inline-block w-6 h-6 mr-2 mt-2" />
             Tâches
-          </a>
+          </Link>
         </li>
         <li className="mb-2 rounded py-2 hover:shadow hover:bg-blue-500">
           <a href="" className="px-3">
