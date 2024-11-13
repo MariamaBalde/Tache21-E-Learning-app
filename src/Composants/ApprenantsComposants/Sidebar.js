@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaCog, FaHome, FaFolder, FaRegEnvelope, FaRegFileAlt } from "react-icons/fa";
+import { FaCog, FaHome, FaFolder, FaRegFileAlt } from "react-icons/fa";
 import { BsFillGridFill } from "react-icons/bs";
 
 const Sidebar = ({ sidebarToggle }) => {
@@ -15,32 +15,33 @@ const Sidebar = ({ sidebarToggle }) => {
       <ul className="mt-3 text-white font-bold">
         <li className="mb-2 rounded py-2 hover:shadow hover:bg-blue-500">
           <Link className="px-3" to="/dashboard">
-            <FaHome className="inline-block w-6 h-6 mr-2 mt-2" />
-          Dashboard</Link>
+            <FaHome className="inline-block w-6 h-6 mr-2" />
+            Dashboard
+          </Link>
         </li>
         <li className="mb-2 rounded py-2 hover:shadow hover:bg-blue-500">
-          <Link to="/coursapp" className="px-3">
-            <FaRegFileAlt className="inline-block w-6 h-6 mr-2 mt-2" />
+          <Link className="px-3" to="/coursapp">
+            <FaRegFileAlt className="inline-block w-6 h-6 mr-2" />
             Cours
           </Link>
         </li>
         <li className="mb-2 rounded py-2 hover:shadow hover:bg-blue-500">
-          <Link to="/livraisons" className="px-3">
-            <FaFolder className="inline-block w-6 h-6 mr-2 mt-2" />
+          <Link className="px-3" to="/livraisons">
+            <FaFolder className="inline-block w-6 h-6 mr-2" />
             Livraison
           </Link>
         </li>
         <li className="mb-2 rounded py-2 hover:shadow hover:bg-blue-500">
-          <Link to="/taches" href="" className="px-3">
-            <BsFillGridFill className="inline-block w-6 h-6 mr-2 mt-2" />
+          <Link className="px-3" to="/taches">
+            <BsFillGridFill className="inline-block w-6 h-6 mr-2" />
             Tâches
           </Link>
         </li>
         <li className="mb-2 rounded py-2 hover:shadow hover:bg-blue-500">
-          <a href="" className="px-3">
-            <FaCog className="inline-block w-6 h-6 mr-2 mt-2" />
+          <Link className="px-3" to="/parametres">
+            <FaCog className="inline-block w-6 h-6 mr-2" />
             Paramètres
-          </a>
+          </Link>
         </li>
       </ul>
     </div>
@@ -48,4 +49,7 @@ const Sidebar = ({ sidebarToggle }) => {
 };
 
 export default Sidebar;
+
+
+
 
