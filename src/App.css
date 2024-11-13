@@ -1,44 +1,62 @@
+
+
+
+
+
+
+/* 
 .App {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  overflow: hidden; 
 }
 
 .main-content {
+  height: auto;
+  min-height: 100vh; 
   display: flex;
-  flex: 1;
+  flex-direction: column;
 }
+
 
 .page-content {
   flex: 1;
   padding: 20px;
-  overflow-y: auto;
+  overflow-y: auto; 
+  transition: margin-left 0.3s ease;
+}  */
+
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden; /* Empêche le déplacement du contenu global */
 }
+
+/* Assurez-vous que le conteneur de la page prend toute la hauteur de l'écran */
+.main-content {
+  height: auto;
+  min-height: 100vh; /* Prend la hauteur de l'écran */
+  display: flex;
+  flex-direction: column;
+}
+
+
+.page-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto; /* Permet un défilement vertical local */
+  transition: margin-left 0.3s ease; /* Transition fluide pour le contenu */
+}
+
 
 /* -------------------------------- Navbar Composant Début ------------------------- */
 
 /* -------------------------------- Navbar Composant Fin ------------------------- */
 
 /* -------------------------------- Sidebar Composant Début ------------------------- */
-.sidebar {
-  width: 200px;
-  background-color: #f8f8f8;
-  padding: 20px;
-}
 
-.sidebar ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.sidebar ul li {
-  margin: 15px 0;
-}
-
-.sidebar ul li a {
-  text-decoration: none;
-  color: #333;
-}
 /* --------------------------------Sidebar Composant Fin------------------------- */
 
 /* -------------------------------- Cours Composant Début ------------------------- */
@@ -55,6 +73,4 @@
 
 /* -------------------------------- Taches Composant Début------------------------- */
 
-/* -------------------------------- Taches Composant Fin ------------------------- */
-
-
+/* -------------------------------- Taches Composant Fin ------------------------- */
