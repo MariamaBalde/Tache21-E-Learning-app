@@ -1,29 +1,51 @@
 
-import React from 'react';
-import { FaBars, FaBell, FaUserCircle, FaEnvelope } from 'react-icons/fa';
 
-const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
-  return (
-    <nav className="bg-gray-800 fixed top-0 left-0 w-full z-10 flex justify-between items-center px-4 py-3">
-      <div className="flex items-center text-xl">
-        {/* Bouton hamburger visible en petit écran */}
-        <FaBars
-          className="text-white cursor-pointer lg:hidden"
-          onClick={() => setSidebarToggle(!sidebarToggle)}
-        />
-        <span className="text-white font-semibold ml-2">Interface Etudiant</span>
-      </div>
-      <div className="flex items-center gap-x-5">
-        <button className="bg-yellow-600 rounded p-2 text-white hidden md:block">Envoyez mon travail</button>
-        <FaEnvelope className="text-white w-6 h-6" />
-        <FaBell className="text-white w-6 h-6" />
-        <button className="text-white">
-          <FaUserCircle className="w-6 h-6" />
-        </button>
-      </div>
-    </nav>
-  );
-};
 
-export default Navbar;
+
+// import React from 'react';
+// import { BellIcon, UserCircleIcon } from '@heroicons/react/outline';
+
+// const Navbar = () => {
+//   return (
+//     <div className="bg-white flex justify-between items-center p-4 shadow-md">
+//       <input
+//         type="text"
+//         placeholder="Search..."
+//         className="border rounded-full py-2 px-4 focus:outline-none"
+//       />
+//       <div className="flex items-center space-x-4">
+//         <BellIcon className="h-6 w-6 text-gray-600" />
+//         <UserCircleIcon className="h-8 w-8 text-gray-600" />
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Navbar;
+
+
+
+// Navbar.js
+// import React from 'react';
+
+// const Navbar = () => {
+//   return (
+//     <div className="flex justify-between items-center p-4 bg-white shadow-md">
+//       <div className="w-1/2">
+//         <input
+//           type="text"
+//           placeholder="Search..."
+//           className="w-full p-2 border rounded-md"
+//         />
+//       </div>
+//       <div className="flex items-center space-x-4">
+//         <button className="p-2 hover:bg-gray-200 rounded-full">🔔</button>
+//         <button className="p-2 hover:bg-gray-200 rounded-full">📩</button>
+//         <div className="w-10 h-10 bg-gray-300 rounded-full"></div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Navbar;
 

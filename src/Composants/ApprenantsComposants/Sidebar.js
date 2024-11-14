@@ -1,51 +1,60 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { FaCog, FaHome, FaFolder, FaRegEnvelope, FaRegFileAlt } from "react-icons/fa";
-import { BsFillGridFill } from "react-icons/bs";
 
-const Sidebar = ({ sidebarToggle }) => {
-  return (
-    <div className={`${sidebarToggle ? "block" : "hidden"} lg:block w-64 bg-gray-800 fixed h-full px-4 py-2 transition-all duration-300`}>
-      <div className="my-2 mb-4">
-        <h1 className="text-2xl text-white font-bold">Admin Apprenant</h1>
-      </div>
-      <hr />
 
-      {/* Sidebar Links */}
-      <ul className="mt-3 text-white font-bold">
-        <li className="mb-2 rounded py-2 hover:shadow hover:bg-blue-500">
-          <Link className="px-3" to="/dashboard">
-            <FaHome className="inline-block w-6 h-6 mr-2 mt-2" />
-          Dashboard</Link>
-        </li>
-        <li className="mb-2 rounded py-2 hover:shadow hover:bg-blue-500">
-          <Link to="/coursapp" className="px-3">
-            <FaRegFileAlt className="inline-block w-6 h-6 mr-2 mt-2" />
-            Cours
-          </Link>
-        </li>
-        <li className="mb-2 rounded py-2 hover:shadow hover:bg-blue-500">
-          <Link to="/livraisons" className="px-3">
-            <FaFolder className="inline-block w-6 h-6 mr-2 mt-2" />
-            Livraison
-          </Link>
-        </li>
-        <li className="mb-2 rounded py-2 hover:shadow hover:bg-blue-500">
-          <Link to="/taches" href="" className="px-3">
-            <BsFillGridFill className="inline-block w-6 h-6 mr-2 mt-2" />
-            Tâches
-          </Link>
-        </li>
-        <li className="mb-2 rounded py-2 hover:shadow hover:bg-blue-500">
-          <a href="" className="px-3">
-            <FaCog className="inline-block w-6 h-6 mr-2 mt-2" />
-            Paramètres
-          </a>
-        </li>
-      </ul>
-    </div>
-  );
-};
+// 2em
+// import React from 'react';
+// import { CalendarIcon, CogIcon, BookOpenIcon, LogoutIcon } from '@heroicons/react/outline';
+// import { HomeIcon } from "@heroicons/react/solid"
+// const Sidebar = () => {
+//   return (
+//     <div className="bg-purple-900 text-white w-64 p-5 flex flex-col">
+//       <h2 className="text-2xl font-bold mb-10">E-Learning</h2>
+//       <nav className="space-y-4">
+//         {/* <a href="#" className="flex items-center space-x-3 hover:bg-purple-700 p-2 rounded">
+//           <HomeIcon className="h-6 w-6" /> <span>Dashboard</span>
+//         </a> */}
+//         <a href="#" className="flex items-center space-x-3 hover:bg-purple-700 p-2 rounded-lg bg-purple-900">
+//           <HomeIcon className="h-6 w-6" /> <span>Dashboard</span>
+//         </a>
 
-export default Sidebar;
+//         <a href="#" className="flex items-center space-x-3 hover:bg-purple-700 p-2 rounded">
+//           <BookOpenIcon className="h-6 w-6" /> <span>Explore</span>
+//         </a>
+//         <a href="#" className="flex items-center space-x-3 hover:bg-purple-700 p-2 rounded">
+//           <CalendarIcon className="h-6 w-6" /> <span>Schedule</span>
+//         </a>
+//         <a href="#" className="flex items-center space-x-3 hover:bg-purple-700 p-2 rounded">
+//           <CogIcon className="h-6 w-6" /> <span>Settings</span>
+//         </a>
+//         <a href="#" className="flex items-center space-x-3 hover:bg-purple-700 p-2 rounded">
+//           <LogoutIcon className="h-6 w-6" /> <span>Log Out</span>
+//         </a>
+//       </nav>
+//     </div>
+//   );
+// };
+// export default Sidebar;
+
+
+
+// 1er
+// Sidebar.js
+// import React from 'react';
+// import { Link } from 'react-router-dom';
+
+// const Sidebar = () => {
+//   return (
+//     <div className="w-64 h-screen bg-purple-900 text-white p-4">
+//       <h2 className="text-2xl font-bold mb-6">Mon E-learning</h2>
+//       <nav className="flex flex-col space-y-4">
+//         <Link to="/dashboard" className="hover:bg-purple-700 p-2 rounded">Dashboard</Link>
+//         <Link to="/livraisons" className="hover:bg-purple-700 p-2 rounded">Livraisons</Link>
+//         <Link to="/certificats" className="hover:bg-purple-700 p-2 rounded">Certificats</Link>
+//       </nav>
+//       <button className="bg-gradient-to-r from-purple-500 to-pink-500 text-white mt-10 p-2 rounded">Upgrade to PRO</button>
+//     </div>
+//   );
+// };
+
+// export default Sidebar;
+
 
