@@ -1,120 +1,128 @@
-import { useState } from 'react';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import { getFirestore, doc, setDoc } from 'firebase/firestore';
-import { auth, db } from '../../Config/firebaseConfig'; // Corrige le chemin d'importation
+// src/Composants/Auth/Inscription.js
+import React, { useState } from 'react';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { setDoc, doc } from 'firebase/firestore';
+import { auth, db } from '../../Config/firebaseConfig'; // Import de la configuration Firebase
 
 const Inscription = () => {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [motDePasse, setMotDePasse] = useState('');
+  const [prenom, setPrenom] = useState('');
+  const [nom, setNom] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = async (e) => {
+  const handleInscription = async (e) => {
     e.preventDefault();
+
     try {
-      // Créer un coach dans Firebase Authentication
-      const userCredential = await createUserWithEmailAndPassword(
+      // Créer un utilisateur avec email et mot de passe via Firebase Authentication
+      const utilisateur = await createUserWithEmailAndPassword(
         auth,
         email,
-        password
+        motDePasse
       );
-      const user = userCredential.user;
 
       // Ajouter les informations du coach dans Firestore
-      await setDoc(doc(db, 'coaches', user.uid), {
-        firstName,
-        lastName,
-        email,
-        createdAt: new Date(),
+      const coachRef = doc(db, 'coachs', utilisateur.user.uid); // UID unique du coach
+      await setDoc(coachRef, {
+        prenom: prenom,
+        nom: nom,
+        email: email,
+        createdAt: new Date(), // Ajoute la date de création
       });
 
-      console.log('Coach ajouté avec succès!');
-      // Optionnel : Redirigez l'admin vers une autre page ou affichez un message de succès
+      console.log('Coach inscrit avec succès');
+      // Rediriger ou afficher un message de succès
     } catch (error) {
-      console.error("Erreur lors de l'ajout du coach:", error);
-      setError("Une erreur est survenue lors de l'ajout du coach");
+      setError(error.message);
+      console.error("Erreur lors de l'inscription du coach : ", error.message);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-md">
-        <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">
-          Inscription du Coach
+    <div className="flex justify-center items-center min-h-screen bg-gray-50">
+      <form
+        onSubmit={handleInscription}
+        className="bg-white shadow-md rounded-lg p-8 w-full max-w-md"
+      >
+        <h2 className="text-2xl font-semibold text-center mb-6 text-gray-800">
+          Inscription Coach
         </h2>
 
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label htmlFor="firstName" className="block text-gray-600">
-              Prénom
-            </label>
-            <input
-              type="text"
-              id="firstName"
-              placeholder="Prénom"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              className="w-full p-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
+        {error && (
+          <p className="text-red-500 text-sm text-center mb-4">{error}</p>
+        )}
 
-          <div className="mb-4">
-            <label htmlFor="lastName" className="block text-gray-600">
-              Nom
-            </label>
-            <input
-              type="text"
-              id="lastName"
-              placeholder="Nom"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              className="w-full p-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 font-medium" htmlFor="prenom">
+            Prénom
+          </label>
+          <input
+            type="text"
+            id="prenom"
+            value={prenom}
+            onChange={(e) => setPrenom(e.target.value)}
+            placeholder="Entrez votre prénom"
+            className="w-full p-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            required
+          />
+        </div>
 
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-600">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 font-medium" htmlFor="nom">
+            Nom
+          </label>
+          <input
+            type="text"
+            id="nom"
+            value={nom}
+            onChange={(e) => setNom(e.target.value)}
+            placeholder="Entrez votre nom"
+            className="w-full p-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            required
+          />
+        </div>
 
-          <div className="mb-4">
-            <label htmlFor="password" className="block text-gray-600">
-              Mot de passe
-            </label>
-            <input
-              type="password"
-              id="password"
-              placeholder="Mot de passe"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 font-medium" htmlFor="email">
+            E-mail
+          </label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Entrez votre e-mail"
+            className="w-full p-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            required
+          />
+        </div>
 
-          {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
-
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        <div className="mb-6">
+          <label
+            className="block text-gray-700 font-medium"
+            htmlFor="motDePasse"
           >
-            Inscrire le Coach
-          </button>
-        </form>
-      </div>
+            Mot de passe
+          </label>
+          <input
+            type="password"
+            id="motDePasse"
+            value={motDePasse}
+            onChange={(e) => setMotDePasse(e.target.value)}
+            placeholder="Entrez votre mot de passe"
+            className="w-full p-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            required
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="w-full py-3 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        >
+          S'inscrire
+        </button>
+      </form>
     </div>
   );
 };
