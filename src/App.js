@@ -12,7 +12,7 @@ import Dashboard from './Composants/ApprenantsComposants/Dashboard';
 import CoursApp from './Composants/ApprenantsComposants/CoursApp';
 import Livraisons from './Composants/ApprenantsComposants/Livraisons';
 import Taches from './Composants/ApprenantsComposants/Taches';
-import Login from './Composants/Auth/Login';
+import AdminLogin from './Composants/Auth/AdminLogin';
 import EtudiantLogin from './Composants/Auth/EtudiantLogin';
 import Inscription from './Composants/Auth/Inscription';
 import RecupererMotDePasse from './Composants/Auth/RecupererMotDePasse';
@@ -29,7 +29,7 @@ function AppContent() {
 
   // Pages sans Navbar et Sidebar
   const pagesSansBarre = [
-    '/login',
+    '/AdminLogin',
     '/etudiant-login',
     '/inscription',
     '/recuperer-mot-de-passe',
@@ -55,7 +55,7 @@ function AppContent() {
           <Route path="/coursapp" element={<CoursApp />} />
           <Route path="/livraisons" element={<Livraisons />} />
           <Route path="/taches" element={<Taches />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/AdminLogin" element={<AdminLogin />} />
           <Route path="/etudiant-login" element={<EtudiantLogin />} />
           <Route path="/inscription" element={<Inscription />} />
           <Route
