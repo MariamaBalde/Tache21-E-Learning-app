@@ -1,78 +1,97 @@
-// src/Composants/Auth/Login.js
 import React, { useState } from 'react';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../Config/firebaseConfig';
+import { useNavigate } from 'react-router-dom';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../../Config/firebaseConfig';
 
 const Login = () => {
   const [email, setEmail] = useState('');
-  const [motDePasse, setMotDePasse] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Logique de connexion ici...
+    setError(''); // Réinitialisation de l'erreur à chaque soumission
+
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      if (userDoc.exists()) {
+        const role = userDoc.data().Role;
+        if (role === 'admin') {
+          navigate('/admin/dashboard');
+        } else if (role === 'coach') {
+          navigate('/coach/dashboard');
+        } else if (role === 'etudiant') {
+          navigate('/etudiant/dashboard');
+        } else {
+          throw new Error('Rôle inconnu');
+        }
+      } else {
+        throw new Error('Utilisateur non trouvé dans la base de données');
+      }
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   return (
-    <div className="h-screen flex justify-center items-center bg-gray-100">
-      <div className="flex max-w-4xl w-full shadow-lg bg-white rounded-lg">
-        {/* Section gauche pour logo et texte */}
-        <div className="w-1/2 p-8 flex flex-col justify-center items-center">
-          <img src="path_to_logo" alt="Logo" className="h-24 mb-6" />
-          <h2 className="text-3xl font-bold text-gray-700">
-            Bienvenue dans l'application
-          </h2>
-          <p className="text-lg text-gray-500 mt-4">
-            Se connecter pour continuer.
-          </p>
-        </div>
-
-        {/* Section droite pour le formulaire de connexion */}
-        <div className="w-1/2 p-8">
-          <form onSubmit={handleLogin} className="space-y-6">
-            <h2 className="text-2xl font-bold text-gray-700 mb-4">Connexion</h2>
-            {error && <p className="text-red-500 text-sm">{error}</p>}
-
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 p-3 w-full border border-gray-300 rounded-lg"
-                placeholder="Entrez votre email"
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="motDePasse"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Mot de passe
-              </label>
-              <input
-                id="motDePasse"
-                type="password"
-                value={motDePasse}
-                onChange={(e) => setMotDePasse(e.target.value)}
-                className="mt-1 p-3 w-full border border-gray-300 rounded-lg"
-                placeholder="Entrez votre mot de passe"
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="w-full bg-blue-600 text-white p-3 rounded-lg mt-4 hover:bg-blue-700"
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="w-full max-w-md p-6 bg-white rounded-md shadow-md">
+        <h2 className="text-2xl font-bold text-center text-gray-800">
+          Connexion
+        </h2>
+        {error && (
+          <p className="mt-4 text-sm text-center text-red-500">{error}</p>
+        )}
+        <form onSubmit={handleLogin} className="mt-6">
+          <div className="mb-4">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-600"
             >
-              Se connecter
-            </button>
-          </form>
-        </div>
+              E-mail
+            </label>
+            <input
+              type="email"
+              id="email"
+              placeholder="E-mail"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-2 mt-2 text-gray-800 bg-gray-100 border rounded-md focus:ring focus:ring-indigo-300 focus:outline-none"
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-600"
+            >
+              Mot de passe
+            </label>
+            <input
+              type="password"
+              id="password"
+              placeholder="Mot de passe"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-4 py-2 mt-2 text-gray-800 bg-gray-100 border rounded-md focus:ring focus:ring-indigo-300 focus:outline-none"
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full px-4 py-2 text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus:ring focus:ring-indigo-300 focus:outline-none"
+          >
+            Se connecter
+          </button>
+        </form>
       </div>
     </div>
   );

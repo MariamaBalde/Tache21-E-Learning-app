@@ -1,104 +1,53 @@
-import React, { useState } from 'react';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useLocation,
-} from 'react-router-dom';
-import './App.css';
-import Navbar from './Composants/ApprenantsComposants/Navbar';
-import Sidebar from './Composants/ApprenantsComposants/Sidebar';
-import Dashboard from './Composants/ApprenantsComposants/Dashboard';
-import CoursApp from './Composants/ApprenantsComposants/CoursApp';
-import Livraisons from './Composants/ApprenantsComposants/Livraisons';
-import Taches from './Composants/ApprenantsComposants/Taches';
-import AdminLogin from './Composants/Auth/AdminLogin';
-import EtudiantLogin from './Composants/Auth/EtudiantLogin';
-import Inscription from './Composants/Auth/Inscription';
-import RecupererMotDePasse from './Composants/Auth/RecupererMotDePasse';
-import CreerEtudiant from './Composants/Admin/CreerEtudiant';
-import GestionUtilisateurs from './Composants/Admin/GestionUtilisateurs';
-import AdminDashboard from './Composants/Admin/AdminDashboard';
-import ProtectedRoute from './Utils/ProtectedRoute';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './Composants/Auth/Login';
+import AdminDashboard from './Composants/Admin/Dashboard';
+import InscrireCoach from './Composants/Admin/InscrireCoach';
+import CoachDashboard from './Composants/Coach/Dashboard';
+import EtudiantDashboard from './Composants/Etudiant/Dashboard';
+import NotFound from './pages/NotFound';
+import PrivateRoute from './utils/PrivateRoute';
 
-import { db, auth } from './Config/firebaseConfig';
-
-function AppContent() {
-  const [sidebarToggle, setSidebarToggle] = useState(false);
-  const location = useLocation();
-
-  // Pages sans Navbar et Sidebar
-  const pagesSansBarre = [
-    '/AdminLogin',
-    '/etudiant-login',
-    '/inscription',
-    '/recuperer-mot-de-passe',
-    '/admin/dashboard',
-  ];
-  const estPageSansBarre = pagesSansBarre.includes(location.pathname);
-
-  return (
-    <div className="App">
-      {!estPageSansBarre && (
-        <>
-          <Navbar
-            sidebarToggle={sidebarToggle}
-            setSidebarToggle={setSidebarToggle}
-          />
-          <Sidebar sidebarToggle={sidebarToggle} />
-        </>
-      )}
-      <div className="page-content">
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/coursapp" element={<CoursApp />} />
-          <Route path="/livraisons" element={<Livraisons />} />
-          <Route path="/taches" element={<Taches />} />
-          <Route path="/AdminLogin" element={<AdminLogin />} />
-          <Route path="/etudiant-login" element={<EtudiantLogin />} />
-          <Route path="/inscription" element={<Inscription />} />
-          <Route
-            path="/recuperer-mot-de-passe"
-            element={<RecupererMotDePasse />}
-          />
-          {/* Routes Admin protégées */}
-          <Route
-            path="/admin/dashboard"
-            element={
-              <ProtectedRoute role="admin">
-                <AdminDashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/creer-etudiant"
-            element={
-              <ProtectedRoute role="admin">
-                <CreerEtudiant />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/gestion-utilisateurs"
-            element={
-              <ProtectedRoute role="admin">
-                <GestionUtilisateurs />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-      </div>
-    </div>
-  );
-}
-
-function App() {
+const App = () => {
   return (
     <Router>
-      <AppContent />
+      <Routes>
+        {/* Route de connexion */}
+        <Route path="/" element={<Login />} />
+
+        {/* Routes sécurisées avec PrivateRoute */}
+        <Route
+          path="/admin/dashboard"
+          element={
+            <PrivateRoute roleRequired="admin">
+              <AdminDashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route path="/admin/inscrire-coach" element={<InscrireCoach />} />
+
+        <Route
+          path="/coach/dashboard"
+          element={
+            <PrivateRoute roleRequired="coach">
+              <CoachDashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/etudiant/dashboard"
+          element={
+            <PrivateRoute roleRequired="etudiant">
+              <EtudiantDashboard />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Page introuvable */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </Router>
   );
-}
+};
 
 export default App;

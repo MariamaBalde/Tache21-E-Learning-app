@@ -1,3 +1,4 @@
+// src/Composants/Auth/AdminLogin.js
 import React, { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../Config/firebaseConfig';
@@ -12,51 +13,60 @@ const AdminLogin = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      await signInWithEmailAndPassword(auth, email, motDePasse);
-      // Si l'admin se connecte avec succès, rediriger vers le tableau de bord
-      navigate('/admin-dashboard');
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        motDePasse
+      );
+      console.log('Connexion réussie:', userCredential.user);
+      navigate('/admin/dashboard');
     } catch (err) {
       setError(err.message);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-8">
-        <h2 className="text-3xl font-semibold text-center mb-6 text-indigo-600">
-          Connexion Admin
-        </h2>
-        {error && (
-          <p className="text-red-500 text-xs text-center mb-4">{error}</p>
-        )}
-
-        <form onSubmit={handleLogin} className="space-y-6">
-          <div>
-            <input
-              type="email"
-              placeholder="E-mail"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            />
-          </div>
-          <div>
-            <input
-              type="password"
-              placeholder="Mot de passe"
-              value={motDePasse}
-              onChange={(e) => setMotDePasse(e.target.value)}
-              className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full py-3 mt-4 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 focus:outline-none"
-          >
-            Se connecter
-          </button>
-        </form>
-      </div>
+    <div className="max-w-md mx-auto p-6 bg-white shadow-lg rounded-lg">
+      <h2 className="text-2xl font-semibold text-center mb-4">
+        Connexion Admin
+      </h2>
+      <form onSubmit={handleLogin} className="space-y-4">
+        <div>
+          <label htmlFor="email" className="block">
+            E-mail
+          </label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="w-full p-2 border rounded-md"
+            placeholder="E-mail"
+          />
+        </div>
+        <div>
+          <label htmlFor="motDePasse" className="block">
+            Mot de passe
+          </label>
+          <input
+            type="password"
+            id="motDePasse"
+            value={motDePasse}
+            onChange={(e) => setMotDePasse(e.target.value)}
+            required
+            className="w-full p-2 border rounded-md"
+            placeholder="Mot de passe"
+          />
+        </div>
+        <button
+          type="submit"
+          className="w-full bg-blue-500 text-white p-2 rounded-md"
+        >
+          Se connecter
+        </button>
+      </form>
+      {error && <p className="text-red-500 mt-2 text-center">{error}</p>}
     </div>
   );
 };

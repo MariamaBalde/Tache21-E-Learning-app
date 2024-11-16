@@ -1,20 +1,21 @@
+// src/Config/firebaseConfig.js
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth'; // Pour l'authentification
+import { getFirestore } from 'firebase/firestore'; // Pour la base de données Firestore
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: 'AIzaSyAj4KOnE4xnI6EhFcFMxc2We8k3wqzAz4Q',
-  authDomain: 'e-learning-app-7b69b.firebaseapp.com',
-  projectId: 'e-learning-app-7b69b',
-  storageBucket: 'e-learning-app-7b69b.firebasestorage.app',
-  messagingSenderId: '18558548334',
-  appId: '1:18558548334:web:9baf59e5a6fa572ea0697f',
-  measurementId: 'G-RWH36XRQKC',
+  apiKey: 'AIzaSyCQCmiojhdkSbmeEo4A98M63T4H0Ks5yIQ',
+  authDomain: 'tache-21-6fd14.firebaseapp.com',
+  projectId: 'tache-21-6fd14',
+  storageBucket: 'tache-21-6fd14.firebasestorage.app',
+  messagingSenderId: '608461948845',
+  appId: '1:608461948845:web:3e87e509173a12fd978324',
+  measurementId: 'G-R6Z2LQ7WXF',
 };
 
-// Initialize Firebase
+// Initialise Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-export { auth, db, app };
+
+export { auth, db };
