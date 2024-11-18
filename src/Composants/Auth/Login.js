@@ -13,7 +13,7 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError(''); // Réinitialisation de l'erreur à chaque soumission
+    setError('');
 
     try {
       const userCredential = await signInWithEmailAndPassword(
@@ -25,7 +25,17 @@ const Login = () => {
 
       const userDoc = await getDoc(doc(db, 'users', user.uid));
       if (userDoc.exists()) {
-        const role = userDoc.data().Role;
+        const userData = userDoc.data();
+        const role = userData.Role;
+        const status = userData.status; // Vérifier le statut de l'utilisateur
+
+        if (status === 'désactivé') {
+          throw new Error(
+            "Votre compte a été désactivé. Veuillez contacter l'administrateur."
+          );
+        }
+
+        // Vérification du rôle de l'utilisateur
         if (role === 'admin') {
           navigate('/admin/dashboard');
         } else if (role === 'coach') {

@@ -1,66 +1,143 @@
 import React, { useState } from 'react';
 import { db } from '../../Config/firebaseConfig';
-import { collection, addDoc } from 'firebase/firestore';
-import { sendEmailToStudent, sendEmailToCoach } from './sendEmail'; // Import des fonctions d'email
+import {
+  collection,
+  addDoc,
+  query,
+  where,
+  getDocs,
+  updateDoc,
+  doc,
+} from 'firebase/firestore';
+import { sendEmailToStudent, sendEmailToCoach } from './sendEmail';
 
-const InscrireEtudiant = () => {
+const InscrireUtilisateur = () => {
   const [email, setEmail] = useState('');
   const [nom, setNom] = useState('');
-  const [role, setRole] = useState('etudiant');
-  const [coachEmail, setCoachEmail] = useState(''); // Nouveau champ pour l'email du coach
-  const [domaine, setDomaine] = useState('');
   const [prenom, setPrenom] = useState('');
   const [tel, setTel] = useState('');
+  const [domaine, setDomaine] = useState('');
   const [dureeFormation, setDureeFormation] = useState('');
+  const [coachEmail, setCoachEmail] = useState('');
+  const [role, setRole] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Enregistrement de l'étudiant dans Firebase
       const userRef = collection(db, 'users');
-      const docRef = await addDoc(userRef, {
-        email,
-        nom,
-        prenom,
-        role,
-        domaine,
-        tel,
-        dureeFormation,
-        coachEmail,
-        createdAt: new Date(),
-      });
+      const password = Math.random().toString(36).slice(-8); // Génération d'un mot de passe temporaire
+      const createdAt = new Date();
 
-      // Génération d'un mot de passe temporaire (par exemple)
-      const password = Math.random().toString(36).slice(-8); // Un mot de passe simple de 8 caractères
-
-      // Envoi des emails à l'étudiant et au coach
-      await sendEmailToStudent(
-        email,
-        `${prenom} ${nom}`,
-        coachEmail,
-        domaine,
-        dureeFormation,
-        new Date(),
-        password
+      // Vérifier si un utilisateur avec le même email et rôle existe déjà
+      const q = query(
+        userRef,
+        where('email', '==', email),
+        where('role', '==', role)
       );
-      await sendEmailToCoach(
-        coachEmail,
-        `${prenom} ${nom}`,
-        domaine,
-        dureeFormation,
-        new Date()
-      );
+      const querySnapshot = await getDocs(q);
 
-      alert('Etudiant inscrit avec succès et coach assigné !');
+      if (!querySnapshot.empty) {
+        alert(
+          `Un utilisateur avec l'email "${email}" et le rôle "${role}" existe déjà.`
+        );
+        return;
+      }
+
+      // Ajout de l'utilisateur selon le rôle
+      if (role === 'etudiant') {
+        await addDoc(userRef, {
+          email,
+          nom,
+          prenom,
+          tel,
+          domaine,
+          dureeFormation,
+          coachEmail,
+          role,
+          createdAt,
+          isActive: true,
+        });
+
+        // Envoi de l'email à l'étudiant et au coach
+        await sendEmailToStudent(
+          email,
+          `${prenom} ${nom}`,
+          coachEmail,
+          domaine,
+          dureeFormation,
+          createdAt,
+          password
+        );
+        await sendEmailToCoach(
+          coachEmail,
+          `${prenom} ${nom}`,
+          domaine,
+          dureeFormation,
+          createdAt
+        );
+        alert(
+          "Étudiant inscrit avec succès, email envoyé à l'étudiant et au coach !"
+        );
+      } else if (role === 'coach') {
+        await addDoc(userRef, {
+          email,
+          nom,
+          prenom,
+          tel,
+          role,
+          createdAt,
+          password,
+          isActive: true,
+        });
+
+        const coachMessage = `Bonjour ${prenom} ${nom},\n\nVous avez été inscrit en tant que coach.\nVotre mot de passe temporaire est : ${password}\nBienvenue à bord !`;
+
+        await sendEmailToCoach(
+          email,
+          `${prenom} ${nom}`,
+          coachMessage,
+          password,
+          createdAt
+        );
+        alert('Coach inscrit avec succès. Bienvenue à bord !');
+      } else if (role === 'admin') {
+        await addDoc(userRef, {
+          email,
+          nom,
+          prenom,
+          role,
+          createdAt,
+          password,
+          isActive: true,
+        });
+
+        alert('Admin inscrit avec succès. Bienvenue à bord !');
+      }
+
+      // Réinitialisation des champs
       setEmail('');
       setNom('');
       setPrenom('');
       setTel('');
-      setCoachEmail('');
       setDomaine('');
       setDureeFormation('');
+      setCoachEmail('');
+      setRole('');
     } catch (error) {
       alert("Erreur lors de l'inscription : " + error.message);
+    }
+  };
+
+  const toggleActivation = async (userId, currentStatus) => {
+    try {
+      const userDoc = doc(db, 'users', userId);
+      await updateDoc(userDoc, { isActive: !currentStatus });
+      alert(
+        `Utilisateur ${!currentStatus ? 'activé' : 'désactivé'} avec succès !`
+      );
+    } catch (error) {
+      console.error("Erreur lors de l'activation/désactivation :", error);
+      alert("Impossible de mettre à jour l'état de l'utilisateur.");
     }
   };
 
@@ -68,22 +145,9 @@ const InscrireEtudiant = () => {
     <div className="flex justify-center items-center h-screen bg-blue-300">
       <div className="bg-white p-8 rounded-lg shadow-lg w-96">
         <h2 className="text-2xl font-bold text-gray-700 mb-4">
-          Inscrire un étudiant
+          Inscrire un utilisateur
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Champ pour le prénom */}
-          <div>
-            <label className="block text-gray-700">Prénom</label>
-            <input
-              type="text"
-              value={prenom}
-              onChange={(e) => setPrenom(e.target.value)}
-              className="w-full border p-2 rounded-lg"
-              placeholder="Prénom"
-            />
-          </div>
-
-          {/* Champ pour le nom */}
           <div>
             <label className="block text-gray-700">Nom</label>
             <input
@@ -95,7 +159,17 @@ const InscrireEtudiant = () => {
             />
           </div>
 
-          {/* Champ pour l'email */}
+          <div>
+            <label className="block text-gray-700">Prénom</label>
+            <input
+              type="text"
+              value={prenom}
+              onChange={(e) => setPrenom(e.target.value)}
+              className="w-full border p-2 rounded-lg"
+              placeholder="Prénom"
+            />
+          </div>
+
           <div>
             <label className="block text-gray-700">Email</label>
             <input
@@ -107,7 +181,6 @@ const InscrireEtudiant = () => {
             />
           </div>
 
-          {/* Champ pour le téléphone */}
           <div>
             <label className="block text-gray-700">Téléphone</label>
             <input
@@ -119,48 +192,68 @@ const InscrireEtudiant = () => {
             />
           </div>
 
-          {/* Choix du domaine */}
           <div>
-            <label className="block text-gray-700">Domaine</label>
+            <label className="block text-gray-700">Rôle</label>
             <select
-              value={domaine}
-              onChange={(e) => setDomaine(e.target.value)}
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
               className="w-full border p-2 rounded-lg"
             >
-              <option value="">Sélectionner un domaine</option>
-              <option value="Developpeur Web">Développeur Web</option>
-              <option value="Designer">Designer</option>
-              <option value="Marketing">Marketing</option>
+              <option value="">Choisir un rôle</option>
+              <option value="etudiant">Étudiant</option>
+              <option value="coach">Coach</option>
+              <option value="admin">Admin</option>
             </select>
           </div>
 
-          {/* Durée de la formation */}
-          <div>
-            <label className="block text-gray-700">
-              Durée de la formation (en mois)
-            </label>
-            <input
-              type="number"
-              value={dureeFormation}
-              onChange={(e) => setDureeFormation(e.target.value)}
-              className="w-full border p-2 rounded-lg"
-              placeholder="Durée en mois"
-            />
-          </div>
+          {role === 'etudiant' && (
+            <>
+              <div>
+                <label className="block text-gray-700">Domaine</label>
+                <select
+                  value={domaine}
+                  onChange={(e) => setDomaine(e.target.value)}
+                  className="w-full border p-2 rounded-lg"
+                >
+                  <option value="">Choisir un domaine</option>
+                  <option value="Développement Web">Développement Web</option>
+                  <option value="Marketing">Marketing</option>
+                  <option value="Design et Management">
+                    Design et Management
+                  </option>
+                </select>
+              </div>
 
-          {/* Email du coach */}
-          <div>
-            <label className="block text-gray-700">Email du Coach</label>
-            <input
-              type="email"
-              value={coachEmail}
-              onChange={(e) => setCoachEmail(e.target.value)}
-              className="w-full border p-2 rounded-lg"
-              placeholder="Email du coach"
-            />
-          </div>
+              <div>
+                <label className="block text-gray-700">
+                  Durée de formation (en mois)
+                </label>
+                <input
+                  type="number"
+                  value={dureeFormation}
+                  onChange={(e) => setDureeFormation(e.target.value)}
+                  className="w-full border p-2 rounded-lg"
+                  placeholder="Durée"
+                />
+              </div>
 
-          <button className="bg-blue-600 text-white w-full py-2 rounded-lg hover:bg-blue-700">
+              <div>
+                <label className="block text-gray-700">Email du coach</label>
+                <input
+                  type="email"
+                  value={coachEmail}
+                  onChange={(e) => setCoachEmail(e.target.value)}
+                  className="w-full border p-2 rounded-lg"
+                  placeholder="Email du coach"
+                />
+              </div>
+            </>
+          )}
+
+          <button
+            type="submit"
+            className="bg-blue-600 text-white w-full py-2 rounded-lg hover:bg-blue-700"
+          >
             Inscrire
           </button>
         </form>
@@ -169,4 +262,4 @@ const InscrireEtudiant = () => {
   );
 };
 
-export default InscrireEtudiant;
+export default InscrireUtilisateur;

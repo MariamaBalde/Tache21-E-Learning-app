@@ -3,29 +3,42 @@ import emailjs from 'emailjs-com';
 const sendEmailToStudent = (
   studentEmail,
   studentName,
-  coachName,
+  coachFirstName,
+  coachLastName,
   domain,
   duration,
   startDate,
   password
 ) => {
+  if (!studentEmail || !studentEmail.includes('@')) {
+    console.error('Adresse email étudiant invalide:', studentEmail);
+    return;
+  }
+
   const templateParams = {
     to_email: studentEmail,
     student_name: studentName,
-    coach_name: coachName,
+    coach_name: `${coachFirstName} ${coachLastName}`,
     domain: domain,
     duration: duration,
     start_date: startDate,
     password: password,
   };
 
+  console.log('Paramètres de l’email étudiant:', templateParams);
+
   emailjs
-    .send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams, 'YOUR_USER_ID')
+    .send(
+      'service_s7qzbrw',
+      'template_h9wnvqj',
+      templateParams,
+      'Os0EEtWm1EJNRQ8sj'
+    )
     .then((response) => {
-      console.log('Email sent successfully', response);
+      console.log('Email envoyé à l’étudiant avec succès', response);
     })
     .catch((err) => {
-      console.error('Failed to send email', err);
+      console.error('Échec de l’envoi de l’email à l’étudiant', err);
     });
 };
 
@@ -36,22 +49,33 @@ const sendEmailToCoach = (
   duration,
   startDate
 ) => {
+  if (!coachEmail || !coachEmail.includes('@')) {
+    console.error('Adresse email coach invalide:', coachEmail);
+    return;
+  }
+
   const templateParams = {
     to_email: coachEmail,
-    coach_name: coachEmail, // If you have the coach's name, pass it here
     student_name: studentName,
     domain: domain,
     duration: duration,
     start_date: startDate,
   };
 
+  console.log('Paramètres de l’email coach:', templateParams);
+
   emailjs
-    .send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams, 'YOUR_USER_ID')
+    .send(
+      'service_s7qzbrw',
+      'template_5ymhe1c',
+      templateParams,
+      'Os0EEtWm1EJNRQ8sj'
+    )
     .then((response) => {
-      console.log('Email sent to coach successfully', response);
+      console.log('Email envoyé au coach avec succès', response);
     })
     .catch((err) => {
-      console.error('Failed to send email to coach', err);
+      console.error('Échec de l’envoi de l’email au coach', err);
     });
 };
 
