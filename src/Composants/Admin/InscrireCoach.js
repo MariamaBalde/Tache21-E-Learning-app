@@ -90,6 +90,7 @@ const InscrireUtilisateur = () => {
           isActive: true,
         });
 
+        // Envoi de l'email au coach
         const coachMessage = `Bonjour ${prenom} ${nom},\n\nVous avez été inscrit en tant que coach.\nVotre mot de passe temporaire est : ${password}\nBienvenue à bord !`;
 
         await sendEmailToCoach(
