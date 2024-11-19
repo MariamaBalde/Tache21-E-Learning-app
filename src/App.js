@@ -2,8 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './Composants/Auth/Login';
 import AdminDashboard from './Composants/Admin/Dashboard';
-import InscrireCoach from './Composants/Admin/InscrireCoach';
-import CoachDashboard from './Composants/Coach/Dashboard';
+import InscrireUtilisateur from './Composants/Admin/InscrireUtilisateur';
+import CoachDashboard from './Composants/Coach/CoachDashboard.js';
 import EtudiantDashboard from './Composants/Etudiant/Dashboard';
 import NotFound from './pages/NotFound';
 import PrivateRoute from './utils/PrivateRoute';
@@ -24,7 +24,7 @@ const App = () => {
             </PrivateRoute>
           }
         />
-        <Route path="/admin/inscrire-coach" element={<InscrireCoach />} />
+        <Route path="/admin/inscrire-utilisateur" element={<InscrireUtilisateur />} />
 
         <Route
           path="/coach/dashboard"

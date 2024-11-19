@@ -108,7 +108,7 @@ const AdminDashboard = () => {
           {/* Bouton pour inscrire un utilisateur */}
           <div className="bg-white rounded-lg shadow p-6 mb-8">
             <button
-              onClick={() => navigate('/inscrire')}
+              onClick={() => navigate('/admin/inscrire-utilisateur')}
               className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
             >
               Inscrire un utilisateur

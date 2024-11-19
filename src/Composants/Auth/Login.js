@@ -11,9 +11,50 @@ const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  // const handleLogin = async (e) => {
+  //   e.preventDefault();
+  //   setError('');
+
+  //   try {
+  //     const userCredential = await signInWithEmailAndPassword(
+  //       auth,
+  //       email,
+  //       password
+  //     );
+  //     const user = userCredential.user;
+
+  //     const userDoc = await getDoc(doc(db, 'users', user.uid));
+  //     if (userDoc.exists()) {
+  //       const userData = userDoc.data();
+  //       const role = userData.Role;
+  //       const status = userData.status; // Vérifier le statut de l'utilisateur
+
+  //       if (status === 'désactivé') {
+  //         throw new Error(
+  //           "Votre compte a été désactivé. Veuillez contacter l'administrateur."
+  //         );
+  //       }
+
+  //       // Vérification du rôle de l'utilisateur
+  //       if (role === 'admin') {
+  //         navigate('/admin/dashboard');
+  //       } else if (role === 'coach') {
+  //         navigate('/coach/dashboard');
+  //       } else if (role === 'etudiant') {
+  //         navigate('/etudiant/dashboard');
+  //       } else {
+  //         throw new Error('Rôle inconnu');
+  //       }
+  //     } else {
+  //       throw new Error('Utilisateur non trouvé dans la base de données');
+  //     }
+  //   } catch (err) {
+  //     setError(err.message);
+  //   }
+  // };
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
     try {
       const userCredential = await signInWithEmailAndPassword(
@@ -23,35 +64,49 @@ const Login = () => {
       );
       const user = userCredential.user;
 
-      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      const userDoc = await getDoc(doc(db, "users", user.uid));
       if (userDoc.exists()) {
         const userData = userDoc.data();
         const role = userData.Role;
-        const status = userData.status; // Vérifier le statut de l'utilisateur
+        const status = userData.status;
 
-        if (status === 'désactivé') {
-          throw new Error(
-            "Votre compte a été désactivé. Veuillez contacter l'administrateur."
-          );
+        if (status === "désactivé") {
+          throw new Error("Votre compte a été désactivé. Veuillez contacter l'administrateur.");
         }
 
-        // Vérification du rôle de l'utilisateur
-        if (role === 'admin') {
-          navigate('/admin/dashboard');
-        } else if (role === 'coach') {
-          navigate('/coach/dashboard');
-        } else if (role === 'etudiant') {
-          navigate('/etudiant/dashboard');
+        if (role === "admin") {
+          navigate("/admin/dashboard");
+        } else if (role === "coach") {
+          navigate("/coach/dashboard");
+        } else if (role === "etudiant") {
+          navigate("/etudiant/dashboard");
         } else {
-          throw new Error('Rôle inconnu');
+          throw new Error("Rôle inconnu.");
         }
       } else {
-        throw new Error('Utilisateur non trouvé dans la base de données');
+        throw new Error("Utilisateur non trouvé dans la base de données.");
       }
     } catch (err) {
-      setError(err.message);
+      console.error("Erreur de connexion :", err.code, err.message);
+      switch (err.code) {
+        case "auth/invalid-email":
+          setError("L'email est invalide.");
+          break;
+        case "auth/user-not-found":
+          setError("Utilisateur introuvable.");
+          break;
+        case "auth/wrong-password":
+          setError("Mot de passe incorrect.");
+          break;
+        case "auth/invalid-credential":
+          setError("Crédential Firebase invalide. Vérifiez la configuration.");
+          break;
+        default:
+          setError(err.message);
+      }
     }
   };
+
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
