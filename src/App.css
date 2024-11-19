@@ -1,4 +1,7 @@
-
+.card {
+  width: 50%; /* Largeur relative par rapport au parent */
+  margin: 0 auto;
+}
 
 
 
