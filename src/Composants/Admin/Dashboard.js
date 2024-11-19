@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { db } from '../../Config/firebaseConfig';
-import { collection, getDocs } from 'firebase/firestore';
+import {
+  collection,
+  getDocs,
+  updateDoc,
+  doc,
+  deleteDoc,
+} from 'firebase/firestore';
 import Navbar from '../Shared/Navbar';
 import Sidebar from '../Shared/Sidebar';
 import { useNavigate } from 'react-router-dom';
@@ -29,6 +35,34 @@ const AdminDashboard = () => {
     fetchUsers();
   }, []);
 
+  const handleDelete = async (id) => {
+    try {
+      await deleteDoc(doc(db, 'users', id));
+      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
+    } catch (error) {
+      console.error('Erreur lors de la suppression de l’utilisateur :', error);
+    }
+  };
+
+  const handleToggleStatus = async (id, currentStatus) => {
+    try {
+      const userDoc = doc(db, 'users', id);
+      await updateDoc(userDoc, {
+        isActive: !currentStatus,
+      });
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user.id === id ? { ...user, isActive: !currentStatus } : user
+        )
+      );
+    } catch (error) {
+      console.error(
+        'Erreur lors de la modification du statut de l’utilisateur :',
+        error
+      );
+    }
+  };
+
   const renderTable = (title, userList) => (
     <div className="bg-white rounded-lg shadow p-4 mb-6">
       <h2 className="text-lg font-bold mb-4">{title}</h2>
@@ -41,6 +75,7 @@ const AdminDashboard = () => {
               <th className="px-4 py-2 text-left">E-mail</th>
               <th className="px-4 py-2 text-left">Date d'inscription</th>
               <th className="px-4 py-2 text-left">Statut</th>
+              <th className="px-4 py-2 text-left">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -56,6 +91,22 @@ const AdminDashboard = () => {
                   ) : (
                     <span className="text-red-500 font-bold">Inactif</span>
                   )}
+                </td>
+                <td className="px-4 py-2">
+                  <button
+                    onClick={() => handleDelete(user.id)}
+                    className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 mr-2"
+                  >
+                    Supprimer
+                  </button>
+                  <button
+                    onClick={() => handleToggleStatus(user.id, user.isActive)}
+                    className={`${
+                      user.isActive ? 'bg-gray-500' : 'bg-green-500'
+                    } text-white px-2 py-1 rounded hover:bg-green-600`}
+                  >
+                    {user.isActive ? 'Désactiver' : 'Activer'}
+                  </button>
                 </td>
               </tr>
             ))}
@@ -108,7 +159,9 @@ const AdminDashboard = () => {
           {/* Bouton pour inscrire un utilisateur */}
           <div className="bg-white rounded-lg shadow p-6 mb-8">
             <button
-              onClick={() => navigate('/admin/inscrire-utilisateur')}
+              onClick={
+                () => navigate('/admin/inscrire-utilisateur') // Assurez-vous que le chemin est correct
+              }
               className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
             >
               Inscrire un utilisateur
