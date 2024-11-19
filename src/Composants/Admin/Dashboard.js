@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { db } from '../../Config/firebaseConfig';
-import {
-  collection,
-  getDocs,
-  updateDoc,
-  deleteDoc,
-  doc,
-} from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import Navbar from '../Shared/Navbar';
 import Sidebar from '../Shared/Sidebar';
+import { useNavigate } from 'react-router-dom';
 
 const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -32,40 +29,6 @@ const AdminDashboard = () => {
     fetchUsers();
   }, []);
 
-  const toggleActivation = async (userId, currentStatus) => {
-    try {
-      const userDoc = doc(db, 'users', userId);
-      await updateDoc(userDoc, { isActive: !currentStatus });
-      setUsers((prevUsers) =>
-        prevUsers.map((user) =>
-          user.id === userId ? { ...user, isActive: !currentStatus } : user
-        )
-      );
-      alert(
-        `Utilisateur ${!currentStatus ? 'activé' : 'désactivé'} avec succès !`
-      );
-    } catch (error) {
-      console.error("Erreur lors de l'activation/désactivation :", error);
-      alert("Impossible de mettre à jour l'état de l'utilisateur.");
-    }
-  };
-
-  const deleteUser = async (userId) => {
-    if (
-      window.confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')
-    ) {
-      try {
-        const userDoc = doc(db, 'users', userId);
-        await deleteDoc(userDoc);
-        setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
-        alert('Utilisateur supprimé avec succès.');
-      } catch (error) {
-        console.error('Erreur lors de la suppression :', error);
-        alert("Impossible de supprimer l'utilisateur.");
-      }
-    }
-  };
-
   const renderTable = (title, userList) => (
     <div className="bg-white rounded-lg shadow p-4 mb-6">
       <h2 className="text-lg font-bold mb-4">{title}</h2>
@@ -78,7 +41,6 @@ const AdminDashboard = () => {
               <th className="px-4 py-2 text-left">E-mail</th>
               <th className="px-4 py-2 text-left">Date d'inscription</th>
               <th className="px-4 py-2 text-left">Statut</th>
-              <th className="px-4 py-2 text-left">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -94,22 +56,6 @@ const AdminDashboard = () => {
                   ) : (
                     <span className="text-red-500 font-bold">Inactif</span>
                   )}
-                </td>
-                <td className="px-4 py-2">
-                  <button
-                    onClick={() => toggleActivation(user.id, user.isActive)}
-                    className={`px-4 py-2 rounded-lg ${
-                      user.isActive ? 'bg-red-500' : 'bg-green-500'
-                    } text-white`}
-                  >
-                    {user.isActive ? 'Désactiver' : 'Activer'}
-                  </button>
-                  <button
-                    onClick={() => deleteUser(user.id)}
-                    className="ml-2 px-4 py-2 rounded-lg bg-gray-500 text-white"
-                  >
-                    Supprimer
-                  </button>
                 </td>
               </tr>
             ))}
@@ -132,12 +78,42 @@ const AdminDashboard = () => {
   const admins = users.filter((user) => user.role === 'admin');
 
   return (
-    <div className="flex flex-col lg:flex-row h-screen">
-      <Sidebar />
-      <div className="flex-1">
-        <Navbar />
-        <div className="p-4 lg:p-8">
+    <div className="flex h-screen">
+      {/* Sidebar */}
+      <div
+        className={`fixed top-0 left-0 bg-gray-800 text-white w-64 h-full transition-transform ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        } lg:translate-x-0`}
+      >
+        <Sidebar />
+      </div>
+
+      {/* Main content */}
+      <div className="flex-1 flex flex-col">
+        {/* Navbar */}
+        <div className="fixed top-0 w-full bg-white shadow z-10 flex items-center px-4 py-2">
+          <button
+            className="lg:hidden mr-4 text-gray-800"
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+          >
+            ☰
+          </button>
+          <Navbar />
+        </div>
+
+        {/* Dashboard content */}
+        <div className="mt-16 lg:mt-0 lg:ml-64 flex-1 p-4 lg:p-8">
           <h1 className="text-2xl font-bold mb-6">Tableau de Bord Admin</h1>
+
+          {/* Bouton pour inscrire un utilisateur */}
+          <div className="bg-white rounded-lg shadow p-6 mb-8">
+            <button
+              onClick={() => navigate('/inscrire')}
+              className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+            >
+              Inscrire un utilisateur
+            </button>
+          </div>
 
           {/* Statistiques */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
@@ -155,16 +131,10 @@ const AdminDashboard = () => {
             </div>
           </div>
 
-          {/* Tableaux par rôle */}
+          {/* Tables */}
           {renderTable('Étudiants', students)}
           {renderTable('Coachs', coaches)}
           {renderTable('Administrateurs', admins)}
-
-          {/* Notifications */}
-          <div className="mt-8 bg-white p-6 rounded-lg shadow">
-            <h2 className="text-lg font-bold mb-4">Notifications</h2>
-            <p>Aucune nouvelle notification</p>
-          </div>
         </div>
       </div>
     </div>
