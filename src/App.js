@@ -1,38 +1,25 @@
-
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import './App.css';
-import Navbar from "./Composants/ApprenantsComposants/Navbar";
-import Sidebar from "./Composants/ApprenantsComposants/Sidebar";
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Dashboard from './Composants/ApprenantsComposants/Dashboard';
-import CoursApp from './Composants/ApprenantsComposants/CoursApp';
-import Livraisons from './Composants/ApprenantsComposants/Livraisons';
+import Cours from './Composants/ApprenantsComposants/CoursApp';
 import Taches from './Composants/ApprenantsComposants/Taches';
+import Livraisons from './Composants/ApprenantsComposants/Livraisons';
+import Parametres from './Composants/ApprenantsComposants/Parametres';
+import Layout from './Composants/Layout';
 
-function App() {
-  // Déclarez l'état sidebarToggle ici
-  const [sidebarToggle, setSidebarToggle] = useState(false);
-
+const App = () => {
   return (
     <Router>
-      <div className="App">
-        {/* Passez setSidebarToggle en tant que prop */}
-        <Navbar sidebarToggle={sidebarToggle} setSidebarToggle={setSidebarToggle} />
-        <div className="main-content">
-          <Sidebar sidebarToggle={sidebarToggle} />
-          <div className="page-content">
-            <Routes>
-              <Route path='/' element={<Dashboard />} />
-              <Route path='/dashboard' element={<Dashboard />} />
-              <Route path='/coursapp' element={<CoursApp />} />
-              <Route path='/livraisons' element={<Livraisons />} />
-              <Route path='/taches' element={<Taches />} />
-            </Routes>
-          </div>
-        </div>
-      </div>
+      <Routes>
+        <Route path="/" element={<Layout><Dashboard /></Layout>} />
+        <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
+        <Route path="/cours" element={<Layout><Cours /></Layout>} />
+        <Route path="/taches" element={<Layout><Taches /></Layout>} />
+        <Route path="/livraisons" element={<Layout><Livraisons /></Layout>} />
+        <Route path="/parametres" element={<Layout><Parametres /></Layout>} />
+      </Routes>
     </Router>
   );
-}
+};
 
 export default App;

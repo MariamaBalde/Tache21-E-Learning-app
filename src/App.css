@@ -1,76 +1,9 @@
-
-
-
-
-
-
-/* 
-.App {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  overflow: hidden; 
+/* Supprimer la scrollbar pour toute la page */
+body {
+  overflow: hidden; /* Cache toutes les scrollbars */
 }
 
-.main-content {
-  height: auto;
-  min-height: 100vh; 
-  display: flex;
-  flex-direction: column;
+/* Si uniquement pour le dashboard */
+.dashboard-container {
+  overflow: hidden; /* Cache la scrollbar uniquement pour cette section */
 }
-
-
-.page-content {
-  flex: 1;
-  padding: 20px;
-  overflow-y: auto; 
-  transition: margin-left 0.3s ease;
-}  */
-
-.App {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  overflow: hidden; /* Empêche le déplacement du contenu global */
-}
-
-/* Assurez-vous que le conteneur de la page prend toute la hauteur de l'écran */
-.main-content {
-  height: auto;
-  min-height: 100vh; /* Prend la hauteur de l'écran */
-  display: flex;
-  flex-direction: column;
-}
-
-
-.page-content {
-  flex: 1;
-  padding: 20px;
-  overflow-y: auto; /* Permet un défilement vertical local */
-  transition: margin-left 0.3s ease; /* Transition fluide pour le contenu */
-}
-
-
-/* -------------------------------- Navbar Composant Début ------------------------- */
-
-/* -------------------------------- Navbar Composant Fin ------------------------- */
-
-/* -------------------------------- Sidebar Composant Début ------------------------- */
-
-/* --------------------------------Sidebar Composant Fin------------------------- */
-
-/* -------------------------------- Cours Composant Début ------------------------- */
-
-/* -------------------------------- Cours Composant Fin ------------------------- */
-
-/* -------------------------------- Dashboard Composant Début------------------------- */
-
-/* -------------------------------- Dashboard Composant Fin ------------------------- */
-
-/* -------------------------------- Livraisons Composant Début------------------------- */
-
-/* -------------------------------- Livraisons Composant Fin ------------------------- */
-
-/* -------------------------------- Taches Composant Début------------------------- */
-
-/* -------------------------------- Taches Composant Fin ------------------------- */
