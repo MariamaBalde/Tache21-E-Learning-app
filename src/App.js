@@ -4,7 +4,7 @@ import Login from './Composants/Auth/Login';
 import AdminDashboard from './Composants/Admin/Dashboard';
 import InscrireUtilisateur from './Composants/Admin/InscrireUtilisateur';
 import CoachDashboard from './Composants/Coach/CoachDashboard.js';
-import EtudiantDashboard from './Composants/Etudiant/Dashboard';
+import StudentDashboard from './Composants/Etudiant/StudentDashboard.js';
 import NotFound from './pages/NotFound';
 import PrivateRoute from './utils/PrivateRoute';
 
@@ -38,7 +38,7 @@ const App = () => {
           path="/etudiant/dashboard"
           element={
             <PrivateRoute roleRequired="etudiant">
-              <EtudiantDashboard />
+              <StudentDashboard />
             </PrivateRoute>
           }
         />

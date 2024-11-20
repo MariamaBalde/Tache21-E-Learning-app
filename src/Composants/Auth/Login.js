@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
+import { auth, db } from '../../Config/firebaseConfig';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../Config/firebaseConfig';
-import { useNavigate } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../../Config/firebaseConfig';
+import { useNavigate } from 'react-router-dom'; // Import pour la navigation
+
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -11,102 +11,47 @@ const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // const handleLogin = async (e) => {
-  //   e.preventDefault();
-  //   setError('');
-
-  //   try {
-  //     const userCredential = await signInWithEmailAndPassword(
-  //       auth,
-  //       email,
-  //       password
-  //     );
-  //     const user = userCredential.user;
-
-  //     const userDoc = await getDoc(doc(db, 'users', user.uid));
-  //     if (userDoc.exists()) {
-  //       const userData = userDoc.data();
-  //       const role = userData.Role;
-  //       const status = userData.status; // Vérifier le statut de l'utilisateur
-
-  //       if (status === 'désactivé') {
-  //         throw new Error(
-  //           "Votre compte a été désactivé. Veuillez contacter l'administrateur."
-  //         );
-  //       }
-
-  //       // Vérification du rôle de l'utilisateur
-  //       if (role === 'admin') {
-  //         navigate('/admin/dashboard');
-  //       } else if (role === 'coach') {
-  //         navigate('/coach/dashboard');
-  //       } else if (role === 'etudiant') {
-  //         navigate('/etudiant/dashboard');
-  //       } else {
-  //         throw new Error('Rôle inconnu');
-  //       }
-  //     } else {
-  //       throw new Error('Utilisateur non trouvé dans la base de données');
-  //     }
-  //   } catch (err) {
-  //     setError(err.message);
-  //   }
-  // };
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError("");
+    setError('');
 
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      const userDoc = await getDoc(doc(db, "users", user.uid));
+      // Récupérer le rôle de l'utilisateur dans Firestore
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
       if (userDoc.exists()) {
         const userData = userDoc.data();
-        const role = userData.Role;
-        const status = userData.status;
+        const role = userData.role; // Rôle de l'utilisateur
 
-        if (status === "désactivé") {
-          throw new Error("Votre compte a été désactivé. Veuillez contacter l'administrateur.");
-        }
-
-        if (role === "admin") {
-          navigate("/admin/dashboard");
-        } else if (role === "coach") {
-          navigate("/coach/dashboard");
-        } else if (role === "etudiant") {
-          navigate("/etudiant/dashboard");
+        if (role === 'admin') {
+          navigate('/admin/dashboard');
+        } else if (role === 'coach') {
+          navigate('/coach/dashboard');
+        } else if (role === 'etudiant') {
+          navigate('/etudiant/dashboard');
         } else {
-          throw new Error("Rôle inconnu.");
+          throw new Error('Rôle inconnu'); // Erreur si le rôle n'est pas défini
         }
       } else {
-        throw new Error("Utilisateur non trouvé dans la base de données.");
+        throw new Error('Utilisateur non trouvé dans Firestore');
       }
     } catch (err) {
-      console.error("Erreur de connexion :", err.code, err.message);
-      switch (err.code) {
-        case "auth/invalid-email":
-          setError("L'email est invalide.");
-          break;
-        case "auth/user-not-found":
-          setError("Utilisateur introuvable.");
-          break;
-        case "auth/wrong-password":
-          setError("Mot de passe incorrect.");
-          break;
-        case "auth/invalid-credential":
-          setError("Crédential Firebase invalide. Vérifiez la configuration.");
-          break;
-        default:
-          setError(err.message);
-      }
+      setError('Erreur : ' + err.message);
     }
   };
+  const fetchUserData = async () => {
+    const user = auth.currentUser;
+    console.log('Utilisateur connecté :', user);
 
+    if (user) {
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      console.log('Données utilisateur Firestore :', userDoc.data());
+    } else {
+      console.log('Aucun utilisateur connecté.');
+    }
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -157,9 +102,22 @@ const Login = () => {
             Se connecter
           </button>
         </form>
+
+        {/* Bouton pour tester l'authentification */}
+        <div className="mt-4">
+          <button
+            onClick={fetchUserData}
+            className="w-full px-4 py-2 text-white bg-green-600 rounded-md hover:bg-green-500 focus:ring focus:ring-green-300 focus:outline-none"
+          >
+            Tester l'authentification
+          </button>
+        </div>
       </div>
     </div>
   );
 };
 
 export default Login;
+
+
+
