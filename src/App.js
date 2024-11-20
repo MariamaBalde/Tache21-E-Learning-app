@@ -5,8 +5,8 @@ import AdminDashboard from './Composants/Admin/Dashboard';
 import InscrireUtilisateur from './Composants/Admin/InscrireUtilisateur';
 import CoachDashboard from './Composants/Coach/CoachDashboard.js';
 import StudentDashboard from './Composants/Etudiant/StudentDashboard.js';
-import NotFound from './pages/NotFound';
-import PrivateRoute from './utils/PrivateRoute';
+import NotFound from './Pages/NotFound.js';
+import PrivateRoute from './Utils/PrivateRoute.js';
 
 const App = () => {
   return (
