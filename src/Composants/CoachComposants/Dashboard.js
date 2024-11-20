@@ -156,7 +156,7 @@ function Dashboard() {
                 <button className="p-2">
                   <ChevronLeft className="h-5 w-5 text-gray-600" />
                 </button>
-                <span className="font-semibold">2022</span>
+                <span className="font-semibold">2024</span>
                 <button className="p-2">
                   <ChevronRight className="h-5 w-5 text-gray-600" />
                 </button>

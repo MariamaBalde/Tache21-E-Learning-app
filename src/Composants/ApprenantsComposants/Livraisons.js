@@ -23,7 +23,7 @@ const Modal = ({ show, onClose, taskTitle }) => {
         <div className="flex justify-end mt-4">
           <button
             onClick={onClose}
-            className="bg-orange-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-orange-600 transition duration-300"
+            className="bg-orange-500 text-white font-semibold py-2 px-4 rounded-lg"
           >
             Soumettre
           </button>
@@ -35,26 +35,10 @@ const Modal = ({ show, onClose, taskTitle }) => {
 
 const Livraisons = () => {
   const tasks = [
-    { id: 1, titleText: "Tâche 01", description: "Apprendre la structure de base d'une page web avec HTML." },
-    { id: 2, titleText: "Tâche 02", description: "Découvrir les styles et la mise en page avec CSS." },
-    { id: 3, titleText: "Tâche 03", description: "Comprendre les bases de la programmation avec JavaScript." },
-    { id: 4, titleText: "Tâche 04", description: "Initier le développement d'applications avec React." },
-    { id: 5, titleText: "Tâche 05", description: "Apprendre à gérer l'état global d'une application avec Redux." },
-    { id: 6, titleText: "Tâche 06", description: "Utiliser TypeScript pour ajouter des types à JavaScript." },
-    { id: 7, titleText: "Tâche 07", description: "Configurer Tailwind CSS pour styliser vos composants." },
-    { id: 8, titleText: "Tâche 08", description: "Développer des composants React modulaires et réutilisables." },
-    { id: 9, titleText: "Tâche 09", description: "Apprendre à consommer des API RESTful dans votre application." },
-    { id: 10, titleText: "Tâche 10", description: "Créer et valider des formulaires utilisateurs efficaces." },
-    { id: 11, titleText: "Tâche 11", description: "Implémenter des systèmes de connexion sécurisés." },
-    { id: 12, titleText: "Tâche 12", description: "Améliorer les performances de votre application React." },
-    { id: 13, titleText: "Tâche 13", description: "Écrire des tests unitaires pour assurer la qualité du code." },
-    { id: 14, titleText: "Tâche 14", description: "Déployer votre application React sur Netlify." },
-    { id: 15, titleText: "Tâche 15", description: "Mettre en place une gestion efficace des erreurs." },
-    { id: 16, titleText: "Tâche 16", description: "Intégrer GraphQL pour des requêtes de données flexibles." },
-    { id: 17, titleText: "Tâche 17", description: "Ajouter la prise en charge de plusieurs langues dans votre application." },
-    { id: 18, titleText: "Tâche 18", description: "Rendre votre application accessible à tous les utilisateurs." },
-    { id: 19, titleText: "Tâche 19", description: "Ajouter des animations fluides à vos composants avec Framer Motion." },
-    { id: 20, titleText: "Tâche 20", description: "Configurer la surveillance et les logs pour votre application." },
+    { id: 1, title: "Tâche 01", description: "Apprendre la structure de base d'une page web avec HTML." },
+    { id: 2, title: "Tâche 02", description: "Découvrir les styles et la mise en page avec CSS." },
+    { id: 3, title: "Tâche 03", description: "Comprendre les bases de la programmation avec JavaScript." },
+    { id: 4, title: "Tâche 04", description: "Initier le développement d'applications avec React." },
   ];
 
   const [clickedHeaders, setClickedHeaders] = useState({});
@@ -87,35 +71,43 @@ const Livraisons = () => {
               }`}
             onClick={() => handleHeaderClick(task.id)}
           >
-            {task.titleText}
+            {task.title}
           </h3>
 
           <div className="flex justify-center mb-4">
             <img
-              src="URL_TO_YOUR_IMAGE"
-              alt="Delivery icon"
+              src="https://via.placeholder.com/40"  
+              alt=""
               className="w-10 h-10"
             />
           </div>
 
           <p className="text-gray-600 text-center mb-6">{task.description}</p>
 
-          <div className="border-2 rounded-md py-2 px-4 mt-4 flex justify-between items-center">
+          {/* Conteneur des boutons côte à côte */}
+          <div className="flex flex-row justify-center gap-4 mt-4">
             <button
               onClick={() => handleModalOpen(task)}
-              className="bg-white text-black font-semibold py-2 px-4 rounded-lg hover:bg-orange-500 hover:text-white transition duration-300"
+              className="bg-orange-500 text-white font-semibold py-2 px-4 rounded-lg w-full max-w-xs text-center"
             >
               Commentaires
             </button>
             <button
-              className="bg-white text-black font-semibold py-2 px-4 rounded-lg hover:bg-green-500 hover:text-white transition duration-300"
+              className="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg w-full max-w-xs text-center"
             >
               Livrables
             </button>
           </div>
         </div>
       ))}
-      <Modal show={showModal} onClose={handleModalClose} taskTitle={selectedTask?.titleText} />
+      {/* Le modal sera rendu conditionnellement si showModal est true */}
+      {selectedTask && (
+        <Modal
+          show={showModal}
+          onClose={handleModalClose}
+          taskTitle={selectedTask.title}
+        />
+      )}
     </div>
   );
 };
