@@ -7,15 +7,9 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-<<<<<<< HEAD
     "chart.js": "^4.4.6",
     "firebase": "^11.0.1",
-=======
 
-    "chart.js": "^4.4.6",
-    "emailjs-com": "^3.2.0",
-    "firebase": "^11.0.2",
->>>>>>> 725b4029256aa7330dd96e67edfaa848ec238ba6
     "primeicons": "^7.0.0",
     "primereact": "^10.8.4",
     "react": "^18.3.1",
