@@ -7,6 +7,12 @@ import CoachDashboard from './Composants/Coach/CoachDashboard.js';
 import StudentDashboard from './Composants/Etudiant/StudentDashboard.js';
 import NotFound from './Pages/NotFound.js';
 import PrivateRoute from './Utils/PrivateRoute.js';
+import Domains from './Composants/Coach/Domains'; // Importer les composants nécessaires
+import SousDomaines from './Composants/Coach/SousDomaines'; // Importer les composants nécessaires
+import Cours from './Composants/Coach/Cours'; // Importer les composants nécessaires
+import Quizzes from './Composants/Coach/Quizzes'; // Importer les composants nécessaires
+import Projets from './Composants/Coach/Projets'; // Importer les composants nécessaires
+import MessagerieCoach from './Composants/Coach/MessagerieCoach'; // Importer les composants nécessaires
 
 const App = () => {
   return (
@@ -24,7 +30,10 @@ const App = () => {
             </PrivateRoute>
           }
         />
-        <Route path="/admin/inscrire-utilisateur" element={<InscrireUtilisateur />} />
+        <Route
+          path="/admin/inscrire-utilisateur"
+          element={<InscrireUtilisateur />}
+        />
 
         <Route
           path="/coach/dashboard"
@@ -33,7 +42,15 @@ const App = () => {
               <CoachDashboard />
             </PrivateRoute>
           }
-        />
+        >
+          {/* Définir ici les sous-routes */}
+          <Route path="domains" element={<Domains />} />
+          <Route path="sous-domaines" element={<SousDomaines />} />
+          <Route path="cours" element={<Cours />} />
+          <Route path="quizzes" element={<Quizzes />} />
+          <Route path="projets" element={<Projets />} />
+          <Route path="messagerie" element={<MessagerieCoach />} />{' '}
+        </Route>
         <Route
           path="/etudiant/dashboard"
           element={
@@ -51,4 +68,3 @@ const App = () => {
 };
 
 export default App;
-
