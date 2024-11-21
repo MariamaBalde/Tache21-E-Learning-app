@@ -1,45 +1,4 @@
 // src/hooks/useAuth.js
-// import { useState, useEffect } from 'react';
-// import { auth, onAuthStateChanged } from '../Config/firebaseConfig'; // Firebase Auth
-
-// export const useAuth = () => {
-//   const [user, setUser] = useState(null);
-
-//   useEffect(() => {
-//     console.log('PrivateRoute: useEffect déclenché');
-//     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-//       if (user) {
-//         console.log('Utilisateur détecté :', user);
-//         try {
-//           const userDoc = await getDoc(doc(db, 'users', user.uid));
-//           const userData = userDoc.data();
-
-//           console.log('Rôle requis :', roleRequired);
-//           console.log('Données utilisateur :', userData);
-
-//           if (userData && userData.role === roleRequired) {
-//             setAuthorized(true);
-//           } else {
-//             console.log('Rôle non autorisé ou manquant.');
-//             setAuthorized(false);
-//           }
-//         } catch (error) {
-//           console.error('Erreur lors de la vérification du rôle :', error);
-//           setAuthorized(false);
-//         }
-//       } else {
-//         console.log('Aucun utilisateur connecté.');
-//         setAuthorized(false);
-//       }
-//       setLoading(false);
-//     });
-
-//     return () => unsubscribe(); // Nettoyage
-//   }, [roleRequired]);
-//   return { user };
-// };
-
-// src/hooks/useAuth.js
 import { useState, useEffect } from 'react';
 import { auth, db } from '../Config/firebaseConfig'; // Firebase Config
 import { onAuthStateChanged } from 'firebase/auth';
