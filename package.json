@@ -9,11 +9,7 @@
     "@testing-library/user-event": "^13.5.0",
     "chart.js": "^4.4.6",
     "firebase": "^11.0.1",
-<<<<<<< HEAD
-    "lucide-react": "^0.456.0",
-=======
     "lucide-react": "^0.460.0",
->>>>>>> 0ce46221c43c4652cecde53f40d6768d8d359d58
     "primeicons": "^7.0.0",
     "primereact": "^10.8.4",
     "react": "^18.3.1",
