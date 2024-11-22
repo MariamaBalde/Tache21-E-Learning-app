@@ -111,7 +111,7 @@ function Sidebar() {
 
 export default Sidebar;
 
-// components/Sidebar.js
+
 // import React from "react";
 // import { NavLink } from "react-router-dom";
 

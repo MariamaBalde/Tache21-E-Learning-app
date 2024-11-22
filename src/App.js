@@ -14,6 +14,7 @@ import Cours from './Composants/Coach/Cours'; // Importer les composants nécess
 import Quizzes from './Composants/Coach/Quizzes'; // Importer les composants nécessaires
 import Projets from './Composants/Coach/Projets'; // Importer les composants nécessaires
 import MessagerieCoach from './Composants/Coach/MessagerieCoach'; // Importer les composants nécessaires
+import Livraisons from './Composants/Coach/Livraisons'; // Importer les composants nécessaires
 
 const App = () => {
   return (
@@ -48,6 +49,7 @@ const App = () => {
           <Route path="domains" element={<Domains />} />
           <Route path="sous-domaines" element={<SousDomaines />} />
           <Route path="cours" element={<Cours />} />
+          <Route path="livraisons" element={<Livraisons />} />
           <Route path="quizzes" element={<Quizzes />} />
           <Route path="projets" element={<Projets />} />
           <Route path="messagerie" element={<MessagerieCoach />} />{' '}
