@@ -1,73 +1,61 @@
-import React, { useState, useEffect } from "react";
+import React from 'react';
 
 const Livraisons = () => {
-  const [livraisons, setLivraisons] = useState([]);
-  const [message, setMessage] = useState("");
-
-  // Simuler une API qui récupère les livraisons des étudiants
-  useEffect(() => {
-    const fetchLivraisons = async () => {
-      const data = [
-        {
-          id: 1,
-          etudiant: "Jean Dupont",
-          projet: "Site web React",
-          lien: "http://github.com/projet1",
-          status: "En attente",
-        },
-        {
-          id: 2,
-          etudiant: "Marie Curie",
-          projet: "Application mobile",
-          lien: "http://github.com/projet2",
-          status: "En attente",
-        },
-      ];
-      setLivraisons(data);
-    };
-    fetchLivraisons();
-  }, []);
-
-  const handleAccept = (id) => {
-    setLivraisons((prev) =>
-      prev.map((livraison) =>
-        livraison.id === id ? { ...livraison, status: "Accepté" } : livraison
-      )
-    );
-    setMessage("Livraison acceptée avec succès !");
-  };
-
-  const handleReject = (id) => {
-    setLivraisons((prev) =>
-      prev.map((livraison) =>
-        livraison.id === id ? { ...livraison, status: "Rejeté" } : livraison
-      )
-    );
-    setMessage("Livraison rejetée.");
-  };
+  const livraisons = [
+    {
+      etudiant: 'Mohamed fall',
+      projet: 'Site web React',
+      lien: '#',
+      statut: 'En attente',
+    },
+    {
+      etudiant: 'Marie Cisse',
+      projet: 'Application mobile',
+      lien: '#',
+      statut: 'En attente',
+    },
+  ];
 
   return (
-    <div>
-      <h2>Liste des Livraisons</h2>
-      {message && <p style={{ color: "green" }}>{message}</p>}
-      <ul>
-        {livraisons.map((livraison) => (
-          <li key={livraison.id} style={{ marginBottom: "20px" }}>
-            <p>Étudiant : {livraison.etudiant}</p>
-            <p>Projet : {livraison.projet}</p>
-            <a href={livraison.lien} target="_blank" rel="noopener noreferrer">
-              Lien de livraison
-            </a>
-            <p>Status : {livraison.status}</p>
-            {livraison.status === "En attente" && (
-              <div>
-                <button onClick={() => handleAccept(livraison.id)}>Accepter</button>
-                <button onClick={() => handleReject(livraison.id)}>Rejeter</button>
-              </div>
-            )}
-          </li>
+    <div className="p-6 bg-white rounded-lg shadow-lg">
+      <h1 className="text-2xl font-bold text-gray-800 mb-6">Liste des livraisons</h1>
+      <div className="space-y-4">
+        {livraisons.map((livraison, index) => (
+          <div
+            key={index}
+            className="p-4 border rounded-lg shadow-sm bg-gray-50 hover:bg-gray-100 transition"
+          >
+            <p className="text-lg font-semibold text-gray-700">
+              Étudiant : <span className="text-gray-900">{livraison.etudiant}</span>
+            </p>
+            <p className="text-lg text-gray-600">
+              Projet : <span className="text-gray-800">{livraison.projet}</span>
+            </p>
+            <p className="text-sm text-blue-600 hover:underline">
+              <a href={livraison.lien} target="_blank" rel="noopener noreferrer">
+                Lien de livraison
+              </a>
+            </p>
+            <div className="mt-2 flex items-center gap-4">
+              <span
+                className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                  livraison.statut === 'En attente'
+                    ? 'bg-yellow-100 text-yellow-700'
+                    : 'bg-green-100 text-green-700'
+                }`}
+              >
+                Statut : {livraison.statut}
+              </span>
+              <button className="px-4 py-2 bg-green-500 text-white text-sm rounded hover:bg-green-600">
+                Accepter
+              </button>
+              <button className="px-4 py-2 bg-red-500 text-white text-sm rounded hover:bg-red-600">
+                Rejeter
+              </button>
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
