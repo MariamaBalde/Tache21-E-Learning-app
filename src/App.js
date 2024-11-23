@@ -7,60 +7,43 @@ import CoachDashboard from './Composants/Coach/CoachDashboard.js';
 import StudentDashboard from './Composants/Etudiant/StudentDashboard.js';
 import NotFound from './Pages/NotFound.js';
 import PrivateRoute from './Utils/PrivateRoute.js';
-import Domains from './Composants/Coach/Domains'; // Importer les composants nécessaires
-import SousDomaines from './Composants/Coach/SousDomaines'; // Importer les composants nécessaires
-import Cours from './Composants/Coach/Cours'; // Importer les composants nécessaires
-import Quizzes from './Composants/Coach/Quizzes'; // Importer les composants nécessaires
-import Projets from './Composants/Coach/Projets'; // Importer les composants nécessaires
-import MessagerieCoach from './Composants/Coach/MessagerieCoach'; // Importer les composants nécessaires
+import Domains from './Composants/Coach/Domains';
+import SousDomaines from './Composants/Coach/SousDomaines';
+import Cours from './Composants/Coach/Cours';
+import Quizzes from './Composants/Coach/Quizzes';  // Quizzes component
+import AddQuizz from './Composants/Coach/quizz/AddQuizz'; // Component for adding quiz
+import ListQuizzes from './Composants/Coach/quizz/ListQuizzes.js'; //
+import HtmlCssQuiz from './Composants/Coach/quizz/HtmlCssQuiz.js'; //
+import BootstrapQuiz from './Composants/Coach/quizz/BootstrapQuiz.js'; //
+import JavaScriptQuiz from './Composants/Coach/quizz/JavaScriptQuiz'; //
+import ReactQuiz from './Composants/Coach/quizz/ReactQuiz'; //
+import Projets from './Composants/Coach/Projets';
+import MessagerieCoach from './Composants/Coach/MessagerieCoach';
 
 const App = () => {
   return (
     <Router>
       <Routes>
-        {/* Route de connexion */}
         <Route path="/" element={<Login />} />
-
-        {/* Routes sécurisées avec PrivateRoute */}
-        <Route
-          path="/admin/dashboard"
-          element={
-            <PrivateRoute roleRequired="admin">
-              <AdminDashboard />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/admin/inscrire-utilisateur"
-          element={<InscrireUtilisateur />}
-        />
-
-        <Route
-          path="/coach/dashboard"
-          element={
-            <PrivateRoute roleRequired="coach">
-              <CoachDashboard />
-            </PrivateRoute>
-          }
-        >
-          {/* Définir ici les sous-routes */}
+        <Route path="/admin/dashboard" element={<PrivateRoute roleRequired="admin"><AdminDashboard /></PrivateRoute>} />
+        <Route path="/admin/inscrire-utilisateur" element={<InscrireUtilisateur />} />
+        <Route path="/coach/dashboard" element={<PrivateRoute roleRequired="coach"><CoachDashboard /></PrivateRoute>}>
           <Route path="domains" element={<Domains />} />
           <Route path="sous-domaines" element={<SousDomaines />} />
           <Route path="cours" element={<Cours />} />
-          <Route path="quizzes" element={<Quizzes />} />
+          <Route path="quizzes" element={<Quizzes />} > {/* Route pour Quizzes */}
+             {/* Sous-routes de quizzes */}
+    <Route path="list" element={<ListQuizzes />} />
+    <Route path="add" element={<AddQuizz />} />
+    <Route path="html-css" element={<HtmlCssQuiz />} />
+    <Route path="bootstrap" element={<BootstrapQuiz />} />
+    <Route path="javascript" element={<JavaScriptQuiz />} />
+    <Route path="react" element={<ReactQuiz />} />
+  </Route>
           <Route path="projets" element={<Projets />} />
-          <Route path="messagerie" element={<MessagerieCoach />} />{' '}
+          <Route path="messagerie" element={<MessagerieCoach />} />
         </Route>
-        <Route
-          path="/etudiant/dashboard"
-          element={
-            <PrivateRoute roleRequired="etudiant">
-              <StudentDashboard />
-            </PrivateRoute>
-          }
-        />
-
-        {/* Page introuvable */}
+        <Route path="/etudiant/dashboard" element={<PrivateRoute roleRequired="etudiant"><StudentDashboard /></PrivateRoute>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
