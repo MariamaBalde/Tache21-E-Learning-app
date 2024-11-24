@@ -13,6 +13,8 @@ import Cours from './Composants/Coach/Cours'; // Importer les composants nécess
 import Quizzes from './Composants/Coach/Quizzes'; // Importer les composants nécessaires
 import Projets from './Composants/Coach/Projets'; // Importer les composants nécessaires
 import MessagerieCoach from './Composants/Coach/MessagerieCoach'; // Importer les composants nécessaires
+import RecupererMotDePasse from './Composants/Auth/RecupererMotDePasse'; // Importer le composant de récupération de mot de passe
+
 
 const App = () => {
   return (
@@ -20,7 +22,8 @@ const App = () => {
       <Routes>
         {/* Route de connexion */}
         <Route path="/" element={<Login />} />
-
+        {/* Route de récupération du mot de passe */}
+        <Route path="/reset-password" element={<RecupererMotDePasse />} />
         {/* Routes sécurisées avec PrivateRoute */}
         <Route
           path="/admin/dashboard"
