@@ -55,6 +55,19 @@ function Sidebar() {
             Cours
           </NavLink>
         </li>
+
+        <li>
+          <NavLink
+            to="/coach/dashboard/livraisons"
+            className={({ isActive }) =>
+              isActive
+                ? 'block p-2 bg-blue-600 rounded'
+                : 'block p-2 hover:bg-gray-700 rounded'
+            }
+          >
+            Livraisons
+          </NavLink>
+        </li>
         <li>
           <NavLink
             to="/coach/dashboard/quizzes"
@@ -97,3 +110,6 @@ function Sidebar() {
 }
 
 export default Sidebar;
+
+
+
