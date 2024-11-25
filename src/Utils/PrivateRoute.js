@@ -77,7 +77,9 @@ const PrivateRoute = ({ children, roleRequired }) => {
   }
 
   if (user.role !== roleRequired) {
-    console.log(`Accès refusé. Rôle requis : ${roleRequired}, Rôle actuel : ${user.role}`);
+    console.log(
+      `Accès refusé. Rôle requis : ${roleRequired}, Rôle actuel : ${user.role}`
+    );
     return <Navigate to="/" replace />;
   }
 

@@ -55,6 +55,10 @@ const App = () => {
           <Route path="quizzes" element={<Quizzes />} />
           <Route path="projets" element={<Projets />} />
           <Route path="messagerie" element={<MessagerieCoach />} />{' '}
+          <Route
+            path="/coach/dashboard/domains/:domaineId"
+            element={<SousDomaines />}
+          />
         </Route>
         <Route
           path="/etudiant/dashboard"
