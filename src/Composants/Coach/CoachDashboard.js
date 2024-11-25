@@ -1,4 +1,3 @@
-// CoachDashboard.js
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Sidebar from './Sidebar';
@@ -27,6 +26,7 @@ const CoachDashboard = () => {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="domains" element={<Domains />} />
+            <Route path="domains/:domaineId" element={<SousDomaines />} />
             <Route path="sous-domaines" element={<SousDomaines />} />
             <Route path="cours" element={<Cours />} />
             <Route path="quizzes" element={<Quizzes />} />
