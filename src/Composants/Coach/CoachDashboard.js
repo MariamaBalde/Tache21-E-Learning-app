@@ -10,7 +10,7 @@ import SousDomaines from './SousDomaines';
 import Cours from './Cours';
 import Quizzes from './Quizzes';
 import Projets from './Projets';
-
+import Parametre from './Parametre';
 const CoachDashboard = () => {
   return (
     <div className="flex h-screen">
@@ -32,6 +32,8 @@ const CoachDashboard = () => {
             <Route path="quizzes" element={<Quizzes />} />
             <Route path="projets" element={<Projets />} />
             <Route path="messagerie" element={<MessagerieCoach />} />
+            <Route path="parametre" element={<Parametre />} />
+
           </Routes>
         </div>
       </div>
