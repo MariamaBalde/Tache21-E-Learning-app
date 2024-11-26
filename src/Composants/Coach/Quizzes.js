@@ -6,6 +6,7 @@ import HtmlCssQuiz from "./quizz/HtmlCssQuiz";
 import BootstrapQuiz from "./quizz/BootstrapQuiz";
 import JavaScriptQuiz from "./quizz/JavaScriptQuiz";
 import ReactQuiz from "./quizz/ReactQuiz";
+import QuizzDetails from "./quizz/QuizzDetails"; // Import du composant
 
 function Quizzes() {
   return (
@@ -70,6 +71,8 @@ function Quizzes() {
         <Route path="bootstrap" element={<BootstrapQuiz />} />
         <Route path="javascript" element={<JavaScriptQuiz />} />
         <Route path="react" element={<ReactQuiz />} />
+        <Route path=":id" element={<QuizzDetails />} />
+        {/* <Route path="/quiz/:id" element={<QuizzDetails />} /> */}
       </Routes>
     </div>
   );

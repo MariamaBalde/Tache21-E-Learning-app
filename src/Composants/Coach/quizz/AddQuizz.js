@@ -1,66 +1,70 @@
 import React, { useState } from "react";
-import { addQuizz } from "./QuizService";
+import { db } from "../../../Config/firebaseConfig"; // Assurez-vous que le chemin est correct
+import { collection, addDoc } from "firebase/firestore";
 
-const AddQuizz = () => {
+const AddQuiz = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [archived, setArchived] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const newQuiz = { title, description, archived };
+    setError("");
+    setSuccess("");
+
+    if (!title || !description) {
+      setError("Tous les champs sont obligatoires !");
+      return;
+    }
+
     try {
-      const id = await addQuizz(newQuiz);
-      console.log("Quiz ajouté avec succès, ID:", id);
+      const docRef = await addDoc(collection(db, "quizzes"), {
+        title,
+        description,
+        createdAt: new Date(),
+      });
+      setSuccess("Quiz ajouté avec succès ! ID : " + docRef.id);
       setTitle("");
       setDescription("");
-      setArchived(false);
-    } catch (error) {
-      console.error("Erreur lors de l'ajout du quiz:", error);
+    } catch (err) {
+      console.error("Erreur lors de l'ajout : ", err);
+      setError("Erreur lors de l'ajout du quiz.");
     }
   };
 
   return (
     <div className="p-6 max-w-md mx-auto bg-white shadow-lg rounded-lg">
-      <h3 className="text-2xl font-semibold text-blue-600 mb-6">Ajouter un Quiz</h3>
+      <h2 className="text-xl font-semibold text-blue-600 mb-4">Ajouter un Quiz</h2>
+      {error && <p className="text-red-600 mb-4">{error}</p>}
+      {success && <p className="text-green-600 mb-4">{success}</p>}
       <form onSubmit={handleSubmit}>
-        <label className="block mb-4">
-          Titre:
+        <div className="mb-4">
+          <label className="block text-gray-700">Titre</label>
           <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            required
-            className="w-full p-3 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2 border border-gray-300 rounded"
           />
-        </label>
-        <label className="block mb-4">
-          Description:
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700">Description</label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            required
-            className="w-full p-3 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2 border border-gray-300 rounded"
           />
-        </label>
-        <label className="block mb-6">
-          Archiver ?
-          <input
-            type="checkbox"
-            checked={archived}
-            onChange={(e) => setArchived(e.target.checked)}
-            className="ml-2"
-          />
-        </label>
+        </div>
         <button
           type="submit"
-          className="bg-blue-500 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition"
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-800"
         >
-          Ajouter le quiz
+          Ajouter
         </button>
       </form>
     </div>
   );
 };
 
-export default AddQuizz;
+export default AddQuiz;
