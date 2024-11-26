@@ -1,14 +1,20 @@
 import React, { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"; // Importer les styles de Quill
-import { FaEye, FaEdit, FaArchive } from "react-icons/fa"; // Importer l'icône d'archive de react-icons
+import { FaEdit, FaArchive } from "react-icons/fa"; // Importer l'icône d'archive de react-icons
+
 
 // Exemple d'initialisation des données du cours
-const initialCourseContent = "<h1>Introduction au cours</h1><p>Voici le contenu du cours...</p>";
+// const initialCourseContent = "<h1>Introduction au cours</h1><p>Voici le contenu du cours...</p>";
+const coursContent = () => {
+return  "<p>This is some <b>HTML</b> courseContent.</p>"
+}
+
 
 function Projets() {
+    
       // L'état pour stocker le contenu du cours
-  const [courseContent, setCourseContent] = useState(initialCourseContent);
+  const [courseContent, setCourseContent] = useState(coursContent);
   const [isEditing, setIsEditing] = useState(false); // Nouvel état pour savoir si on est en mode édition
 
   // Fonction pour gérer les modifications dans l'éditeur WYSIWYG
@@ -44,22 +50,14 @@ function Projets() {
           ) : (
             // Sinon, on affiche le contenu du cours tel quel
             <div
-              className="border p-4 mt-2 rounded-md bg-gray-100"
-              dangerouslySetInnerHTML={{ __html: courseContent }}
+            //   className="border p-4 mt-2 rounded-md bg-gray-100"
+            //   dangerouslySetInnerHTML={{ __html: courseContent }}
             />
           )}
         </div>
   
         {/* Conteneur des icônes d'action alignées à droite */}
         <div className="flex justify-end space-x-4">
-          {/* Icône Voir le contenu */}
-          <button
-            onClick={() => alert(courseContent)} 
-            className="bg-blue-500 text-white p-2 rounded-full"
-            title="Voir le contenu"
-          >
-            <FaEye size={24} />
-          </button>
   
           {/* Icône Modifier / Voir */}
           <button
@@ -76,7 +74,7 @@ function Projets() {
             className="bg-green-500 text-white p-2 rounded-full"
             title="Archiver le cours"
           >
-            <FaArchive size={24} /> {/* Remplacer FaDownload par FaArchive */}
+            <FaArchive size={24} /> 
           </button>
         </div>
   
@@ -84,8 +82,9 @@ function Projets() {
         <div className="mt-8">
           <h2 className="text-xl font-bold">Voir le Cours :</h2>
           <div
-            className="border p-4 mt-2 rounded-md bg-gray-100"
+            // className="border p-4 mt-2 rounded-md bg-gray-100"
             dangerouslySetInnerHTML={{ __html: courseContent }}
+            
           />
         </div>
       </div>
