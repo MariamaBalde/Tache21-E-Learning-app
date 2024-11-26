@@ -13,7 +13,13 @@ import Cours from './Composants/Coach/Cours'; // Importer les composants nécess
 import Quizzes from './Composants/Coach/Quizzes'; // Importer les composants nécessaires
 import Projets from './Composants/Coach/Projets'; // Importer les composants nécessaires
 import MessagerieCoach from './Composants/Coach/MessagerieCoach'; // Importer les composants nécessaires
+<<<<<<< HEAD
 import Livraisons from './Composants/Coach/Livraisons'; // Importer les composants nécessaires
+=======
+import RecupererMotDePasse from './Composants/Auth/RecupererMotDePasse'; // Importer le composant de récupération de mot de passe
+import Livraisons from './Composants/Coach/Livraisons'; // Importer les composants nécessaires
+
+>>>>>>> aa82cc5c164c6afbca6623d2aa846ac17ba4a03c
 
 const App = () => {
   return (
@@ -21,7 +27,8 @@ const App = () => {
       <Routes>
         {/* Route de connexion */}
         <Route path="/" element={<Login />} />
-
+        {/* Route de récupération du mot de passe */}
+        <Route path="/reset-password" element={<RecupererMotDePasse />} />
         {/* Routes sécurisées avec PrivateRoute */}
         <Route
           path="/admin/dashboard"
@@ -52,7 +59,14 @@ const App = () => {
           <Route path="quizzes" element={<Quizzes />} />
           <Route path="projets" element={<Projets />} />
           <Route path="messagerie" element={<MessagerieCoach />} />{' '}
+          <Route
+            path="/coach/dashboard/domains/:domaineId"
+            element={<SousDomaines />}
+          />
         </Route>
+
+
+        
         <Route
           path="/etudiant/dashboard"
           element={
@@ -69,4 +83,9 @@ const App = () => {
   );
 };
 
+<<<<<<< HEAD
 export default App;
+=======
+export default App;
+
+>>>>>>> aa82cc5c164c6afbca6623d2aa846ac17ba4a03c
