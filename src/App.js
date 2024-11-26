@@ -3,29 +3,26 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './Composants/Auth/Login';
 import AdminDashboard from './Composants/Admin/Dashboard';
 import InscrireUtilisateur from './Composants/Admin/InscrireUtilisateur';
-import CoachDashboard from './Composants/Coach/CoachDashboard';
-import StudentDashboard from './Composants/Etudiant/StudentDashboard';
-import NotFound from './Pages/NotFound';
-import PrivateRoute from './Utils/PrivateRoute';
-import Domains from './Composants/Coach/Domains';
-import SousDomaines from './Composants/Coach/SousDomaines';
-import Cours from './Composants/Coach/Cours';
-import Quizzes from './Composants/Coach/Quizzes';
-import QuizzDetails from './Composants/Coach/quizz/QuizzDetails'; // Nouveau composant
-import AddQuizz from './Composants/Coach/quizz/AddQuizz';
-import ListQuizzes from './Composants/Coach/quizz/ListQuizzes';
-import HtmlCssQuiz from './Composants/Coach/quizz/HtmlCssQuiz';
-import BootstrapQuiz from './Composants/Coach/quizz/BootstrapQuiz';
-import JavaScriptQuiz from './Composants/Coach/quizz/JavaScriptQuiz';
-import ReactQuiz from './Composants/Coach/quizz/ReactQuiz';
-import Projets from './Composants/Coach/Projets';
-import MessagerieCoach from './Composants/Coach/MessagerieCoach';
+import CoachDashboard from './Composants/Coach/CoachDashboard.js';
+import StudentDashboard from './Composants/Etudiant/StudentDashboard.js';
+import NotFound from './Pages/NotFound.js';
+import PrivateRoute from './Utils/PrivateRoute.js';
+import Domains from './Composants/Coach/Domains'; // Importer les composants nécessaires
+import SousDomaines from './Composants/Coach/SousDomaines'; // Importer les composants nécessaires
+import Cours from './Composants/Coach/Cours'; // Importer les composants nécessaires
+import Quizzes from './Composants/Coach/Quizzes'; // Importer les composants nécessaires
+import Projets from './Composants/Coach/Projets'; // Importer les composants nécessaires
+import MessagerieCoach from './Composants/Coach/MessagerieCoach'; // Importer les composants nécessaires
+import Livraisons from './Composants/Coach/Livraisons'; // Importer les composants nécessaires
 
 const App = () => {
   return (
     <Router>
       <Routes>
+        {/* Route de connexion */}
         <Route path="/" element={<Login />} />
+
+        {/* Routes sécurisées avec PrivateRoute */}
         <Route
           path="/admin/dashboard"
           element={
@@ -34,7 +31,11 @@ const App = () => {
             </PrivateRoute>
           }
         />
-        <Route path="/admin/inscrire-utilisateur" element={<InscrireUtilisateur />} />
+        <Route
+          path="/admin/inscrire-utilisateur"
+          element={<InscrireUtilisateur />}
+        />
+
         <Route
           path="/coach/dashboard"
           element={
@@ -43,20 +44,14 @@ const App = () => {
             </PrivateRoute>
           }
         >
+          {/* Définir ici les sous-routes */}
           <Route path="domains" element={<Domains />} />
           <Route path="sous-domaines" element={<SousDomaines />} />
           <Route path="cours" element={<Cours />} />
-          <Route path="quizzes" element={<Quizzes />}>
-            <Route path="list" element={<ListQuizzes />} />
-            <Route path="add" element={<AddQuizz />} />
-            <Route path="html-css" element={<HtmlCssQuiz />} />
-            <Route path="bootstrap" element={<BootstrapQuiz />} />
-            <Route path="javascript" element={<JavaScriptQuiz />} />
-            <Route path="react" element={<ReactQuiz />} />
-            <Route path=":id" element={<QuizzDetails />} /> {/* Détail du quiz */}
-          </Route>
+          <Route path="livraisons" element={<Livraisons />} />
+          <Route path="quizzes" element={<Quizzes />} />
           <Route path="projets" element={<Projets />} />
-          <Route path="messagerie" element={<MessagerieCoach />} />
+          <Route path="messagerie" element={<MessagerieCoach />} />{' '}
         </Route>
         <Route
           path="/etudiant/dashboard"
@@ -66,6 +61,8 @@ const App = () => {
             </PrivateRoute>
           }
         />
+
+        {/* Page introuvable */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
