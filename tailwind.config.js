@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-=======
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}",],
@@ -20,4 +19,3 @@ module.exports = {
   plugins: [],
 }
 
->>>>>>> 725b4029256aa7330dd96e67edfaa848ec238ba6

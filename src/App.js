@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-=======
+
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './Composants/Auth/Login';
@@ -70,4 +69,3 @@ const App = () => {
 };
 
 export default App;
->>>>>>> 725b4029256aa7330dd96e67edfaa848ec238ba6

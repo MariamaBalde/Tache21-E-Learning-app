@@ -1,0 +1,98 @@
+.conversation-list {
+    width: 300px;
+    border-right: 1px solid var(--gray);
+    overflow-y: auto;
+    background-color: var(--white);
+  }
+  
+  .conversation-list h2 {
+    padding: 1rem;
+    margin: 0;
+    background-color: var(--royal-blue);
+    color: var(--white);
+  }
+  
+  .search-bar {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid var(--gray);
+  }
+  
+  .search-bar input {
+    flex: 1;
+    padding: 0.5rem;
+    border: none;
+    background-color: var(--light-blue);
+    border-radius: 1rem;
+  }
+  
+  .search-icon {
+    margin-right: 0.5rem;
+    color: var(--bic-blue);
+  }
+  
+  .conversation-item {
+    display: flex;
+    padding: 1rem;
+    border-bottom: 1px solid var(--gray);
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .conversation-item:hover {
+    background-color: var(--light-blue);
+  }
+  
+  .conversation-info {
+    flex: 1;
+  }
+  
+  .conversation-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.25rem;
+  }
+  
+  .conversation-header h3 {
+    margin: 0;
+    color: var(--dark-gray);
+  }
+  
+  .time {
+    font-size: 0.75rem;
+    color: var(--bic-blue);
+  }
+  
+  .role {
+    font-size: 0.875rem;
+    color: var(--royal-blue);
+    margin-bottom: 0.25rem;
+  }
+  
+  .last-message {
+    font-size: 0.875rem;
+    color: var(--dark-gray);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .unread-badge {
+    background-color: var(--bic-blue);
+    color: var(--white);
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 1rem;
+    align-self: flex-start;
+  }
+  
+  @media (max-width: 768px) {
+    .conversation-list {
+      width: 100%;
+      border-right: none;
+      border-bottom: 1px solid var(--gray);
+    }
+  }
+  
+  
