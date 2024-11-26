@@ -12,7 +12,7 @@ import SousDomaines from './Composants/Coach/SousDomaines'; // Importer les comp
 import Cours from './Composants/Coach/Cours'; // Importer les composants nécessaires
 import Quizzes from './Composants/Coach/Quizzes'; // Importer les composants nécessaires
 import Projets from './Composants/Coach/Projets'; // Importer les composants nécessaires
-import MessagerieCoach from './Composants/Coach/MessagerieCoach'; // Importer les composants nécessaires
+import MessagerieCoach from './Composants/Coach/MessagerieCoach'; // Importer les composants nécessaires 
 
 const App = () => {
   return (
