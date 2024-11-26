@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '../Hooks/UseAuth';
+import { useAuth } from '../Hooks/useAuth';
 
 const PrivateRoute = ({ children, roleRequired }) => {
   const { user, loading } = useAuth();
@@ -15,7 +15,9 @@ const PrivateRoute = ({ children, roleRequired }) => {
   }
 
   if (user.role !== roleRequired) {
-    console.log(`Accès refusé. Rôle requis : ${roleRequired}, Rôle actuel : ${user.role}`);
+    console.log(
+      `Accès refusé. Rôle requis : ${roleRequired}, Rôle actuel : ${user.role}`
+    );
     return <Navigate to="/" replace />;
   }
 

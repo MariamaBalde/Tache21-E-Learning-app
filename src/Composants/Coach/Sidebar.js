@@ -2,19 +2,28 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { HiMenuAlt3 } from "react-icons/hi";
 import { MdOutlineDashboard } from "react-icons/md";
-import { FaCog, FaFolder, FaRegFileAlt } from 'react-icons/fa';
+import {
+  FaFileAlt,
+  FaBook,
+  FaPaperPlane,
+  FaQuestionCircle,
+  FaProjectDiagram,
+  FaEnvelope,
+  FaCog
+} from 'react-icons/fa';
 import { BsFillGridFill } from 'react-icons/bs';
 
 const Sidebar = () => {
   const menus = [
     { nom: "Dashboard", link: "/coach/dashboard", icon: MdOutlineDashboard },
     { nom: "Domaines", link: "/coach/dashboard/domains", icon: BsFillGridFill },
-    { nom: "Sous-Domaines", link: "/coach/dashboard/sous-domaines", icon: FaRegFileAlt },
-    { nom: "Cours", link: "/coach/dashboard/cours", icon: FaFolder },
-    { nom: "Quizzes", link: "/coach/dashboard/quizzes", icon: FaFolder },
-    { nom: "Projets", link: "/coach/dashboard/projets", icon: FaFolder },
-    { nom: "Messagerie", link: "/coach/dashboard/messagerie", icon: FaFolder },
-    { nom: "Parametre", link: "/coach/dashboard/parametre", icon: FaCog },
+    { nom: "Sous-Domaines", link: "/coach/dashboard/sous-domaines", icon: FaFileAlt }, // Icône pour des fichiers ou documents
+    { nom: "Cours", link: "/coach/dashboard/cours", icon: FaBook }, // Icône pour des livres ou cours
+    { nom: "Livraisons", link: "/coach/dashboard/livraisons", icon: FaPaperPlane }, // Icône pour une livraison
+    { nom: "Quizzes", link: "/coach/dashboard/quizzes", icon: FaQuestionCircle }, // Icône pour des questions ou quizzes
+    { nom: "Projets", link: "/coach/dashboard/projets", icon: FaProjectDiagram }, // Icône pour des projets
+    { nom: "Messagerie", link: "/coach/dashboard/messagerie", icon: FaEnvelope }, // Icône pour des messages
+    { nom: "Paramètre", link: "/coach/dashboard/parametre", icon: FaCog }, // Icône pour des paramètres
   ];
 
   const [open, setOpen] = useState(true);
@@ -39,9 +48,8 @@ const Sidebar = () => {
               </h2>
 
               <h2
-                className={`${
-                  open ? "hidden" : ""
-                } absolute left-[-48px] bg-white font-semibold whitespace-pre text-gray-900 rounded-md drop-shadow-lg px-0 py-0 w-0 overflow-hidden group-hover:px-2 group-hover:py-1 group-hover:left-14 group-hover:duration-300 group-hover:w-fit`}
+                className={`${open ? "hidden" : ""
+                  } absolute left-[-48px] bg-white font-semibold whitespace-pre text-gray-900 rounded-md drop-shadow-lg px-0 py-0 w-0 overflow-hidden group-hover:px-2 group-hover:py-1 group-hover:left-14 group-hover:duration-300 group-hover:w-fit`}
               >
                 {menu.nom}
               </h2>
@@ -57,105 +65,4 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
-
-
-// // Sidebar.js
-// import React from 'react';
-// import { NavLink } from 'react-router-dom';
-
-// function Sidebar() {
-//   return (
-//     <div className="bg-gray-800 text-white w-64 h-screen p-4">
-//       <h2 className="text-xl font-bold mb-4">Menu</h2>
-//       <ul className="space-y-4">
-//         <li>
-//           <NavLink
-//             to="/coach/dashboard"
-//             className={({ isActive }) =>
-//               isActive
-//                 ? 'block p-2 bg-blue-600 rounded'
-//                 : 'block p-2 hover:bg-gray-700 rounded'
-//             }
-//           >
-//             Tableau de bord
-//           </NavLink>
-//         </li>
-//         <li>
-//           <NavLink
-//             to="/coach/dashboard/domains"
-//             className={({ isActive }) =>
-//               isActive
-//                 ? 'block p-2 bg-blue-600 rounded'
-//                 : 'block p-2 hover:bg-gray-700 rounded'
-//             }
-//           >
-//             Domaines
-//           </NavLink>
-//         </li>
-//         <li>
-//           <NavLink
-//             to="/coach/dashboard/sous-domaines"
-//             className={({ isActive }) =>
-//               isActive
-//                 ? 'block p-2 bg-blue-600 rounded'
-//                 : 'block p-2 hover:bg-gray-700 rounded'
-//             }
-//           >
-//             Sous-domaines
-//           </NavLink>
-//         </li>
-//         <li>
-//           <NavLink
-//             to="/coach/dashboard/cours"
-//             className={({ isActive }) =>
-//               isActive
-//                 ? 'block p-2 bg-blue-600 rounded'
-//                 : 'block p-2 hover:bg-gray-700 rounded'
-//             }
-//           >
-//             Cours
-//           </NavLink>
-//         </li>
-//         <li>
-//           <NavLink
-//             to="/coach/dashboard/quizzes"
-//             className={({ isActive }) =>
-//               isActive
-//                 ? 'block p-2 bg-blue-600 rounded'
-//                 : 'block p-2 hover:bg-gray-700 rounded'
-//             }
-//           >
-//             Quizzes
-//           </NavLink>
-//         </li>
-//         <li>
-//           <NavLink
-//             to="/coach/dashboard/projets"
-//             className={({ isActive }) =>
-//               isActive
-//                 ? 'block p-2 bg-blue-600 rounded'
-//                 : 'block p-2 hover:bg-gray-700 rounded'
-//             }
-//           >
-//             Projets
-//           </NavLink>
-//         </li>
-//         <li>
-//           <NavLink
-//             to="/coach/dashboard/messagerie"
-//             className={({ isActive }) =>
-//               isActive
-//                 ? 'block p-2 bg-blue-600 rounded'
-//                 : 'block p-2 hover:bg-gray-700 rounded'
-//             }
-//           >
-//             Messagerie
-//           </NavLink>
-//         </li>
-//       </ul>
-//     </div>
-//   );
-// }
-
-// export default Sidebar;
 

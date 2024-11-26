@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Bell, Search } from 'lucide-react';
 import { FaEnvelope, FaUserCircle } from 'react-icons/fa';
@@ -50,3 +51,4 @@ function Navbar() {
 }
 
 export default Navbar;
+
