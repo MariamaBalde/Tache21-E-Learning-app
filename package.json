@@ -7,15 +7,12 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-<<<<<<< HEAD
+
 
     "axios": "^1.7.7",
   
     "lucide-react": "^0.456.0",
 
-
-=======
->>>>>>> ab53ac4f461b5bed62bb67e3418dae6b152b9b5c
     "chart.js": "^4.4.6",
     "emailjs-com": "^3.2.0",
     "firebase": "^11.0.1",

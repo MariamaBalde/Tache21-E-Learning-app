@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-
-
-=======
->>>>>>> ab53ac4f461b5bed62bb67e3418dae6b152b9b5c
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '../Hooks/UseAuth';
+import { useAuth } from '../Hooks/useAuth';
 
 const PrivateRoute = ({ children, roleRequired }) => {
   const { user, loading } = useAuth();

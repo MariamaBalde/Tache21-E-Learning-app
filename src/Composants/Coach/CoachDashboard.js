@@ -11,6 +11,7 @@ import Cours from './Cours';
 import Quizzes from './Quizzes';
 import Projets from './Projets';
 import Parametre from './Parametre';
+import Livraisons from './Livraisons';
 const CoachDashboard = () => {
   return (
     <div className="flex h-screen">
@@ -29,6 +30,7 @@ const CoachDashboard = () => {
             <Route path="domains" element={<Domains />} />
             <Route path="sous-domaines" element={<SousDomaines />} />
             <Route path="cours" element={<Cours />} />
+            <Route path="livraisons" element={<Livraisons />} />
             <Route path="quizzes" element={<Quizzes />} />
             <Route path="projets" element={<Projets />} />
             <Route path="messagerie" element={<MessagerieCoach />} />

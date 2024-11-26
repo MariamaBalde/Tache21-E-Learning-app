@@ -11,6 +11,7 @@ const Sidebar = () => {
     { nom: "Domaines", link: "/coach/dashboard/domains", icon: BsFillGridFill },
     { nom: "Sous-Domaines", link: "/coach/dashboard/sous-domaines", icon: FaRegFileAlt },
     { nom: "Cours", link: "/coach/dashboard/cours", icon: FaFolder },
+    { nom: "Livraisons", link: "/coach/dashboard/livraisons", icon: FaFolder },
     { nom: "Quizzes", link: "/coach/dashboard/quizzes", icon: FaFolder },
     { nom: "Projets", link: "/coach/dashboard/projets", icon: FaFolder },
     { nom: "Messagerie", link: "/coach/dashboard/messagerie", icon: FaFolder },
