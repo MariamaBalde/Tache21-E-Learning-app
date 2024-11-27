@@ -1,105 +1,101 @@
-import React, { useState } from "react";
-import Profil from "./Profil"; // Importer le composant Profil
+import React from 'react';
+import { Bell, Search } from 'lucide-react';
+import { FaEnvelope, FaUserCircle } from 'react-icons/fa';
+
 
 function Navbar() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [profile, setProfile] = useState({
-    firstName: "Jean",
-    lastName: "Dupont",
-    password: "",
-    image: "https://via.placeholder.com/40", // Par défaut, une image placeholder
-  });
-
   return (
-    <div>
-      {/* Navbar */}
-      <div className="bg-white shadow-md flex items-center justify-between px-6 py-3 relative">
-        {/* Logo */}
-        <div className="text-xl font-bold text-gray-800">E-Learning</div>
+    <div className="bg-white shadow-md flex items-center justify-between px-6 py-3">
+      {/* Logo */}
+      {/* <div className="text-xl font-bold text-gray-800">E-Learning</div> */}
 
-        {/* Search Bar */}
-        <input
-          type="text"
-          placeholder="Rechercher..."
-          className="flex-grow mx-6 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+      {/* Search Bar */}
+      {/* <input
+        type="text"
+        placeholder="Rechercher..."
+        className="flex-grow mx-6 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+      /> */}
 
-        {/* Icons */}
-        <div className="flex items-center space-x-4 relative">
-          <i className="cursor-pointer text-gray-600 hover:text-blue-600">🔔</i>
-          <i className="cursor-pointer text-gray-600 hover:text-blue-600">✉</i>
-          {/* Photo de profil */}
-          <img
-            src={profile.image} // Utilisation de l'image actuelle du profil
-            alt="Photo de profil"
-            className="w-10 h-10 rounded-full cursor-pointer hover:ring-2 hover:ring-blue-600"
-            onClick={() => setIsModalOpen(!isModalOpen)}
-          />
+<div className="flex items-center bg-white rounded-full px-4 py-2 w-1/2">
+            <Search className="h-5 w-5 text-gray-400 mr-2" />
+            <input
+              type="text"
+              placeholder="Rechercher..."
+              className="bg-transparent focus:outline-none flex-1"
+            />
+          </div>
 
-          {/* Composant Profil */}
-          <Profil
-            profile={profile}
-            setProfile={setProfile}
-            isModalOpen={isModalOpen}
-            setIsModalOpen={setIsModalOpen}
-          />
+      {/* Icons */}
+      {/* <div className="flex items-center space-x-4">
+        <i className="cursor-pointer text-gray-600 hover:text-blue-600">🔔</i>
+        <i className="cursor-pointer text-gray-600 hover:text-blue-600">✉️</i>
+        <div className="cursor-pointer text-gray-600 hover:text-blue-600">
+          👤
         </div>
-      </div>
+      </div> */}
+
+<div className="flex items-center space-x-4">
+            <button className="p-2 bg-white rounded-full">
+              <Bell className="h-5 w-5 text-gray-600" />
+            </button>
+            <button className="p-2 bg-white rounded-full">
+              <FaEnvelope className="h-5 w-5 text-gray-600" />
+            </button>
+            <button className="p-2 bg-white rounded-full">
+             <FaUserCircle className="h-5 w-5 text-gray-600" />
+           </button>
+          </div>
     </div>
   );
 }
 
-export default Navbar;
+export default Navbar;import React from 'react';
+import { Bell, Search } from 'lucide-react';
+import { FaEnvelope, FaUserCircle } from 'react-icons/fa';
 
-
-
-
-// import React, { useState } from "react";
-// import Profil from "./Profil"; // Importer le composant Profil
 
 // function Navbar() {
-//   const [isModalOpen, setIsModalOpen] = useState(false);
-//   const [profile, setProfile] = useState({
-//     firstName: "Jean",
-//     lastName: "Dupont",
-//     password: "",
-//   });
-
 //   return (
-//     <div>
-//       {/* Navbar */}
-//       <div className="bg-white shadow-md flex items-center justify-between px-6 py-3 relative">
-//         {/* Logo */}
-//         <div className="text-xl font-bold text-gray-800">E-Learning</div>
+//     <div className="bg-white shadow-md flex items-center justify-between px-6 py-3">
+//       {/* Logo */}
+//       {/* <div className="text-xl font-bold text-gray-800">E-Learning</div> */}
 
-//         {/* Search Bar */}
-//         <input
-//           type="text"
-//           placeholder="Rechercher..."
-//           className="flex-grow mx-6 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-//         />
+//       {/* Search Bar */}
+//       {/* <input
+//         type="text"
+//         placeholder="Rechercher..."
+//         className="flex-grow mx-6 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+//       /> */}
 
-//         {/* Icons */}
-//         <div className="flex items-center space-x-4 relative">
-//           <i className="cursor-pointer text-gray-600 hover:text-blue-600">🔔</i>
-//           <i className="cursor-pointer text-gray-600 hover:text-blue-600">✉</i>
-//           {/* Photo de profil */}
-//           <img
-//             src="https://via.placeholder.com/40"
-//             alt="Photo de profil"
-//             className="w-10 h-10 rounded-full cursor-pointer hover:ring-2 hover:ring-blue-600"
-//             onClick={() => setIsModalOpen(!isModalOpen)} 
-//           />
+// <div className="flex items-center bg-white rounded-full px-4 py-2 w-1/2">
+//             <Search className="h-5 w-5 text-gray-400 mr-2" />
+//             <input
+//               type="text"
+//               placeholder="Rechercher..."
+//               className="bg-transparent focus:outline-none flex-1"
+//             />
+//           </div>
 
-//           {/* Composant Profil */}
-//           <Profil
-//             profile={profile}
-//             setProfile={setProfile}
-//             isModalOpen={isModalOpen}
-//             setIsModalOpen={setIsModalOpen}
-//           />
+//       {/* Icons */}
+//       {/* <div className="flex items-center space-x-4">
+//         <i className="cursor-pointer text-gray-600 hover:text-blue-600">🔔</i>
+//         <i className="cursor-pointer text-gray-600 hover:text-blue-600">✉️</i>
+//         <div className="cursor-pointer text-gray-600 hover:text-blue-600">
+//           👤
 //         </div>
-//       </div>
+//       </div> */}
+
+// <div className="flex items-center space-x-4">
+//             <button className="p-2 bg-white rounded-full">
+//               <Bell className="h-5 w-5 text-gray-600" />
+//             </button>
+//             <button className="p-2 bg-white rounded-full">
+//               <FaEnvelope className="h-5 w-5 text-gray-600" />
+//             </button>
+//             <button className="p-2 bg-white rounded-full">
+//              <FaUserCircle className="h-5 w-5 text-gray-600" />
+//            </button>
+//           </div>
 //     </div>
 //   );
 // }
