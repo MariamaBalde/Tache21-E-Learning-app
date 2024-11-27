@@ -1,3 +1,4 @@
+
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { db } from '../../Config/firebaseConfig';
@@ -220,3 +221,4 @@ const SousDomaines = () => {
 };
 
 export default SousDomaines;
+

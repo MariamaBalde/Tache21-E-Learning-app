@@ -1,3 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Ajouter votre CSS personnalisé après Tailwind */
+@import './Styles/Login.css';
