@@ -2,20 +2,28 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { HiMenuAlt3 } from "react-icons/hi";
 import { MdOutlineDashboard } from "react-icons/md";
-import { FaCog, FaFolder, FaRegFileAlt } from 'react-icons/fa';
+import {
+  FaFileAlt,
+  FaBook,
+  FaPaperPlane,
+  FaQuestionCircle,
+  FaProjectDiagram,
+  FaEnvelope,
+  FaCog
+} from 'react-icons/fa';
 import { BsFillGridFill } from 'react-icons/bs';
 
 const Sidebar = () => {
   const menus = [
     { nom: "Dashboard", link: "/coach/dashboard", icon: MdOutlineDashboard },
     { nom: "Domaines", link: "/coach/dashboard/domains", icon: BsFillGridFill },
-    { nom: "Sous-Domaines", link: "/coach/dashboard/sous-domaines", icon: FaRegFileAlt },
-    { nom: "Cours", link: "/coach/dashboard/cours", icon: FaFolder },
-    { nom: "Livraisons", link: "/coach/dashboard/livraisons", icon: FaFolder },
-    { nom: "Quizzes", link: "/coach/dashboard/quizzes", icon: FaFolder },
-    { nom: "Projets", link: "/coach/dashboard/projets", icon: FaFolder },
-    { nom: "Messagerie", link: "/coach/dashboard/messagerie", icon: FaFolder },
-    { nom: "Parametre", link: "/coach/dashboard/parametre", icon: FaCog },
+    { nom: "Sous-Domaines", link: "/coach/dashboard/sous-domaines", icon: FaFileAlt }, // Icône pour des fichiers ou documents
+    { nom: "Cours", link: "/coach/dashboard/cours", icon: FaBook }, // Icône pour des livres ou cours
+    { nom: "Livraisons", link: "/coach/dashboard/livraisons", icon: FaPaperPlane }, // Icône pour une livraison
+    { nom: "Quizzes", link: "/coach/dashboard/quizzes", icon: FaQuestionCircle }, // Icône pour des questions ou quizzes
+    { nom: "Projets", link: "/coach/dashboard/projets", icon: FaProjectDiagram }, // Icône pour des projets
+    { nom: "Messagerie", link: "/coach/dashboard/messagerie", icon: FaEnvelope }, // Icône pour des messages
+    { nom: "Paramètre", link: "/coach/dashboard/parametre", icon: FaCog }, // Icône pour des paramètres
   ];
 
   const [open, setOpen] = useState(true);
