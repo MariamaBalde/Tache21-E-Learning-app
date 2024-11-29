@@ -17,13 +17,13 @@ function Header() {
                         href="#hero"
                         className="text-gray-600 font-semibold hover:text-indigo-600 hover:shadow-lg transition-all duration-300 hover:border-b-2 hover:border-indigo-600"
                     >
-                        Home
+                        Accueil
                     </a>
                     <a
                         href="#courses"
                         className="text-gray-600 font-semibold hover:text-indigo-600 hover:shadow-lg transition-all duration-300 hover:border-b-2 hover:border-indigo-600"
                     >
-                        Courses
+                        Cours
                     </a>
                     <a
                         href="#popularCourses"
@@ -35,7 +35,7 @@ function Header() {
                         href="#footer"
                         className="text-gray-600 font-semibold hover:text-indigo-600 hover:shadow-lg transition-all duration-300 hover:border-b-2 hover:border-indigo-600"
                     >
-                        About
+                        À propos
                     </a>
                 </nav>
                 <div className="hidden md:flex items-center space-x-4">
@@ -71,7 +71,6 @@ function Header() {
                         <a href="#cours" className="block text-gray-600 hover:text-gray-900">Courses</a>
                         <a href="#popularCourses" className="block text-gray-600 hover:text-gray-900">Mentors</a>
                         <a href="#footer" className="block text-gray-600 hover:text-gray-900">About</a>
-                        {/* <a href="#" className="block bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Sign In</a> */}
                         <a
                             href="/login"
                             className="inline-block bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 sm:block sm:px-6 sm:py-3"
