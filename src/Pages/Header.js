@@ -68,7 +68,7 @@ function Header() {
                 <nav className="md:hidden bg-white shadow-md">
                     <div className="px-4 py-2 space-y-2">
                         <a href="#hero" className="block text-gray-600 hover:text-gray-900">Home</a>
-                        <a href="#cours" className="block text-gray-600 hover:text-gray-900">Courses</a>
+                        <a href="#courses" className="block text-gray-600 hover:text-gray-900">Courses</a>
                         <a href="#popularCourses" className="block text-gray-600 hover:text-gray-900">Mentors</a>
                         <a href="#footer" className="block text-gray-600 hover:text-gray-900">About</a>
                         <a
