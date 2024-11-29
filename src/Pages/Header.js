@@ -67,16 +67,16 @@ function Header() {
             {isMenuOpen && (
                 <nav className="md:hidden bg-white shadow-md">
                     <div className="px-4 py-2 space-y-2">
-                        <a href="#" className="block text-gray-600 hover:text-gray-900">Home</a>
-                        <a href="#" className="block text-gray-600 hover:text-gray-900">Courses</a>
-                        <a href="#" className="block text-gray-600 hover:text-gray-900">Mentors</a>
-                        <a href="#" className="block text-gray-600 hover:text-gray-900">About</a>
+                        <a href="#hero" className="block text-gray-600 hover:text-gray-900">Home</a>
+                        <a href="#cours" className="block text-gray-600 hover:text-gray-900">Courses</a>
+                        <a href="#popularCourses" className="block text-gray-600 hover:text-gray-900">Mentors</a>
+                        <a href="#footer" className="block text-gray-600 hover:text-gray-900">About</a>
                         {/* <a href="#" className="block bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Sign In</a> */}
                         <a
-                            href="#"
+                            href="/login"
                             className="inline-block bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 sm:block sm:px-6 sm:py-3"
                         >
-                            Sign In
+                            Se connecter
                         </a>
 
 
