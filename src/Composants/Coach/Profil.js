@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { FaUserCircle } from 'react-icons/fa';
 
 function Profil() {
-  // États locaux pour gérer les données du profil et l'ouverture du modal
   const [isModalOpen, setModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     nom: '',
@@ -13,20 +11,18 @@ function Profil() {
   const [profileImage, setProfileImage] = useState(
     'https://via.placeholder.com/100' // Image par défaut
   );
-  const [isProfileEdited, setIsProfileEdited] = useState(false); // Vérifier si le profil est modifié
-  const [menuOpen, setMenuOpen] = useState(false); // Contrôler l'affichage du menu
+  const [isProfileEdited, setIsProfileEdited] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  // Charger les données depuis le localStorage au démarrage du composant
   useEffect(() => {
     const savedData = JSON.parse(localStorage.getItem('profileData'));
     if (savedData) {
-      setFormData(savedData.formData);
+      setFormData(savedData.formData || {});
       setProfileImage(savedData.profileImage || 'https://via.placeholder.com/100');
       setIsProfileEdited(true);
     }
   }, []);
 
-  // Sauvegarder les données dans le localStorage
   const saveProfileData = () => {
     const profileData = {
       formData,
@@ -35,10 +31,8 @@ function Profil() {
     localStorage.setItem('profileData', JSON.stringify(profileData));
   };
 
-  // Fonction pour ouvrir ou fermer le modal
   const toggleModal = () => setModalOpen(!isModalOpen);
 
-  // Fonction pour gérer les changements dans le formulaire
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -47,53 +41,50 @@ function Profil() {
     });
   };
 
-  // Fonction pour gérer l'upload d'une nouvelle image
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const imageURL = URL.createObjectURL(file);
-      setProfileImage(imageURL);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const imageBase64 = reader.result; // Convertir l'image en base64
+        setProfileImage(imageBase64);
+        localStorage.setItem(
+          'profileData',
+          JSON.stringify({ formData, profileImage: imageBase64 })
+        ); // Sauvegarder immédiatement
+      };
+      reader.readAsDataURL(file);
     }
   };
 
-  // Fonction pour soumettre les données
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Données modifiées :', formData);
-    setIsProfileEdited(true); // Marquer le profil comme modifié
-    saveProfileData(); // Sauvegarder les modifications dans le localStorage
-    toggleModal(); // Fermer le modal après soumission
+    setIsProfileEdited(true);
+    saveProfileData();
+    toggleModal();
   };
 
-  // Fonction pour afficher ou masquer le menu
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
-  // Fonction pour ouvrir le modal de modification
   const openProfileModal = () => {
-    toggleMenu(); // Fermer le menu
-    toggleModal(); // Ouvrir le modal
+    toggleMenu();
+    toggleModal();
   };
 
   return (
     <div className="relative flex items-center">
-      {/* Photo de profil avec menu déroulant */}
       <div>
         <img
           src={profileImage}
           alt="Photo de profil"
           className="w-8 h-8 rounded-full object-cover border border-gray-300 cursor-pointer"
-          onClick={toggleMenu} // Affiche le menu déroulant quand on clique sur l'image
+          onClick={toggleMenu}
         />
-        {/* Menu déroulant avec Profil, Settings, Déconnecter */}
         {menuOpen && (
           <div className="absolute bg-white rounded-lg shadow w-32 top-full right-0 z-10">
             <ul className="py-2 text-sm text-gray-950">
               <li>
-                <a
-                  href="#"
-                  onClick={openProfileModal} // Ouvre le modal quand on clique sur Profil
-                  className="block px-4 py-2"
-                >
+                <a href="#" onClick={openProfileModal} className="block px-4 py-2">
                   Profil
                 </a>
               </li>
@@ -112,7 +103,6 @@ function Profil() {
         )}
       </div>
 
-      {/* Affichage dynamique du nom et prénom ou champ vide */}
       {isProfileEdited ? (
         <div className="ml-2 text-sm">
           <span>{formData.nom} {formData.prenom}</span>
@@ -123,61 +113,68 @@ function Profil() {
         </button>
       )}
 
-      {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-lg w-96 p-6">
             <h2 className="text-lg font-bold mb-4">Modifier le Profil</h2>
             <form onSubmit={handleSubmit}>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Nom</label>
+              {/* Image de profil */}
+              <div className="flex justify-center mb-6">
+                <img
+                  src={profileImage}
+                  alt="Photo actuelle"
+                  className="w-20 h-20 rounded-full object-cover border border-gray-300"
+                />
+              </div>
+
+              {/* Champ Nom */}
+              <div className="flex items-center mb-4">
+                <label className="w-1/3 text-sm font-medium text-gray-700">Nom</label>
                 <input
                   type="text"
                   name="nom"
                   value={formData.nom}
                   onChange={handleChange}
-                  className="w-full border border-gray-300 rounded-md p-2"
+                  className="w-2/3 border border-gray-300 rounded-md p-2"
                 />
               </div>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Prénom</label>
+
+              {/* Champ Prénom */}
+              <div className="flex items-center mb-4">
+                <label className="w-1/3 text-sm font-medium text-gray-700">Prénom</label>
                 <input
                   type="text"
                   name="prenom"
                   value={formData.prenom}
                   onChange={handleChange}
-                  className="w-full border border-gray-300 rounded-md p-2"
+                  className="w-2/3 border border-gray-300 rounded-md p-2"
                 />
               </div>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Numéro de Téléphone</label>
+
+              {/* Champ Téléphone */}
+              <div className="flex items-center mb-4">
+                <label className="w-1/3 text-sm font-medium text-gray-700">Téléphone</label>
                 <input
                   type="tel"
                   name="telephone"
                   value={formData.telephone}
                   onChange={handleChange}
-                  className="w-full border border-gray-300 rounded-md p-2"
+                  className="w-2/3 border border-gray-300 rounded-md p-2"
                 />
               </div>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Adresse</label>
-                <input
-                  type="adress"
-                  name="adess"
-                  value={formData.adress}
-                  onChange={handleChange}
-                  className="w-full border border-gray-300 rounded-md p-2"
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Photo de Profil</label>
+
+              {/* Champ Photo */}
+              <div className="flex items-center mb-4">
+                <label className="w-1/3 text-sm font-medium text-gray-700">Photo</label>
                 <input
                   type="file"
                   accept="image/*"
                   onChange={handleImageChange}
-                  className="w-full border border-gray-300 rounded-md p-2"
+                  className="w-2/3 border border-gray-300 rounded-md p-2"
                 />
               </div>
+
+              {/* Boutons */}
               <div className="flex justify-end space-x-2">
                 <button
                   type="button"
