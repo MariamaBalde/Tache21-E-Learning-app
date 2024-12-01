@@ -15,7 +15,7 @@ const courses = [
         image: image1,
         students: "500+",
         rating: "4.9",
-        price: "105.00FCA",
+        // price: "105.00FCA",
     },
     {
         id: 2,
@@ -24,7 +24,7 @@ const courses = [
         image: image2,
         students: "500+",
         rating: "4.9",
-        price: "105.00FCA",
+        // price: "105.00FCA",
     },
     {
         id: 3,
@@ -33,7 +33,7 @@ const courses = [
         image: image3,
         students: "500+",
         rating: "4.9",
-        price: "105.00FCA",
+        // price: "105.00FCA",
     },
     {
         id: 4,
@@ -42,7 +42,7 @@ const courses = [
         image: image4,
         students: "500+",
         rating: "4.9",
-        price: "105.00FCA",
+        // price: "105.00FCA",
     },
     {
         id: 5,
@@ -51,7 +51,7 @@ const courses = [
         image: image5,
         students: "500+",
         rating: "4.9",
-        price: "105.00FCA",
+        // price: "105.00FCA",
     },
     {
         id: 6,
@@ -60,7 +60,7 @@ const courses = [
         image: image6,
         students: "500+",
         rating: "4.9",
-        price: "105.00FCA",
+        // price: "105.00FCA",
     }
 ];
 
@@ -81,15 +81,15 @@ function CourseCard({ course }) {
                 </div>
                 <h3 className="font-medium text-sm mb-2 line-clamp-2">{course.title}</h3>
                 <div className="flex items-center justify-between text-xs">
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-start gap-1">
                         <Users size={12} className="text-gray-500" />
                         <span className="text-gray-600">{course.students}</span>
                     </div>
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-end gap-1">
                         <Star size={12} className="text-yellow-400 fill-yellow-400" />
                         <span className="text-gray-600">{course.rating}</span>
                     </div>
-                    <span className="text-indigo-600 font-medium">{course.price}</span>
+                    {/* <span className="text-indigo-600 font-medium">{course.price}</span> */}
                 </div>
             </div>
         </div>
