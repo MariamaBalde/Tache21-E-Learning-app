@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { db } from '../../Config/firebaseConfig';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+
 import {
   collection,
   getDocs,
@@ -9,8 +11,16 @@ import {
   updateDoc,
   doc,
   addDoc,
+  deleteDoc,
 } from 'firebase/firestore';
-import { FaArchive, FaEdit, FaUsers, FaPlus } from 'react-icons/fa';
+import {
+  FaArchive,
+  FaEdit,
+  FaUsers,
+  FaPlus,
+  FaUndo,
+  FaTrash,
+} from 'react-icons/fa';
 
 const Domains = () => {
   const [domains, setDomains] = useState([]);
@@ -26,6 +36,23 @@ const Domains = () => {
   const [newDomainName, setNewDomainName] = useState(''); // Nom du nouveau domaine
   const [showEditDomainModal, setShowEditDomainModal] = useState(false); // Modal pour éditer le domaine
   const [domainToEdit, setDomainToEdit] = useState(null); // Domaine à éditer
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // L'utilisateur est connecté, récupérez ses informations
+        setCurrentUser(user);
+      } else {
+        // L'utilisateur n'est pas connecté
+        setCurrentUser(null);
+      }
+    });
+
+    // Nettoyage de l'écouteur lors du démontage du composant
+    return () => unsubscribe();
+  }, []);
 
   const fetchDomains = async () => {
     try {
@@ -101,22 +128,6 @@ const Domains = () => {
       console.error("Erreur lors de l'assignation de l'étudiant :", error);
     }
   };
-
-  // const disableAssignment = async (studentId) => {
-  //   try {
-  //     await updateDoc(doc(db, 'users', studentId), {
-  //       domaineId: null,
-  //     });
-  //     alert('Assignation désactivée avec succès !');
-  //     fetchStudents();
-  //     setShowModal(false);
-  //   } catch (error) {
-  //     console.error(
-  //       "Erreur lors de la désactivation de l'assignation :",
-  //       error
-  //     );
-  //   }
-  // };
 
   const archiveDomain = async (domainId) => {
     try {
@@ -248,6 +259,7 @@ const Domains = () => {
                 >
                   <FaArchive />
                 </button>
+
                 <button
                   onClick={() => showStudentsInDomain(domain.id)}
                   className={`relative text-gray-500 hover:text-gray-700 text-xl ${
