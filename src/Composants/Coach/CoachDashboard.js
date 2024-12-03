@@ -28,6 +28,8 @@ const CoachDashboard = () => {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="domains" element={<Domains />} />
+            <Route path="domains/:domaineId" element={<SousDomaines />} />
+
             <Route path="sous-domaines" element={<SousDomaines />} />
             <Route path="cours" element={<Cours />} />
             <Route path="livraisons" element={<Livraisons />} />
@@ -35,7 +37,6 @@ const CoachDashboard = () => {
             <Route path="projets" element={<Projets />} />
             <Route path="messagerie" element={<MessagerieCoach />} />
             <Route path="parametre" element={<Parametre />} />
-
           </Routes>
         </div>
       </div>
