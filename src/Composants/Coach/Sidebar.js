@@ -15,30 +15,31 @@ import {
 } from 'react-icons/fa';
 import { BsFillGridFill } from 'react-icons/bs';
 
-
 const Sidebar = () => {
+  const [open, setOpen] = useState(true);
+
   const menus = [
     { nom: "Dashboard", link: "/coach/dashboard", icon: MdOutlineDashboard },
     { nom: "Domaines", link: "/coach/dashboard/domains", icon: BsFillGridFill },
-    { nom: "Sous-Domaines", link: "/coach/dashboard/sous-domaines", icon: FaFileAlt }, // Icône pour des fichiers ou documents
-    { nom: "Cours", link: "/coach/dashboard/cours", icon: FaBook }, // Icône pour des livres ou cours
-    { nom: "Livraisons", link: "/coach/dashboard/livraisons", icon: FaPaperPlane }, // Icône pour une livraison
-    { nom: "Quizzes", link: "/coach/dashboard/quizzes", icon: FaQuestionCircle }, // Icône pour des questions ou quizzes
-    { nom: "Projets", link: "/coach/dashboard/projets", icon: FaProjectDiagram }, // Icône pour des projets
-    { nom: "Messagerie", link: "/coach/dashboard/messagerie", icon: FaEnvelope }, // Icône pour des messages
-    { nom: "Paramètre", link: "/coach/dashboard/parametre", icon: FaCog }, // Icône pour des paramètres
+    { nom: "Sous-Domaines", link: "/coach/dashboard/sous-domaines", icon: FaFileAlt },
+    { nom: "Cours", link: "/coach/dashboard/cours", icon: FaBook },
+    { nom: "Livraisons", link: "/coach/dashboard/livraisons", icon: FaPaperPlane },
+    { nom: "Quizzes", link: "/coach/dashboard/quizzes", icon: FaQuestionCircle },
+    { nom: "Projets", link: "/coach/dashboard/projets", icon: FaProjectDiagram },
+    { nom: "Messagerie", link: "/coach/dashboard/messagerie", icon: FaEnvelope },
+    { nom: "Paramètre", link: "/coach/dashboard/parametre", icon: FaCog },
   ];
-
-  // const [open, setOpen] = useState(true);
 
   return (
     <section className='flex'>
       <div className={`bg-[#191970] min-h-screen ${open ? 'w-72' : 'w-16'} duration-500 px-4 text-gray-100`}>
-        {/* <div className='py-3 flex justify-end'>
+        <div className='py-3 flex justify-end'>
           <HiMenuAlt3 size={26} className='cursor-pointer' onClick={() => setOpen(!open)} />
-        </div> */}
+        </div>
         <div className="mb-6">
-          <img src={logo} alt="Logo" className="h-16 w-16" />
+
+          {/* <img src={logo} alt="Logo" className="h-16 w-16" /> */}
+          
         </div>
         <div className='mt-4 flex flex-col gap-4 relative'>
           {menus.map((menu, i) => (
@@ -71,4 +72,3 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
-
