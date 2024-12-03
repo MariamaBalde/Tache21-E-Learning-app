@@ -1,4 +1,4 @@
-// CoachDashboard.js
+// src/Composants/Coach/CoachDashboard.js
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Sidebar from './Sidebar';
@@ -12,18 +12,14 @@ import Quizzes from './Quizzes';
 import Projets from './Projets';
 import Parametre from './Parametre';
 import Livraisons from './Livraisons';
+import PlayQuiz from './quizz/PlayQuiz';
+
 const CoachDashboard = () => {
   return (
     <div className="flex h-screen">
-      {/* Sidebar */}
       <Sidebar />
-
-      {/* Main Area */}
       <div className="flex-1 flex flex-col">
-        {/* Navbar */}
         <Navbar />
-
-        {/* Routes pour les sous-sections */}
         <div className="flex-1 bg-gray-50 overflow-y-auto p-4">
           <Routes>
             <Route path="/" element={<Dashboard />} />
@@ -31,11 +27,11 @@ const CoachDashboard = () => {
             <Route path="sous-domaines" element={<SousDomaines />} />
             <Route path="cours" element={<Cours />} />
             <Route path="livraisons" element={<Livraisons />} />
-            <Route path="quizzes" element={<Quizzes />} />
+            <Route path="quizzes/*" element={<Quizzes />} /> {/* Route pour gérer les quizzes */}
             <Route path="projets" element={<Projets />} />
             <Route path="messagerie" element={<MessagerieCoach />} />
             <Route path="parametre" element={<Parametre />} />
-
+            <Route path="quizzes/play/:quizId" element={<PlayQuiz />} />
           </Routes>
         </div>
       </div>
