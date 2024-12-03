@@ -24,7 +24,7 @@ const CoachDashboard = () => {
         <Navbar />
 
         {/* Routes pour les sous-sections */}
-        <div className="flex-1 bg-gray-50 overflow-y-auto p-4">
+        <div className="flex-1 bg-gray-50 overflow-y-auto w-full md:w-full p-4">
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="domains" element={<Domains />} />
