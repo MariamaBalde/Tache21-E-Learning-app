@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { HiMenuAlt3 } from "react-icons/hi";
 import { MdOutlineDashboard } from "react-icons/md";
+import logo from '../../Images/ImagesAdmin/1.png';
+
 import {
   FaFileAlt,
   FaBook,
@@ -12,6 +14,7 @@ import {
   FaCog
 } from 'react-icons/fa';
 import { BsFillGridFill } from 'react-icons/bs';
+
 
 const Sidebar = () => {
   const menus = [
@@ -26,13 +29,16 @@ const Sidebar = () => {
     { nom: "Paramètre", link: "/coach/dashboard/parametre", icon: FaCog }, // Icône pour des paramètres
   ];
 
-  const [open, setOpen] = useState(true);
+  // const [open, setOpen] = useState(true);
 
   return (
     <section className='flex'>
       <div className={`bg-[#191970] min-h-screen ${open ? 'w-72' : 'w-16'} duration-500 px-4 text-gray-100`}>
-        <div className='py-3 flex justify-end'>
+        {/* <div className='py-3 flex justify-end'>
           <HiMenuAlt3 size={26} className='cursor-pointer' onClick={() => setOpen(!open)} />
+        </div> */}
+        <div className="mb-6">
+          <img src={logo} alt="Logo" className="h-16 w-16" />
         </div>
         <div className='mt-4 flex flex-col gap-4 relative'>
           {menus.map((menu, i) => (
