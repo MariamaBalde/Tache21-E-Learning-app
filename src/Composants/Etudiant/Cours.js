@@ -1,3 +1,8 @@
+
+
+
+
+
 import React from 'react';
 
 const Cours = ({ title, description, image }) => {

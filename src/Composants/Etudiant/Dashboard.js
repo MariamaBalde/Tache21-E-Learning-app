@@ -1,49 +1,39 @@
+import React from 'react';
+import { ChevronLeft, ChevronRight, Heart } from 'lucide-react';
 
-import React, { useState } from 'react';
-import { FaSearch } from 'react-icons/fa';
-
-const Dashboard = () => {
-  const [date, setDate] = useState(null);
-
+export default function Dashboard() {
   return (
-    <div className="flex flex-col lg:flex-row">
-      {/* Contenu Principal */}
-      <div className="flex-1 min-h-screen ml-0 lg:ml-64 transition-all">
-        {/* Contenu Principal du Dashboard */}
-        <main className="p-8 mt-20">
-          {/* Dashboard Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            <div className="bg-[#f8492a] rounded-2xl h-40 flex items-center justify-center p-4">
-              <h1 className="text-lg font-semibold text-white">Card 1</h1>
-            </div>
-            <div className="bg-[#478b56] rounded-2xl h-40 flex items-center justify-center p-4">
-              <h1 className="text-lg font-semibold text-white">Card 2</h1>
-            </div>
-            <div className="bg-[#d16923] rounded-2xl h-40 flex items-center justify-center p-4">
-              <h1 className="text-lg font-semibold text-white">Card 3</h1>
-            </div>
+    <div className="p-6">
+      <section className="mb-8">
+        {/* Header for Word Sets */}
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-bold">Word Sets</h2>
+          <div className="flex space-x-2">
+            <ChevronLeft className="w-6 h-6 text-gray-500" />
+            <ChevronRight className="w-6 h-6 text-gray-500" />
           </div>
+        </div>
 
-          {/* Recherche Section */}
-          <div className="recherche-section bg-[#e2d9d7] mt-7 p-5 rounded-lg">
-            <div className="flex flex-col lg:flex-row items-center justify-between space-y-4 lg:space-y-0 lg:space-x-4">
-              <div className="flex items-center gap-x-3 w-full lg:w-auto">
-                <FaSearch className="text-gray-600 w-5 h-5" />
-                <input
-                  type="text"
-                  className="font-semibold p-2 bg-[#e2d9d7] placeholder-black rounded-md w-full lg:w-auto"
-                  placeholder="Recherche une livraison"
-                />
-              </div>
-              <div className="relative w-full lg:w-auto">
-              </div>
-            </div>
-          </div>
+        {/* Word sets grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <WordSetCard title="Books and Library" gradient="from-purple-400 to-pink-500" icon="📚" />
+          <WordSetCard title="Countries and cities" gradient="from-purple-400 to-indigo-500" icon="🌍" />
+          <WordSetCard title="What is o'clock now?" gradient="from-cyan-400 to-blue-500" icon="🕰" />
+        </div>
+      </section>
+    </div>
+  );
+}
 
-        </main>
+// WordSetCard component integrated directly into Dashboard.js
+function WordSetCard({ title, gradient, icon }) {
+  return (
+    <div className={`bg-gradient-to-br ${gradient} rounded-lg p-4 text-white relative overflow-hidden`}>
+      <div className="text-4xl mb-2">{icon}</div>
+      <h3 className="font-semibold">{title}</h3>
+      <div className="absolute top-2 right-2 bg-white bg-opacity-30 rounded-full p-1">
+        <Heart className="w-4 h-4 text-white" />
       </div>
     </div>
   );
-};
-
-export default Dashboard;
+}

@@ -1,12 +1,200 @@
-import React from "react";
 
-function SousDomaines() {
-    return (
-        <div className="p-6">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">SousDomaines</h2>
-        </div>
-    );
-}
+import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { db, storage } from '../../Config/firebaseConfig'; // Assurez-vous d'importer Firebase Storage
+import {
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  addDoc,
+  deleteDoc,
+  query,
+  where,
+} from 'firebase/firestore';
+import { ref, getDownloadURL } from 'firebase/storage'; // Importer pour accéder aux URLs des fichiers stockés
+import { FaPlus, FaTrashAlt } from 'react-icons/fa';
+import UploadImage from '../../Composants/Shared/UploadImage'; // Chemin corrigé pour le composant d'upload
+
+const SousDomaines = () => {
+  const { domaineId } = useParams();
+  const [sousDomaines, setSousDomaines] = useState([]);
+  const [newSousDomaine, setNewSousDomaine] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [domaineName, setDomaineName] = useState('');
+  const [images, setImages] = useState({});
+
+  // Fonction pour récupérer le nom du domaine
+  const fetchDomaineName = async () => {
+    try {
+      const domaineRef = doc(db, 'domaines', domaineId);
+      const domaineSnapshot = await getDoc(domaineRef);
+      if (domaineSnapshot.exists()) {
+        setDomaineName(domaineSnapshot.data().name);
+      } else {
+        console.error('Domaine non trouvé');
+      }
+    } catch (error) {
+      console.error(
+        'Erreur lors de la récupération du nom du domaine :',
+        error
+      );
+    }
+  };
+
+  // Fonction pour récupérer les sous-domaines du domaine spécifié
+  const fetchSousDomaines = async () => {
+    try {
+      const sousDomainesRef = collection(db, 'sous-domaines');
+      const q = query(sousDomainesRef, where('domaineId', '==', domaineId));
+      const querySnapshot = await getDocs(q);
+      const sousDomainesData = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setSousDomaines(sousDomainesData);
+    } catch (error) {
+      console.error(
+        'Erreur lors de la récupération des sous-domaines :',
+        error
+      );
+    }
+  };
+
+  // Fonction pour récupérer l'image depuis Firebase Storage
+  const fetchImageFromStorage = async (sousDomaineId, domaineName) => {
+    try {
+      const imageRef = ref(
+        storage,
+        `domains/${domaineName}/sous-domaines/${sousDomaineId}`
+      );
+      const imageUrl = await getDownloadURL(imageRef);
+      return imageUrl;
+    } catch (error) {
+      console.error(
+        "Erreur lors de la récupération de l'image depuis Firebase Storage :",
+        error
+      );
+      return '/default-image.jpg'; // Image par défaut en cas d'erreur
+    }
+  };
+
+  // Utiliser useEffect pour charger le nom du domaine et les sous-domaines
+  useEffect(() => {
+    fetchDomaineName();
+    fetchSousDomaines();
+  }, [domaineId]);
+
+  // Récupérer les images pour chaque sous-domaine
+  useEffect(() => {
+    const fetchImagesForSousDomaines = async () => {
+      const newImages = {};
+      for (const sousDomaine of sousDomaines) {
+        // Récupérer l'image depuis Firebase Storage
+        const image = await fetchImageFromStorage(sousDomaine.id, domaineName);
+        newImages[sousDomaine.id] = image;
+      }
+      setImages(newImages);
+    };
+    if (sousDomaines.length > 0 && domaineName) {
+      fetchImagesForSousDomaines();
+    }
+  }, [sousDomaines, domaineName]);
+
+  // Fonction pour gérer l'ajout d'un sous-domaine
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const sousDomainesRef = collection(db, 'sous-domaines');
+      await addDoc(sousDomainesRef, {
+        name: newSousDomaine,
+        domaineId,
+        domaineName, // Ajouter le domaine principal
+        imageURL: '/default-image.jpg', // Image par défaut pour le nouveau sous-domaine
+      });
+      alert('Sous-domaine ajouté avec succès !');
+      setNewSousDomaine('');
+      fetchSousDomaines();
+    } catch (error) {
+      console.error('Erreur lors de la création :', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fonction pour supprimer un sous-domaine
+  const handleDelete = async (sousDomaineId) => {
+    try {
+      const sousDomaineRef = doc(db, 'sous-domaines', sousDomaineId);
+      await deleteDoc(sousDomaineRef);
+      alert('Sous-domaine supprimé !');
+      fetchSousDomaines();
+    } catch (error) {
+      console.error('Erreur lors de la suppression :', error);
+    }
+  };
+
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-semibold mb-6">
+        Sous-domaines pour le domaine : {domaineName || 'Chargement...'}
+      </h1>
+
+      {/* Formulaire d'ajout de sous-domaine */}
+      <form
+        onSubmit={handleSubmit}
+        className="mb-6 flex items-center space-x-4"
+      >
+        <input
+          type="text"
+          value={newSousDomaine}
+          onChange={(e) => setNewSousDomaine(e.target.value)}
+          placeholder="Nom du sous-domaine"
+          required
+          className="border rounded px-3 py-2 w-full md:w-1/2"
+        />
+        <button
+          type="submit"
+          disabled={loading}
+          className="bg-blue-500 text-white px-4 py-2 rounded disabled:bg-gray-300 flex items-center space-x-2"
+        >
+          <FaPlus />
+          <span>{loading ? 'Ajout...' : 'Ajouter'}</span>
+        </button>
+      </form>
+
+      {/* Affichage des sous-domaines */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {sousDomaines.map((sousDomaine) => (
+          <div
+            key={sousDomaine.id}
+            className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-4"
+          >
+            <h2 className="text-lg font-semibold text-blue-600">
+              {sousDomaine.name}
+            </h2>
+            <img
+              src={images[sousDomaine.id] || '/default-image.jpg'}
+              alt={sousDomaine.name}
+              className="w-full h-40 object-cover rounded-md mb-4"
+            />
+            <button
+              onClick={() => handleDelete(sousDomaine.id)}
+              className="text-red-500 hover:underline flex items-center space-x-2"
+            >
+              <FaTrashAlt />
+              <span>Supprimer</span>
+            </button>
+          </div>
+        ))}
+      </div>
+
+      {/* Intégration du composant d'upload d'image */}
+      <UploadImage domaineId={domaineId} />
+    </div>
+  );
+};
 
 export default SousDomaines;
 
