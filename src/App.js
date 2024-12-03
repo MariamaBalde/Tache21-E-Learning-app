@@ -17,6 +17,7 @@ import RecupererMotDePasse from './Composants/Auth/RecupererMotDePasse';
 import Livraisons from './Composants/Coach/Livraisons';
 import LandingPage from './Pages/LandingPage.js';
 
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -76,3 +77,7 @@ const App = () => {
   return <RouterProvider router={router} />;
 };
 export default App;
+
+
+
+
