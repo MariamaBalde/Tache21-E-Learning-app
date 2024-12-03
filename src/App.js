@@ -9,7 +9,7 @@ import NotFound from './Pages/NotFound.js';
 import PrivateRoute from './Utils/PrivateRoute.js';
 import Domains from './Composants/Coach/Domains';
 import SousDomaines from './Composants/Coach/SousDomaines';
-import CoursesList from './Composants/Coach/Cours';
+import Cours from './Composants/Coach/Cours';
 import Quizzes from './Composants/Coach/Quizzes';
 import Projets from './Composants/Coach/Projets';
 import MessagerieCoach from './Composants/Coach/MessagerieCoach';
@@ -51,7 +51,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: 'coach/dashboard',
+        path: 'coach/dashboard/*',
         element: (
           <PrivateRoute roleRequired="coach">
             <CoachDashboard />
@@ -60,16 +60,16 @@ const router = createBrowserRouter([
         children: [
           { path: 'domains', element: <Domains /> },
           { path: 'sous-domaines', element: <SousDomaines /> },
-          { path: 'cours', element: <CoursesList /> },
+          { path: 'cours', element: <Cours /> },
           { path: 'livraisons', element: <Livraisons /> },
           { path: 'quizzes', element: <Quizzes /> },
           { path: 'projets', element: <Projets /> },
           { path: 'messagerie', element: <MessagerieCoach /> },
-          { path: 'domains/:domaineId', element: <SousDomaines /> },
           {
-            path: 'domains/:domaineId/cours/:sousDomaineId',
-            element: <CoursesList />,
+            path: 'domains/:domaineId/sous-domaines/:sousDomaineId/cours',
+            element: <Cours />,
           },
+          { path: 'domains/:domaineId', element: <SousDomaines /> },
         ],
       },
       {

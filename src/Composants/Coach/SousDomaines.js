@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { db } from '../../Config/firebaseConfig';
 import {
@@ -14,8 +14,7 @@ import {
 import { FaPlus, FaTrashAlt } from 'react-icons/fa';
 
 const SousDomaines = () => {
-  const { domaineId } = useParams();
-  const navigate = useNavigate(); // Hook pour la navigation
+  const { domaineId, sousDomaineId } = useParams();
 
   const [sousDomaines, setSousDomaines] = useState([]);
   const [newSousDomaine, setNewSousDomaine] = useState('');
@@ -103,10 +102,6 @@ const SousDomaines = () => {
     }
   };
 
-  const navigateToCours = (sousDomaineId) => {
-    navigate(`/coach/dashboard/domains/${domaineId}/cours/${sousDomaineId}`);
-  };
-
   return (
     <div className="p-6">
       <h1 className="text-2xl font-semibold mb-6">
@@ -127,12 +122,12 @@ const SousDomaines = () => {
             key={sousDomaine.id}
             className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-4"
           >
-            <h2
+            <Link
+              to={`/coach/dashboard/domains/${domaineId}/sous-domaines/${sousDomaine.id}/cours`}
               className="text-lg font-semibold text-blue-600"
-              onClick={() => navigateToCours(sousDomaine.id)}
             >
               {sousDomaine.name}
-            </h2>
+            </Link>
             <img
               src={sousDomaine.imageURL || '/default-image.jpg'}
               alt={sousDomaine.name}

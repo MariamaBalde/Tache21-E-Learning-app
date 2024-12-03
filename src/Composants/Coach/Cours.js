@@ -1,257 +1,205 @@
-import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { db } from '../../Config/firebaseConfig';
 import {
   collection,
   getDocs,
-  query,
-  where,
+  addDoc,
   updateDoc,
   doc,
-  deleteDoc,
-  addDoc,
+  query,
+  where,
 } from 'firebase/firestore';
-import { ArchiveIcon, TrashIcon, PencilIcon } from '@heroicons/react/solid';
-import { useParams } from 'react-router-dom';
+import { FaEdit, FaTrash, FaLink } from 'react-icons/fa';
 
-const CoursesList = () => {
-  const { sousDomaineId } = useParams(); // Récupérer l'ID du sous-domaine depuis l'URL
-  const [courses, setCourses] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [selectedCourse, setSelectedCourse] = useState(null);
-  const [courseName, setCourseName] = useState('');
-  const [courseDescription, setCourseDescription] = useState('');
-  const [youtubeLink, setYoutubeLink] = useState('');
-  const [otherLink, setOtherLink] = useState('');
+const Cours = () => {
+  const { sousDomaineId } = useParams();
 
-  // Récupérer les cours associés à un sous-domaine
-  const fetchCourses = async () => {
-    if (!sousDomaineId) {
-      console.error('sousDomaineId est indéfini ou null');
-      setError(new Error("L'ID du sous-domaine est requis."));
-      setLoading(false);
-      return;
-    }
+  const [cours, setCours] = useState([]);
+  const [newCours, setNewCours] = useState('');
+  const [description, setDescription] = useState('');
+  const [link, setLink] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [editCoursId, setEditCoursId] = useState(null);
 
+  const fetchCours = async () => {
     try {
-      const coursesRef = collection(db, 'cours');
-      const q = query(coursesRef, where('sousDomaineId', '==', sousDomaineId));
+      const coursRef = collection(db, 'cours');
+      const q = query(coursRef, where('sousDomaineId', '==', sousDomaineId));
       const querySnapshot = await getDocs(q);
-
-      if (querySnapshot.empty) {
-        console.log('Aucun cours trouvé pour cet ID de sous-domaine');
-      }
-
-      const coursesData = querySnapshot.docs.map((doc) => ({
+      const coursData = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
-      console.log('Cours récupérés:', coursesData); // Ajouter ici pour vérifier les données récupérées
-      setCourses(coursesData);
-      setLoading(false);
-    } catch (err) {
-      console.error('Erreur lors de la récupération des cours:', err);
-      setError(err);
-      setLoading(false);
+      setCours(coursData);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des cours :', error);
     }
   };
 
-  // Fonction pour créer un cours
-  const createCourse = async () => {
-    try {
-      await addDoc(collection(db, 'cours'), {
-        name: courseName,
-        description: courseDescription,
-        sousDomaineId,
-        archived: false,
-        youtubeLink,
-        otherLink,
-      });
-      setCourseName('');
-      setCourseDescription('');
-      setYoutubeLink('');
-      setOtherLink('');
-      fetchCourses(); // Recharge la liste des cours après l'ajout
-    } catch (err) {
-      console.error('Erreur lors de la création du cours:', err);
-    }
-  };
-
-  // Fonction pour archiver ou désarchiver un cours
-  const toggleArchiveCourse = async (courseId, isArchived) => {
-    try {
-      const courseRef = doc(db, 'cours', courseId);
-      await updateDoc(courseRef, { archived: !isArchived });
-      fetchCourses(); // Recharge la liste des cours après modification
-    } catch (err) {
-      console.error("Erreur lors de l'archivage du cours:", err);
-    }
-  };
-
-  // Fonction pour supprimer un cours
-  const deleteCourse = async (courseId) => {
-    try {
-      const courseRef = doc(db, 'cours', courseId);
-      await deleteDoc(courseRef);
-      fetchCourses(); // Recharge la liste des cours après suppression
-    } catch (err) {
-      console.error('Erreur lors de la suppression du cours:', err);
-    }
-  };
-
-  // Fonction pour sélectionner un cours et le modifier
-  const editCourse = (course) => {
-    setSelectedCourse(course);
-    setCourseName(course.name);
-    setCourseDescription(course.description);
-    setYoutubeLink(course.youtubeLink || '');
-    setOtherLink(course.otherLink || '');
-  };
-
-  // Fonction pour mettre à jour un cours
-  const updateCourse = async () => {
-    try {
-      const courseRef = doc(db, 'cours', selectedCourse.id);
-      await updateDoc(courseRef, {
-        name: courseName,
-        description: courseDescription,
-        youtubeLink,
-        otherLink,
-      });
-      setSelectedCourse(null);
-      setCourseName('');
-      setCourseDescription('');
-      setYoutubeLink('');
-      setOtherLink('');
-      fetchCourses(); // Recharge la liste des cours après modification
-    } catch (err) {
-      console.error('Erreur lors de la mise à jour du cours:', err);
-    }
-  };
-
-  // Charger les cours au premier rendu
   useEffect(() => {
-    fetchCourses();
+    fetchCours();
   }, [sousDomaineId]);
 
-  if (loading) {
-    return <div className="text-center">Chargement des cours...</div>;
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const coursRef = collection(db, 'cours');
+      if (editCoursId) {
+        const coursDoc = doc(coursRef, editCoursId);
+        await updateDoc(coursDoc, { name: newCours, description, link });
+        alert('Cours modifié avec succès !');
+      } else {
+        await addDoc(coursRef, {
+          name: newCours,
+          description,
+          link,
+          sousDomaineId,
+        });
+        alert('Cours ajouté avec succès !');
+      }
+      setNewCours('');
+      setDescription('');
+      setLink('');
+      fetchCours();
+      setShowAddModal(false);
+      setEditCoursId(null);
+    } catch (error) {
+      console.error(
+        'Erreur lors de la création ou modification du cours :',
+        error
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  if (error) {
-    return (
-      <div className="text-center text-red-500">Erreur : {error.message}</div>
-    );
-  }
+  const handleArchive = async (coursId) => {
+    try {
+      const coursRef = doc(db, 'cours', coursId);
+      await updateDoc(coursRef, { archived: true });
+      fetchCours();
+      alert('Cours archivé avec succès !');
+    } catch (error) {
+      console.error("Erreur lors de l'archivage du cours :", error);
+    }
+  };
+
+  const handleEdit = (coursId) => {
+    const coursToEdit = cours.find((c) => c.id === coursId);
+    if (coursToEdit) {
+      setNewCours(coursToEdit.name);
+      setDescription(coursToEdit.description || '');
+      setLink(coursToEdit.link || '');
+      setEditCoursId(coursId);
+      setShowAddModal(true);
+    }
+  };
 
   return (
-    <div className="container mx-auto px-4 py-6">
-      <h1 className="text-2xl font-bold mb-6 text-center">
-        Cours du Sous-Domaine
-      </h1>
+    <div className="p-6">
+      <h1 className="text-2xl font-semibold mb-6">Cours du sous-domaine</h1>
 
-      {/* Formulaire pour ajouter un nouveau cours */}
-      <div className="mb-6">
-        <input
-          type="text"
-          value={courseName}
-          onChange={(e) => setCourseName(e.target.value)}
-          placeholder="Nom du cours"
-          className="mb-2 p-2 border border-gray-300 rounded w-full"
-        />
-        <textarea
-          value={courseDescription}
-          onChange={(e) => setCourseDescription(e.target.value)}
-          placeholder="Description du cours"
-          className="mb-2 p-2 border border-gray-300 rounded w-full"
-        ></textarea>
-        <input
-          type="text"
-          value={youtubeLink}
-          onChange={(e) => setYoutubeLink(e.target.value)}
-          placeholder="Lien YouTube (optionnel)"
-          className="mb-2 p-2 border border-gray-300 rounded w-full"
-        />
-        <input
-          type="text"
-          value={otherLink}
-          onChange={(e) => setOtherLink(e.target.value)}
-          placeholder="Autre lien (optionnel)"
-          className="mb-2 p-2 border border-gray-300 rounded w-full"
-        />
-        <button
-          onClick={createCourse}
-          className="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-700 transition duration-300"
-        >
-          Ajouter Cours
-        </button>
-      </div>
+      <button
+        onClick={() => setShowAddModal(true)}
+        className="bg-blue-500 text-white px-4 py-2 rounded flex items-center space-x-2 mb-6"
+      >
+        Ajouter un cours
+      </button>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {courses.map((course) => (
-          <div
-            key={course.id}
-            className="bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+      <ul className="list-disc pl-5">
+        {cours.map((coursItem) => (
+          <li
+            key={coursItem.id}
+            className="flex justify-between items-center mb-4"
           >
-            <h2 className="text-xl font-semibold mb-2">{course.name}</h2>
-            <p className="text-gray-600">{course.description}</p>
-
-            {/* Affichage des liens YouTube et autres */}
-            {course.youtubeLink && (
-              <div className="mt-2">
+            <div>
+              <h3 className="text-lg font-semibold">{coursItem.name}</h3>
+              <p className="text-sm text-gray-600">{coursItem.description}</p>
+              {coursItem.link && (
                 <a
-                  href={course.youtubeLink}
+                  href={coursItem.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-500 underline"
+                  className="text-blue-500 hover:underline"
                 >
-                  Voir sur YouTube
+                  Voir le contenu
                 </a>
-              </div>
-            )}
-            {course.otherLink && (
-              <div className="mt-2">
-                <a
-                  href={course.otherLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-500 underline"
-                >
-                  Voir sur une autre plateforme
-                </a>
-              </div>
-            )}
-
-            {/* Boutons pour voir les détails, archiver, ou supprimer */}
-            <div className="mt-4 flex justify-between items-center">
-              <button
-                onClick={() => editCourse(course)}
-                className="p-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-700 transition duration-300"
-              >
-                <PencilIcon className="h-5 w-5 text-white" />
-              </button>
-
-              <button
-                onClick={() => toggleArchiveCourse(course.id, course.archived)}
-                className={`p-2 rounded-lg text-white hover:bg-opacity-80 transition duration-300 ${
-                  course.archived ? 'bg-green-500' : 'bg-yellow-500'
-                }`}
-              >
-                {course.archived ? 'Restaurer' : 'Archiver'}
-              </button>
-
-              <button
-                onClick={() => deleteCourse(course.id)}
-                className="p-2 bg-red-500 text-white rounded-lg hover:bg-red-700 transition duration-300"
-              >
-                <TrashIcon className="h-5 w-5 text-white" />
-              </button>
+              )}
             </div>
-          </div>
+            <div className="flex space-x-2">
+              <button onClick={() => handleEdit(coursItem.id)}>
+                <FaEdit className="text-yellow-500" />
+              </button>
+              <button onClick={() => handleArchive(coursItem.id)}>
+                <FaTrash className="text-red-500" />
+              </button>
+              {coursItem.link && (
+                <a
+                  href={coursItem.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FaLink className="text-blue-500" />
+                </a>
+              )}
+            </div>
+          </li>
         ))}
-      </div>
+      </ul>
+
+      {showAddModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md">
+            <h2 className="text-lg font-semibold mb-4">
+              {editCoursId ? 'Modifier le cours' : 'Ajouter un cours'}
+            </h2>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <input
+                type="text"
+                value={newCours}
+                onChange={(e) => setNewCours(e.target.value)}
+                placeholder="Nom du cours"
+                required
+                className="border rounded px-3 py-2 w-full"
+              />
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Description"
+                className="border rounded px-3 py-2 w-full"
+              />
+              <input
+                type="url"
+                value={link}
+                onChange={(e) => setLink(e.target.value)}
+                placeholder="Lien (YouTube, OpenClassrooms, etc.)"
+                className="border rounded px-3 py-2 w-full"
+              />
+              <div className="flex justify-end space-x-4">
+                <button
+                  type="button"
+                  onClick={() => setShowAddModal(false)}
+                  className="px-4 py-2 bg-gray-500 text-white rounded"
+                >
+                  Annuler
+                </button>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300"
+                >
+                  {loading ? 'Ajout...' : 'Ajouter'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
-export default CoursesList;
+export default Cours;

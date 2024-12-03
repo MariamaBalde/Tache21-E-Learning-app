@@ -11,16 +11,8 @@ import {
   updateDoc,
   doc,
   addDoc,
-  deleteDoc,
 } from 'firebase/firestore';
-import {
-  FaArchive,
-  FaEdit,
-  FaUsers,
-  FaPlus,
-  FaUndo,
-  FaTrash,
-} from 'react-icons/fa';
+import { FaArchive, FaEdit, FaUsers, FaPlus } from 'react-icons/fa';
 
 const Domains = () => {
   const [domains, setDomains] = useState([]);
