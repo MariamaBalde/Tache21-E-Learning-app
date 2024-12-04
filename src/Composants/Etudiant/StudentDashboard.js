@@ -25,7 +25,7 @@ const StudentDashboard = () => {
         <div className="flex-1 bg-gray-50 overflow-y-auto p-4">
           <Routes>
             <Route path="/" element={<Dashboard />} />
-            <Route path="domains" element={<Cours />} />
+            <Route path="courses" element={<Cours />} />
             <Route path="Taches" element={<Taches />} />
             <Route path="livraisons" element={<Livraisons />} />
             <Route path="quizzes" element={<QuizzesEtudiants />} />

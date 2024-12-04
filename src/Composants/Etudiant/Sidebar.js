@@ -7,10 +7,10 @@ export default function Sidebar() {
 
   const menus = [
     { name: "Dashboard", link: "etudiant/dashboard", icon: <Home className="w-5 h-5" /> },
-    { name: "Cours", link: "etudiant/courses", icon: <BookOpen className="w-5 h-5" /> }, // Icône de livre pour les cours
-    { name: "Livraisons", link: "etudiant/deliveries", icon: <Clipboard className="w-5 h-5" /> }, // Icône de clipboard pour les livraisons de cours
-    { name: "Taches", link: "etudiant/tasks", icon: <List className="w-5 h-5" /> }, // Icône de liste
-    { name: "Quizzes", link: "etudiant/quizzes", icon: <HelpCircle className="w-5 h-5" /> }, // Icône de question
+    { name: "Cours", link: "etudiant/dashboard/courses", icon: <BookOpen className="w-5 h-5" /> }, // Icône de livre pour les cours
+    { name: "Livraisons", link: "etudiant/dashboard/deliveries", icon: <Clipboard className="w-5 h-5" /> }, // Icône de clipboard pour les livraisons de cours
+    { name: "Taches", link: "etudiant/dashboard/tasks", icon: <List className="w-5 h-5" /> }, // Icône de liste
+    { name: "Quizzes", link: "etudiant/dashboard/quizzes", icon: <HelpCircle className="w-5 h-5" /> }, // Icône de question
   ];
 
   return (
