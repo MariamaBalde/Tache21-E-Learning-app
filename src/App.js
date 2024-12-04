@@ -15,6 +15,7 @@ import Projets from './Composants/Coach/Projets'; // Importer les composants né
 import MessagerieCoach from './Composants/Coach/MessagerieCoach'; // Importer les composants nécessaires
 import RecupererMotDePasse from './Composants/Auth/RecupererMotDePasse'; // Importer le composant de récupération de mot de passe
 import Livraisons from './Composants/Coach/Livraisons'; // Importer les composants nécessaires
+import Taches from './Composants/Etudiant/Taches'; 
 
 
 const App = () => {
@@ -70,7 +71,20 @@ const App = () => {
               <StudentDashboard />
             </PrivateRoute>
           }
-        />
+         >
+           {/* Définir ici les sous-routes */}
+           
+            <Route path="cours" element={<Cours />} />
+          <Route path="livraisons" element={<Livraisons />} />
+          <Route path="taches" element={<Taches />} />
+          <Route path="quiz" element={<Quizzes />} />
+          <Route path="projets" element={<Projets />} />
+          <Route path="messagerie" element={<MessagerieCoach />} />{' '}
+          <Route
+            path="/coach/dashboard/domains/:domaineId"
+            element={<SousDomaines />}
+          />
+         </Route>
 
         {/* Page introuvable */}
         <Route path="*" element={<NotFound />} />

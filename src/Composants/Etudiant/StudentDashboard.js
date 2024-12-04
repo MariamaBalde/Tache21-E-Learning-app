@@ -26,7 +26,7 @@ const StudentDashboard = () => {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="domains" element={<Cours />} />
-            <Route path="sous-domaines" element={<Taches />} />
+            <Route path="Taches" element={<Taches />} />
             <Route path="livraisons" element={<Livraisons />} />
             <Route path="quizzes" element={<QuizzesEtudiants />} />
             <Route path="projets" element={<ProjetsEtudiant />} />
