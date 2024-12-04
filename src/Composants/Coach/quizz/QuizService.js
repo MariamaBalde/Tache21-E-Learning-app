@@ -1,9 +1,9 @@
-import { collection, addDoc, updateDoc, doc } from "firebase/firestore";
-import { db } from "../../../Config/firebaseConfig";
+import { collection, addDoc, updateDoc, doc } from 'firebase/firestore';
+import { db } from '../../../Config/firebaseConfig';
 
 export const addQuiz = async (quizData) => {
   try {
-    const docRef = await addDoc(collection(db, "quizzes"), quizData);
+    const docRef = await addDoc(collection(db, 'quizzes'), quizData);
     console.log("Quiz ajouté avec succès avec l'ID :", docRef.id);
     return { id: docRef.id, ...quizData };
   } catch (error) {
@@ -13,7 +13,7 @@ export const addQuiz = async (quizData) => {
 };
 
 export const toggleArchiveQuiz = async (id, archived) => {
-  const quizRef = doc(db, "quizzes", id);
+  const quizRef = doc(db, 'quizzes', id);
   await updateDoc(quizRef, {
     archived: !archived,
   });

@@ -16,18 +16,21 @@ import MessagerieCoach from './Composants/Coach/MessagerieCoach';
 import RecupererMotDePasse from './Composants/Auth/RecupererMotDePasse';
 import Livraisons from './Composants/Coach/Livraisons';
 import LandingPage from './Pages/LandingPage.js';
-
+import AddQuiz from './Composants/Coach/quizz/AddQuiz.js';
+import QuizDetails from './Composants/Coach/quizz/QuizDetails.js';
+import EditQuiz from './Composants/Coach/quizz/EditQuiz.js';
+import PlayQuiz from './Composants/Coach/quizz/PlayQuiz.js';
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <Outlet />, // Conteneur pour les routes
     children: [
-      { path: "/", element: <LandingPage /> },
-      { path: "login", element: <Login /> },
-      { path: "reset-password", element: <RecupererMotDePasse /> },
+      { path: '/', element: <LandingPage /> },
+      { path: 'login', element: <Login /> },
+      { path: 'reset-password', element: <RecupererMotDePasse /> },
       {
-        path: "admin/dashboard",
+        path: 'admin/dashboard',
         element: (
           <PrivateRoute roleRequired="admin">
             <AdminDashboard />
@@ -35,7 +38,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "admin/inscrire-utilisateur",
+        path: 'admin/inscrire-utilisateur',
         element: (
           <PrivateRoute roleRequired="admin">
             <InscrireUtilisateur />
@@ -43,32 +46,40 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "coach/dashboard",
+        path: 'coach/dashboard',
         element: (
           <PrivateRoute roleRequired="coach">
             <CoachDashboard />
           </PrivateRoute>
         ),
         children: [
-          { path: "domains", element: <Domains /> },
-          { path: "sous-domaines", element: <SousDomaines /> },
-          { path: "cours", element: <Cours /> },
-          { path: "livraisons", element: <Livraisons /> },
-          { path: "quizzes", element: <Quizzes /> },
-          { path: "projets", element: <Projets /> },
-          { path: "messagerie", element: <MessagerieCoach /> },
-          { path: "domains/:domaineId", element: <SousDomaines /> },
+          { path: 'domains', element: <Domains /> },
+          { path: 'sous-domaines', element: <SousDomaines /> },
+          { path: 'cours', element: <Cours /> },
+          { path: 'livraisons', element: <Livraisons /> },
+          { path: 'quizzes', element: <Quizzes /> },
+          { path: 'quizzes', element: <Quizzes /> },
+          { path: 'quizzes/add-quiz', element: <AddQuiz /> },
+          { path: 'quizzes/quiz-details/:quizId', element: <QuizDetails /> },
+          { path: 'quizzes/edit-quiz/:quizId', element: <EditQuiz /> },
+          {
+            path: 'quizzes/quiz-details/:quizId/play-quiz/:playQuizId',
+            element: <PlayQuiz />,
+          },
+          { path: 'projets', element: <Projets /> },
+          { path: 'messagerie', element: <MessagerieCoach /> },
+          { path: 'domains/:domaineId', element: <SousDomaines /> },
         ],
       },
       {
-        path: "etudiant/dashboard",
+        path: 'etudiant/dashboard',
         element: (
           <PrivateRoute roleRequired="etudiant">
             <StudentDashboard />
           </PrivateRoute>
         ),
       },
-      { path: "*", element: <NotFound /> },
+      { path: '*', element: <NotFound /> },
     ],
   },
 ]);
@@ -77,8 +88,6 @@ const App = () => {
   return <RouterProvider router={router} />;
 };
 export default App;
-
-
 
 // // src/App.js
 // import React from 'react';
@@ -118,4 +127,3 @@ export default App;
 // };
 
 // export default App;
-

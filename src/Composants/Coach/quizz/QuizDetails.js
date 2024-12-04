@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { db } from "../../../Config/firebaseConfig";
-import { doc, getDoc } from "firebase/firestore";
-import { useParams, Link } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { db } from '../../../Config/firebaseConfig';
+import { doc, getDoc } from 'firebase/firestore';
+import { useParams, Link } from 'react-router-dom';
 
 const QuizDetails = () => {
   const { quizId } = useParams();
@@ -10,12 +10,12 @@ const QuizDetails = () => {
 
   useEffect(() => {
     const fetchQuizDetails = async () => {
-      const quizRef = doc(db, "quizzes", quizId);
+      const quizRef = doc(db, 'quizzes', quizId);
       const quizSnap = await getDoc(quizRef);
       if (quizSnap.exists()) {
         setQuizData(quizSnap.data());
       } else {
-        console.log("Quiz non trouvé !");
+        console.log('Quiz non trouvé !');
       }
     };
 
@@ -47,8 +47,8 @@ const QuizDetails = () => {
             <ul className="list-disc pl-5 text-gray-600">
               {question.options.map((option, optIndex) => (
                 <li key={optIndex}>
-                  {option}{" "}
-                  {question.correctAnswer === optIndex && "(Réponse correcte)"}
+                  {option}{' '}
+                  {question.correctAnswer === optIndex && '(Réponse correcte)'}
                 </li>
               ))}
             </ul>
@@ -61,7 +61,9 @@ const QuizDetails = () => {
         {scores.length > 0 ? (
           scores.map((score, index) => (
             <div key={index} className="mt-2">
-              <p>{score.studentId}: {score.score}</p>
+              <p>
+                {score.studentId}: {score.score}
+              </p>
             </div>
           ))
         ) : (
@@ -71,7 +73,9 @@ const QuizDetails = () => {
 
       {/* Lien pour jouer au quiz */}
       <div className="mt-6">
-        <Link to={`/play-quiz/${quizId}`}>
+        <Link
+          to={`/coach/dashboard/quizzes/quiz-details/${quizId}/play-quiz/${quizId}`}
+        >
           <button className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-500">
             Jouer au Quiz
           </button>

@@ -12,6 +12,8 @@ import Quizzes from './Quizzes';
 import Projets from './Projets';
 import Livraisons from './Livraisons';
 import PlayQuiz from './quizz/PlayQuiz';
+import AddQuiz from './quizz/AddQuiz';
+import QuizDetails from './quizz/QuizDetails';
 
 const CoachDashboard = () => {
   return (
@@ -27,11 +29,22 @@ const CoachDashboard = () => {
             <Route path="sous-domaines" element={<SousDomaines />} />
             <Route path="cours" element={<Cours />} />
             <Route path="livraisons" element={<Livraisons />} />
-            <Route path="quizzes/*" element={<Quizzes />} /> {/* Route pour gérer les quizzes */}
+            <Route path="quizzes/*" element={<Quizzes />} />{' '}
+            {/* Gestion des quizzes */}
+            <Route path="quizzes" element={<Quizzes />} />
+            <Route path="quizzes" element={<Quizzes />} />
+            <Route path="quizzes/add-quiz" element={<AddQuiz />} />
+            <Route
+              path="quizzes/quiz-details/:quizId"
+              element={<QuizDetails />}
+            />
+            <Route
+              path="quizzes/quiz-details/:quizId/play-quiz/:playQuizId"
+              element={<PlayQuiz />}
+            />
+            {/* Route pour gérer les quizzes */}
             <Route path="projets" element={<Projets />} />
             <Route path="messagerie" element={<MessagerieCoach />} />
-            <Route path="quizzes/play/:quizId" element={<PlayQuiz />} />
-
           </Routes>
         </div>
       </div>

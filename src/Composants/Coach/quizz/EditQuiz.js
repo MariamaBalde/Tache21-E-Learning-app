@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { db } from "../../../Config/firebaseConfig";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { db } from '../../../Config/firebaseConfig';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 
 const EditQuiz = () => {
   const { id } = useParams();
   const [quizData, setQuizData] = useState({
-    title: "",
-    subject: "html-css",
+    title: '',
+    subject: 'html-css',
     questions: [
       {
-        question: "",
-        options: ["", "", "", ""],
-        correctAnswer: 0
-      }
-    ]
+        question: '',
+        options: ['', '', '', ''],
+        correctAnswer: 0,
+      },
+    ],
   });
 
   const navigate = useNavigate();
@@ -22,13 +22,13 @@ const EditQuiz = () => {
   // Charger les données du quiz depuis Firestore
   useEffect(() => {
     const fetchQuiz = async () => {
-      const docRef = doc(db, "quizzes", id);
+      const docRef = doc(db, 'quizzes', id);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
         setQuizData(docSnap.data());
       } else {
-        console.log("Aucun quiz trouvé");
+        console.log('Aucun quiz trouvé');
       }
     };
 
@@ -40,7 +40,7 @@ const EditQuiz = () => {
     const { name, value } = e.target;
     setQuizData((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -49,7 +49,7 @@ const EditQuiz = () => {
     newQuestions[index][field] = value;
     setQuizData((prevState) => ({
       ...prevState,
-      questions: newQuestions
+      questions: newQuestions,
     }));
   };
 
@@ -58,7 +58,7 @@ const EditQuiz = () => {
     newQuestions[questionIndex].options[optionIndex] = value;
     setQuizData((prevState) => ({
       ...prevState,
-      questions: newQuestions
+      questions: newQuestions,
     }));
   };
 
@@ -68,8 +68,8 @@ const EditQuiz = () => {
       ...prevState,
       questions: [
         ...prevState.questions,
-        { question: "", options: ["", "", "", ""], correctAnswer: 0 }
-      ]
+        { question: '', options: ['', '', '', ''], correctAnswer: 0 },
+      ],
     }));
   };
 
@@ -79,30 +79,52 @@ const EditQuiz = () => {
     newQuestions.splice(index, 1); // Supprime la question à l'index spécifié
     setQuizData((prevState) => ({
       ...prevState,
-      questions: newQuestions
+      questions: newQuestions,
     }));
   };
 
   // Enregistrer les modifications dans Firestore
   const handleSaveChanges = async () => {
-    const quizRef = doc(db, "quizzes", id);
+    const quizRef = doc(db, 'quizzes', id);
+
+    // Validation locale
+    const validQuestions = quizData.questions.filter(
+      (q) =>
+        q.question &&
+        Array.isArray(q.options) &&
+        q.options.length === 4 &&
+        typeof q.correctAnswer === 'number'
+    );
+
+    const quizToSave = {
+      title: quizData.title || 'Untitled Quiz',
+      subject: quizData.subject || 'html-css',
+      questions: validQuestions,
+    };
 
     try {
-      await updateDoc(quizRef, quizData);
-      alert("Quiz modifié avec succès !");
-      navigate("/"); // Redirige après la modification
+      await updateDoc(quizRef, quizToSave);
+      alert('Quiz modifié avec succès !');
+      navigate('/'); // Redirection
     } catch (error) {
-      console.error("Erreur lors de la modification du quiz :", error);
-      alert("Échec de la modification du quiz");
+      console.error('Erreur lors de la modification du quiz :', error);
+      alert('Échec de la modification du quiz');
     }
   };
 
   return (
     <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg mt-10">
-      <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Modifier un Quiz</h2>
+      <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
+        Modifier un Quiz
+      </h2>
       <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
         <div>
-          <label htmlFor="title" className="block text-sm font-medium text-gray-700">Titre du quiz :</label>
+          <label
+            htmlFor="title"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Titre du quiz :
+          </label>
           <input
             id="title"
             type="text"
@@ -116,7 +138,12 @@ const EditQuiz = () => {
         </div>
 
         <div>
-          <label htmlFor="subject" className="block text-sm font-medium text-gray-700">Sujet :</label>
+          <label
+            htmlFor="subject"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Sujet :
+          </label>
           <select
             id="subject"
             name="subject"
@@ -133,13 +160,20 @@ const EditQuiz = () => {
         </div>
 
         {quizData.questions.map((q, index) => (
-          <div key={index} className="space-y-4 border p-4 rounded-md shadow-sm">
-            <h4 className="font-semibold text-lg text-gray-700">Question {index + 1}</h4>
+          <div
+            key={index}
+            className="space-y-4 border p-4 rounded-md shadow-sm"
+          >
+            <h4 className="font-semibold text-lg text-gray-700">
+              Question {index + 1}
+            </h4>
 
             <input
               type="text"
               value={q.question}
-              onChange={(e) => handleQuestionChange(index, "question", e.target.value)}
+              onChange={(e) =>
+                handleQuestionChange(index, 'question', e.target.value)
+              }
               placeholder="Entrez la question"
               className="w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
@@ -150,7 +184,9 @@ const EditQuiz = () => {
                 key={optIndex}
                 type="text"
                 value={option}
-                onChange={(e) => handleOptionChange(index, optIndex, e.target.value)}
+                onChange={(e) =>
+                  handleOptionChange(index, optIndex, e.target.value)
+                }
                 placeholder={`Option ${optIndex + 1}`}
                 className="mt-2 w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
@@ -158,10 +194,18 @@ const EditQuiz = () => {
             ))}
 
             <div className="mt-2">
-              <label className="text-sm font-medium text-gray-700">Réponse correcte :</label>
+              <label className="text-sm font-medium text-gray-700">
+                Réponse correcte :
+              </label>
               <select
                 value={q.correctAnswer}
-                onChange={(e) => handleQuestionChange(index, "correctAnswer", parseInt(e.target.value))}
+                onChange={(e) =>
+                  handleQuestionChange(
+                    index,
+                    'correctAnswer',
+                    parseInt(e.target.value)
+                  )
+                }
                 className="w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               >
@@ -203,7 +247,7 @@ const EditQuiz = () => {
 
         <div className="mt-4 text-center">
           <button
-            onClick={() => navigate("/")}
+            onClick={() => navigate('/')}
             className="px-4 py-2 text-white bg-gray-600 rounded-lg hover:bg-gray-500"
           >
             Retour à la liste
