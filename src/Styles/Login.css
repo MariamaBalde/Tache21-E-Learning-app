@@ -1,0 +1,138 @@
+/* Conteneur principal */
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #87CEEB;
+  font-family: Arial, sans-serif;
+}
+
+/* Wrapper pour contenir les deux sections */
+.login-wrapper {
+  display: flex;
+  width: 90%;
+  max-width: 1200px;
+  background: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Section gauche avec illustration */
+.login-illustration {
+  flex: 1;
+  background: #4169E1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.illustration-img {
+  width: 80%;
+  z-index: 2;
+}
+
+/* Wave décorative dans la section gauche */
+.login-illustration::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: #87CEEB;
+  clip-path: polygon(0 70%, 50% 100%, 100% 70%, 100% 100%, 0 100%);
+  z-index: 1;
+}
+
+/* Section droite avec le formulaire */
+.login-form {
+  flex: 1;
+  padding: 40px;
+  background: #fff;
+  position: relative;
+}
+
+.form-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #4169E1;
+  text-align: center;
+}
+
+.form-error {
+  margin-top: 10px;
+  color: red;
+  font-size: 14px;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #555;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #333;
+}
+
+.form-input:focus {
+  border-color: #4169E1;
+  outline: none;
+}
+
+.form-button {
+  width: 100%;
+  padding: 12px;
+  background: #4169E1;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.form-button:hover {
+  background: #375ab7;
+}
+
+.form-footer {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.form-link {
+  color: #4169E1;
+  text-decoration: none;
+}
+
+.form-link:hover {
+  text-decoration: underline;
+}
+
+/* Wave décorative entre les deux sections */
+.login-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: #4169E1;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
+  transform: translateY(-50%);
+  z-index: 1;
+}

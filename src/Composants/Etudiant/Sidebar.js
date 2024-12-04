@@ -1,51 +1,56 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaCog, FaHome, FaFolder, FaRegEnvelope, FaRegFileAlt } from "react-icons/fa";
-import { BsFillGridFill } from "react-icons/bs";
+import { Home, BookOpen, Clipboard, List, HelpCircle } from 'lucide-react'; // Changement d'icône pour les livraisons
 
-const Sidebar = ({ sidebarToggle }) => {
+export default function Sidebar() {
+  const [open, setOpen] = useState(true);
+
+  const menus = [
+    { name: "Dashboard", link: "/dashboard", icon: <Home className="w-5 h-5" /> },
+    { name: "Cours", link: "/courses", icon: <BookOpen className="w-5 h-5" /> }, // Icône de livre pour les cours
+    { name: "Livraisons", link: "/deliveries", icon: <Clipboard className="w-5 h-5" /> }, // Icône de clipboard pour les livraisons de cours
+    { name: "Taches", link: "/tasks", icon: <List className="w-5 h-5" /> }, // Icône de liste
+    { name: "Quizzes", link: "/quizzes", icon: <HelpCircle className="w-5 h-5" /> }, // Icône de question
+  ];
+
   return (
-    <div className={`${sidebarToggle ? "block" : "hidden"} lg:block w-64 bg-gray-800 fixed h-full px-4 py-2 transition-all duration-300`}>
-      <div className="my-2 mb-4">
-        <h1 className="text-2xl text-white font-bold">Admin Apprenant</h1>
+    <div className={`bg-indigo-900 min-h-screen ${open ? 'w-64' : 'w-16'} sm:w-64 transition-all duration-300`}>
+      {/* Sidebar Toggle Button for mobile */}
+      <div className="flex justify-end py-3 px-4 sm:hidden">
+        <button onClick={() => setOpen(!open)} className="text-white">
+          {open ? "<<" : ">>"}
+        </button>
       </div>
-      <hr />
 
-      {/* Sidebar Links */}
-      <ul className="mt-3 text-white font-bold">
-        <li className="mb-2 rounded py-2 hover:shadow hover:bg-blue-500">
-          <Link className="px-3" to="/dashboard">
-            <FaHome className="inline-block w-6 h-6 mr-2 mt-2" />
-          Dashboard</Link>
-        </li>
-        <li className="mb-2 rounded py-2 hover:shadow hover:bg-blue-500">
-          <Link to="/coursapp" className="px-3">
-            <FaRegFileAlt className="inline-block w-6 h-6 mr-2 mt-2" />
-            Cours
-          </Link>
-        </li>
-        <li className="mb-2 rounded py-2 hover:shadow hover:bg-blue-500">
-          <Link to="/livraisons" className="px-3">
-            <FaFolder className="inline-block w-6 h-6 mr-2 mt-2" />
-            Livraison
-          </Link>
-        </li>
-        <li className="mb-2 rounded py-2 hover:shadow hover:bg-blue-500">
-          <Link to="/taches" href="" className="px-3">
-            <BsFillGridFill className="inline-block w-6 h-6 mr-2 mt-2" />
-            Tâches
-          </Link>
-        </li>
-        <li className="mb-2 rounded py-2 hover:shadow hover:bg-blue-500">
-          <a href="" className="px-3">
-            <FaCog className="inline-block w-6 h-6 mr-2 mt-2" />
-            Paramètres
-          </a>
-        </li>
-      </ul>
+      {/* Navigation Menu */}
+      <nav className="space-y-8 px-4 mt-20">
+        <div className="space-y-2">
+          {menus.map((menu, index) => (
+            <NavItem key={index} icon={menu.icon} text={menu.name} link={menu.link} open={open} />
+          ))}
+        </div>
+      </nav>
     </div>
   );
-};
+}
 
-export default Sidebar;
+function NavItem({ icon, text, link, open }) {
+  return (
+    <Link
+      to={link}
+      className={`group flex items-center text-sm font-medium gap-4 px-3 py-2 rounded-lg text-gray-300 hover:bg-indigo-800 ${!open ? 'justify-center' : ''}`}
+    >
+      {icon}
+      <span className={`whitespace-pre duration-300 ${!open ? 'opacity-0 overflow-hidden' : ''}`}>
+        {text}
+      </span>
 
+      {/* Tooltip for closed state */}
+      {!open && (
+        <span className="absolute left-16 bg-white text-gray-900 px-2 py-1 rounded-md shadow-lg opacity-0 group-hover:opacity-100 duration-300">
+          {text}
+        </span>
+      )}
+    </Link>
+  );
+}

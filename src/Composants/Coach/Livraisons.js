@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 
 const Livraisons = () => {
   const livraisons = [
@@ -15,6 +16,15 @@ const Livraisons = () => {
       statut: 'En attente',
     },
   ];
+
+  const [reactions, setReactions] = useState({});
+
+  const handleAction = (index, action) => {
+    setReactions((prev) => ({
+      ...prev,
+      [index]: action,
+    }));
+  };
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-lg">
@@ -40,19 +50,41 @@ const Livraisons = () => {
               <span
                 className={`px-3 py-1 rounded-full text-sm font-semibold ${
                   livraison.statut === 'En attente'
-                    ? 'bg-yellow-100 text-yellow-700'
+                    ? 'bg-blue-500 text-white'
                     : 'bg-green-100 text-green-700'
                 }`}
               >
                 Statut : {livraison.statut}
               </span>
-              <button className="px-4 py-2 bg-green-500 text-white text-sm rounded hover:bg-green-600">
+              <button
+                className="px-4 py-2 bg-green-500 text-white text-sm rounded hover:bg-green-600"
+                onClick={() => handleAction(index, 'validé')}
+              >
                 Accepter
               </button>
-              <button className="px-4 py-2 bg-red-500 text-white text-sm rounded hover:bg-red-600">
+              <button
+                className="px-4 py-2 bg-red-500 text-white text-sm rounded hover:bg-red-600"
+                onClick={() => handleAction(index, 'rejeté')}
+              >
                 Rejeter
               </button>
             </div>
+            {reactions[index] && (
+              <div className="mt-4 flex items-center gap-2">
+                {reactions[index] === 'validé' ? (
+                  <FaCheckCircle className="text-green-500 text-xl" />
+                ) : (
+                  <FaTimesCircle className="text-red-500 text-xl" />
+                )}
+                <span
+                  className={`text-lg font-semibold ${
+                    reactions[index] === 'validé' ? 'text-green-700' : 'text-red-700'
+                  }`}
+                >
+                  {reactions[index] === 'validé' ? 'Validé' : 'Rejeté'}
+                </span>
+              </div>
+            )}
           </div>
         ))}
       </div>
