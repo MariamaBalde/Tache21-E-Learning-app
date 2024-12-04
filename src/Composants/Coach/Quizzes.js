@@ -20,21 +20,3 @@ const Quizzes = () => {
 };
 
 export default Quizzes;
-
-// import React from 'react';
-// import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-// import QuizList from './quizz/QuizList';
-// import EditQuiz from './quizz/EditQuiz';
-
-// const Quizzes = () => {
-//   return (
-//     <Router>
-//       <Routes>
-//         <Route path="/" element={<QuizList />} />
-//         <Route path="/edit-quiz" element={<EditQuiz />} />
-//       </Routes>
-//     </Router>
-//   );
-// };
-
-// export default Quizzes;

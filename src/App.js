@@ -61,7 +61,9 @@ const router = createBrowserRouter([
           { path: 'quizzes', element: <Quizzes /> },
           { path: 'quizzes/add-quiz', element: <AddQuiz /> },
           { path: 'quizzes/quiz-details/:quizId', element: <QuizDetails /> },
-          { path: 'quizzes/edit-quiz/:quizId', element: <EditQuiz /> },
+          // { path: 'quizzes/edit-quiz/:quizId', element: <EditQuiz /> },
+          { path: 'quizzes/edit-quiz/:id', element: <EditQuiz /> },
+
           {
             path: 'quizzes/quiz-details/:quizId/play-quiz/:playQuizId',
             element: <PlayQuiz />,
@@ -88,42 +90,3 @@ const App = () => {
   return <RouterProvider router={router} />;
 };
 export default App;
-
-// // src/App.js
-// import React from 'react';
-// import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-// import Login from './Composants/Auth/Login';
-// import RecupererMotDePasse from './Composants/Auth/RecupererMotDePasse';
-// import AdminDashboard from './Composants/Admin/Dashboard';
-// import InscrireUtilisateur from './Composants/Admin/InscrireUtilisateur';
-// import CoachDashboard from './Composants/Coach/CoachDashboard';
-// import StudentDashboard from './Composants/Etudiant/StudentDashboard';
-// import NotFound from './Pages/NotFound';
-// import PrivateRoute from './utils/ProtectedRoute'; // Assurez-vous que ce fichier est correctement configuré
-
-// const App = () => {
-//   return (
-//     <Router>
-//       <Routes>
-//         {/* Routes publiques */}
-//         <Route path="/" element={<Login />} />
-//         <Route path="/reset-password" element={<RecupererMotDePasse />} />
-
-//         {/* Routes Admin */}
-//         <Route path="/admin/dashboard" element={<PrivateRoute roleRequired="admin"><AdminDashboard /></PrivateRoute>} />
-//         <Route path="/admin/inscrire-utilisateur" element={<PrivateRoute roleRequired="admin"><InscrireUtilisateur /></PrivateRoute>} />
-
-//         {/* Routes Coach */}
-//         <Route path="/coach/*" element={<PrivateRoute roleRequired="coach"><CoachDashboard /></PrivateRoute>} />
-
-//         {/* Routes Étudiant */}
-//         <Route path="/etudiant/dashboard" element={<PrivateRoute roleRequired="etudiant"><StudentDashboard /></PrivateRoute>} />
-
-//         {/* Route 404 */}
-//         <Route path="*" element={<NotFound />} />
-//       </Routes>
-//     </Router>
-//   );
-// };
-
-// export default App;

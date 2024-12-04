@@ -4,7 +4,7 @@ import { db } from '../../../Config/firebaseConfig';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 
 const EditQuiz = () => {
-  const { id } = useParams();
+  const { id } = useParams(); // Récupération de l'ID du quiz
   const [quizData, setQuizData] = useState({
     title: '',
     subject: 'html-css',
@@ -22,6 +22,8 @@ const EditQuiz = () => {
   // Charger les données du quiz depuis Firestore
   useEffect(() => {
     const fetchQuiz = async () => {
+      if (!id) return;
+
       const docRef = doc(db, 'quizzes', id);
       const docSnap = await getDoc(docRef);
 
@@ -76,7 +78,7 @@ const EditQuiz = () => {
   // Supprimer une question
   const handleDeleteQuestion = (index) => {
     const newQuestions = [...quizData.questions];
-    newQuestions.splice(index, 1); // Supprime la question à l'index spécifié
+    newQuestions.splice(index, 1);
     setQuizData((prevState) => ({
       ...prevState,
       questions: newQuestions,
@@ -86,8 +88,7 @@ const EditQuiz = () => {
   // Enregistrer les modifications dans Firestore
   const handleSaveChanges = async () => {
     const quizRef = doc(db, 'quizzes', id);
-
-    // Validation locale
+    
     const validQuestions = quizData.questions.filter(
       (q) =>
         q.question &&
@@ -98,14 +99,16 @@ const EditQuiz = () => {
 
     const quizToSave = {
       title: quizData.title || 'Untitled Quiz',
-      subject: quizData.subject || 'html-css',
+      subject: quizData.subject || 'html-css', // Vérifie que le sujet est bien mis à jour
       questions: validQuestions,
     };
+
+    console.log("Données à sauvegarder :", quizToSave); // Vérifie les données avant de les envoyer
 
     try {
       await updateDoc(quizRef, quizToSave);
       alert('Quiz modifié avec succès !');
-      navigate('/'); // Redirection
+      navigate('/coach/dashboard/quizzes'); // Redirection vers la liste des quizzes
     } catch (error) {
       console.error('Erreur lors de la modification du quiz :', error);
       alert('Échec de la modification du quiz');
@@ -119,16 +122,13 @@ const EditQuiz = () => {
       </h2>
       <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
         <div>
-          <label
-            htmlFor="title"
-            className="block text-sm font-medium text-gray-700"
-          >
+          <label htmlFor="title" className="block text-sm font-medium text-gray-700">
             Titre du quiz :
           </label>
           <input
             id="title"
             type="text"
-            name="title"
+            name="title" // Assurez-vous que le name est bien "title"
             value={quizData.title}
             onChange={handleInputChange}
             placeholder="Titre du Quiz"
@@ -138,15 +138,12 @@ const EditQuiz = () => {
         </div>
 
         <div>
-          <label
-            htmlFor="subject"
-            className="block text-sm font-medium text-gray-700"
-          >
+          <label htmlFor="subject" className="block text-sm font-medium text-gray-700">
             Sujet :
           </label>
           <select
             id="subject"
-            name="subject"
+            name="subject" // Assurez-vous que le name est bien "subject"
             value={quizData.subject}
             onChange={handleInputChange}
             className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -160,20 +157,13 @@ const EditQuiz = () => {
         </div>
 
         {quizData.questions.map((q, index) => (
-          <div
-            key={index}
-            className="space-y-4 border p-4 rounded-md shadow-sm"
-          >
-            <h4 className="font-semibold text-lg text-gray-700">
-              Question {index + 1}
-            </h4>
+          <div key={index} className="space-y-4 border p-4 rounded-md shadow-sm">
+            <h4 className="font-semibold text-lg text-gray-700">Question {index + 1}</h4>
 
             <input
               type="text"
               value={q.question}
-              onChange={(e) =>
-                handleQuestionChange(index, 'question', e.target.value)
-              }
+              onChange={(e) => handleQuestionChange(index, 'question', e.target.value)}
               placeholder="Entrez la question"
               className="w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
@@ -184,9 +174,7 @@ const EditQuiz = () => {
                 key={optIndex}
                 type="text"
                 value={option}
-                onChange={(e) =>
-                  handleOptionChange(index, optIndex, e.target.value)
-                }
+                onChange={(e) => handleOptionChange(index, optIndex, e.target.value)}
                 placeholder={`Option ${optIndex + 1}`}
                 className="mt-2 w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
@@ -194,18 +182,10 @@ const EditQuiz = () => {
             ))}
 
             <div className="mt-2">
-              <label className="text-sm font-medium text-gray-700">
-                Réponse correcte :
-              </label>
+              <label className="text-sm font-medium text-gray-700">Réponse correcte :</label>
               <select
                 value={q.correctAnswer}
-                onChange={(e) =>
-                  handleQuestionChange(
-                    index,
-                    'correctAnswer',
-                    parseInt(e.target.value)
-                  )
-                }
+                onChange={(e) => handleQuestionChange(index, 'correctAnswer', parseInt(e.target.value))}
                 className="w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               >
@@ -217,7 +197,6 @@ const EditQuiz = () => {
               </select>
             </div>
 
-            {/* Bouton de suppression pour chaque question */}
             <button
               type="button"
               onClick={() => handleDeleteQuestion(index)}
@@ -247,7 +226,7 @@ const EditQuiz = () => {
 
         <div className="mt-4 text-center">
           <button
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/coach/dashboard/quizzes')}
             className="px-4 py-2 text-white bg-gray-600 rounded-lg hover:bg-gray-500"
           >
             Retour à la liste
