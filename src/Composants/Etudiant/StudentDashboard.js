@@ -31,8 +31,6 @@ const StudentDashboard = () => {
             <Route path="quizzes" element={<QuizzesEtudiants />} />
             <Route path="projets" element={<ProjetsEtudiant />} />
             <Route path="messagerie" element={<MessagerieEtudiant />} />
-            
-
           </Routes>
         </div>
       </div>
