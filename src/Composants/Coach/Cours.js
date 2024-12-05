@@ -100,49 +100,57 @@ const Cours = () => {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-semibold mb-6">Cours du sous-domaine</h1>
+      <h1 className="text-2xl font-semibold mb-6 text-center text-gray-800">
+        Cours du sous-domaine
+      </h1>
 
       <button
         onClick={() => setShowAddModal(true)}
-        className="bg-blue-500 text-white px-4 py-2 rounded flex items-center space-x-2 mb-6"
+        className="bg-blue-600 text-white px-4 py-2 rounded flex items-center space-x-2 mb-6 shadow-md hover:bg-blue-700 transition"
       >
         Ajouter un cours
       </button>
 
-      <ul className="list-disc pl-5">
+      <ul className="list-disc pl-5 space-y-4">
         {cours.map((coursItem) => (
           <li
             key={coursItem.id}
-            className="flex justify-between items-center mb-4"
+            className="flex justify-between items-center p-4 bg-white rounded-lg shadow-md border hover:shadow-lg transition"
           >
             <div>
-              <h3 className="text-lg font-semibold">{coursItem.name}</h3>
+              <h3 className="text-lg font-semibold text-gray-800">
+                {coursItem.name}
+              </h3>
               <p className="text-sm text-gray-600">{coursItem.description}</p>
               {coursItem.link && (
                 <a
                   href={coursItem.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-500 hover:underline"
+                  className="text-blue-600 hover:underline"
                 >
                   Voir le contenu
                 </a>
               )}
             </div>
-            <div className="flex space-x-2">
-              <button onClick={() => handleEdit(coursItem.id)}>
-                <FaEdit className="text-yellow-500" />
+            <div className="flex space-x-4">
+              <button onClick={() => handleEdit(coursItem.id)} title="Modifier">
+                <FaEdit className="text-yellow-500 hover:text-yellow-600 transition text-lg" />
               </button>
-              <button onClick={() => handleArchive(coursItem.id)}>
-                <FaTrash className="text-red-500" />
+              <button
+                onClick={() => handleArchive(coursItem.id)}
+                title="Archiver"
+              >
+                <FaTrash className="text-red-500 hover:text-red-600 transition text-lg" />
               </button>
               {coursItem.link && (
                 <a
                   href={coursItem.link}
                   target="_blank"
                   rel="noopener noreferrer"
+                  title="Voir le lien"
                 >
-                  <FaLink className="text-blue-500" />
+                  <FaLink className="text-blue-500 hover:text-blue-600 transition text-lg" />
                 </a>
               )}
             </div>
@@ -153,7 +161,7 @@ const Cours = () => {
       {showAddModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-md">
-            <h2 className="text-lg font-semibold mb-4">
+            <h2 className="text-lg font-semibold mb-4 text-gray-800">
               {editCoursId ? 'Modifier le cours' : 'Ajouter un cours'}
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -163,33 +171,33 @@ const Cours = () => {
                 onChange={(e) => setNewCours(e.target.value)}
                 placeholder="Nom du cours"
                 required
-                className="border rounded px-3 py-2 w-full"
+                className="border rounded px-3 py-2 w-full focus:ring-2 focus:ring-blue-500 outline-none"
               />
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Description"
-                className="border rounded px-3 py-2 w-full"
+                className="border rounded px-3 py-2 w-full focus:ring-2 focus:ring-blue-500 outline-none"
               />
               <input
                 type="url"
                 value={link}
                 onChange={(e) => setLink(e.target.value)}
                 placeholder="Lien (YouTube, OpenClassrooms, etc.)"
-                className="border rounded px-3 py-2 w-full"
+                className="border rounded px-3 py-2 w-full focus:ring-2 focus:ring-blue-500 outline-none"
               />
               <div className="flex justify-end space-x-4">
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="px-4 py-2 bg-gray-500 text-white rounded"
+                  className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition"
                 >
                   Annuler
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300"
+                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition disabled:bg-gray-300"
                 >
                   {loading ? 'Ajout...' : 'Ajouter'}
                 </button>
