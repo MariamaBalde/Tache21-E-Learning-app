@@ -18,6 +18,7 @@ import Livraisons from './Composants/Coach/Livraisons';
 import LandingPage from './Pages/LandingPage.js';
 import DomainsList from './Composants/Admin/DomainsList.js';
 
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -88,5 +89,8 @@ const router = createBrowserRouter([
 const App = () => {
   return <RouterProvider router={router} />;
 };
-
 export default App;
+
+
+
+

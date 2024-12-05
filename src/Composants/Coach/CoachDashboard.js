@@ -10,7 +10,6 @@ import SousDomaines from './SousDomaines';
 import Cours from './Cours';
 import Quizzes from './Quizzes';
 import Projets from './Projets';
-import Parametre from './Parametre';
 import Livraisons from './Livraisons';
 const CoachDashboard = () => {
   return (
@@ -24,7 +23,7 @@ const CoachDashboard = () => {
         <Navbar />
 
         {/* Routes pour les sous-sections */}
-        <div className="flex-1 bg-gray-50 overflow-y-auto p-4">
+        <div className="flex-1 bg-gray-50 overflow-y-auto w-full md:w-full p-4">
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="domains" element={<Domains />} />
@@ -40,7 +39,6 @@ const CoachDashboard = () => {
             <Route path="quizzes" element={<Quizzes />} />
             <Route path="projets" element={<Projets />} />
             <Route path="messagerie" element={<MessagerieCoach />} />
-            <Route path="parametre" element={<Parametre />} />
           </Routes>
         </div>
       </div>

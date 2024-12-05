@@ -10,57 +10,57 @@ import image6 from '../Images/ImagesLandingP/pop6.jpg'
 const courses = [
     {
         id: 1,
-        title: "Learn app development in 30 days",
+        title: "Apprenez à développer des apps en 30 jours",
         category: "Web Design",
         image: image1,
         students: "500+",
         rating: "4.9",
-        price: "$105.00",
+        // price: "105.00FCA",
     },
     {
         id: 2,
-        title: "Advance motion graphics",
+        title: "Graphisme animé avancé",
         category: "Graphics Design",
         image: image2,
         students: "500+",
         rating: "4.9",
-        price: "$105.00",
+        // price: "105.00FCA",
     },
     {
         id: 3,
-        title: "Learn CMS Development",
+        title: "Apprenez le développement CMS",
         category: "Web Design",
         image: image3,
         students: "500+",
         rating: "4.9",
-        price: "$105.00",
+        // price: "105.00FCA",
     },
     {
         id: 4,
-        title: "The Complete Web Design course",
+        title: "Le cours complet de conception web ",
         category: "Web Design",
         image: image4,
         students: "500+",
         rating: "4.9",
-        price: "$105.00",
+        // price: "105.00FCA",
     },
     {
         id: 5,
-        title: "Advance Drawing",
+        title: "Dessin avancé",
         category: "Art",
         image: image5,
         students: "500+",
         rating: "4.9",
-        price: "$105.00",
+        // price: "105.00FCA",
     },
     {
         id: 6,
-        title: "Advance videography course",
+        title: "Cours avancé de vidéographie",
         category: "Media",
         image: image6,
         students: "500+",
         rating: "4.9",
-        price: "$105.00",
+        // price: "105.00FCA",
     }
 ];
 
@@ -81,15 +81,15 @@ function CourseCard({ course }) {
                 </div>
                 <h3 className="font-medium text-sm mb-2 line-clamp-2">{course.title}</h3>
                 <div className="flex items-center justify-between text-xs">
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-start gap-1">
                         <Users size={12} className="text-gray-500" />
                         <span className="text-gray-600">{course.students}</span>
                     </div>
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-end gap-1">
                         <Star size={12} className="text-yellow-400 fill-yellow-400" />
                         <span className="text-gray-600">{course.rating}</span>
                     </div>
-                    <span className="text-indigo-600 font-medium">{course.price}</span>
+                    {/* <span className="text-indigo-600 font-medium">{course.price}</span> */}
                 </div>
             </div>
         </div>
