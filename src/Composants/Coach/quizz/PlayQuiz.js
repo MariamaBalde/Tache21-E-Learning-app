@@ -1,3 +1,4 @@
+// src/Composants/Coach/quizz/PlayQuiz.js
 import React, { useEffect, useState } from 'react';
 import { db } from '../../../Config/firebaseConfig';
 import { doc, getDoc } from 'firebase/firestore';
@@ -13,6 +14,7 @@ const PlayQuiz = () => {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isArchived, setIsArchived] = useState(false);
 
   useEffect(() => {
     const fetchQuizData = async () => {
@@ -21,6 +23,7 @@ const PlayQuiz = () => {
         const quizSnap = await getDoc(quizRef);
         if (quizSnap.exists()) {
           setQuizData(quizSnap.data());
+          setIsArchived(quizSnap.data().archived); // Vérifiez si le quiz est archivé
           setUserAnswers(new Array(quizSnap.data().questions.length).fill(null));
         } else {
           setError('Quiz non trouvé !');
@@ -34,6 +37,14 @@ const PlayQuiz = () => {
 
     fetchQuizData();
   }, [quizId]);
+
+  if (isArchived) {
+    return (
+      <div className="bg-red-100 p-4 rounded">
+        <h2>Ce quiz est archivé. Vous ne pouvez pas le jouer.</h2>
+      </div>
+    );
+  }
 
   const handleAnswerChange = (answer) => {
     const updatedAnswers = [...userAnswers];
@@ -125,7 +136,6 @@ const PlayQuiz = () => {
         </div>
       ) : (
         <div>
-          {/* Affichage de la progression de la question */}
           <h3 className="text-lg font-semibold">
             Question {currentQuestionIndex + 1} sur {quizData.questions.length} :
           </h3>
