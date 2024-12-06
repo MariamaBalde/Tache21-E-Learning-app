@@ -73,6 +73,10 @@ const router = createBrowserRouter([
           { path: 'projets', element: <Projets /> },
           { path: 'messagerie', element: <MessagerieCoach /> },
           { path: 'domains/:domaineId', element: <SousDomaines /> },
+          {
+            path: 'domains/:domaineId/sous-domaines/:sousDomaineId/cours',
+            element: <Cours />,
+          },
         ],
       },
       {
