@@ -1,8 +1,13 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
+      screens:{
+        'xss' : '500px',
+        'xs' : '410px',
+        'xxs' : '320px',
+      },
       colors: {
         // primaryGreen: "#00B894", // Couleur pour le bouton "Démarrer"
         // secondaryGreen: "#F4FBF9", // Couleur de fond
