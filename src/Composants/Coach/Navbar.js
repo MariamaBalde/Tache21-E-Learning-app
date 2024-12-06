@@ -2,7 +2,6 @@
 import React from 'react';
 import { Bell, Search} from 'lucide-react';
 import { FaEnvelope } from "react-icons/fa";
-
 import Profil from './Profil';
 
 
