@@ -12,9 +12,5 @@ const NotFound = () => {
     );
 };
 
-<<<<<<< HEAD
-export default NotFound;
-=======
 export default NotFound;
 
->>>>>>> 71d6d487494fa3fc94f8663398499a02f2ade8b6
