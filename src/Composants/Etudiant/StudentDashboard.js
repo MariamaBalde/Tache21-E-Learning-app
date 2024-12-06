@@ -12,7 +12,7 @@ import ProjetsEtudiant from './ProjetsEtudiant';
 import LivraisonsEtudiant from './LivraisonsEtudiant';
 
 
-const CoachDashboard = () => {
+const StudentDashboard = () => {
     return (
         <div className="flex h-screen">
             <Sidebar />
@@ -53,4 +53,4 @@ const CoachDashboard = () => {
     );
 };
 
-export default CoachDashboard;
+export default StudentDashboard;
