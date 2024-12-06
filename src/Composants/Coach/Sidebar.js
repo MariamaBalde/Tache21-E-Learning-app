@@ -1,3 +1,4 @@
+// The best
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { FiMenu, FiX, FiHome, FiBookOpen, FiLayers, FiClipboard, FiHelpCircle } from 'react-icons/fi';
@@ -128,3 +129,5 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+
+// The best

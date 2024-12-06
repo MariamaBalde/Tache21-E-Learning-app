@@ -1,5 +1,5 @@
 // src/Composants/Coach/CoachDashboard.js
-import React from 'react';
+import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
@@ -14,10 +14,12 @@ import Livraisons from './Livraisons';
 import PlayQuiz from './quizz/PlayQuiz';
 import AddQuiz from './quizz/AddQuiz';
 import QuizDetails from './quizz/QuizDetails';
+
 const CoachDashboard = () => {
+
   return (
     <div className="flex h-screen">
-      <Sidebar />
+      <Sidebar  />
       <div className="flex-1 flex flex-col">
         <Navbar />
         <div className="flex-1 bg-gray-50 overflow-y-auto p-4">
