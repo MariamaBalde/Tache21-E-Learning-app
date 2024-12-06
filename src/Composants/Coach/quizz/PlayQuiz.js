@@ -116,7 +116,7 @@ const PlayQuiz = () => {
               Recommencer
             </button>
             <button
-              onClick={() => navigate('/coach/dashboard/quizzes')} // Rediriger vers la page des quizzes
+              onClick={() => navigate('/coach/dashboard/quizzes')}
               className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 transition duration-200"
             >
               Quitter
@@ -125,7 +125,10 @@ const PlayQuiz = () => {
         </div>
       ) : (
         <div>
-          <h3 className="text-lg font-semibold">Question {currentQuestionIndex + 1} :</h3>
+          {/* Affichage de la progression de la question */}
+          <h3 className="text-lg font-semibold">
+            Question {currentQuestionIndex + 1} sur {quizData.questions.length} :
+          </h3>
           <p className="mt-2">{quizData.questions[currentQuestionIndex].question}</p>
           <ul className="list-disc pl-5 mt-4">
             {quizData.questions[currentQuestionIndex].options.map((option, index) => (

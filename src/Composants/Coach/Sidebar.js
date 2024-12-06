@@ -38,7 +38,7 @@ const Sidebar = () => {
         </div>
         <div className="mb-6">
 
-          {/* <img src={logo} alt="Logo" className="h-16 w-16" /> */}
+          <img src={logo} alt="Logo" className="h-16 w-16" />
           
         </div>
         <div className='mt-4 flex flex-col gap-4 relative'>
