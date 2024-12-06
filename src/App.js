@@ -16,11 +16,16 @@ import MessagerieCoach from './Composants/Coach/MessagerieCoach';
 import RecupererMotDePasse from './Composants/Auth/RecupererMotDePasse';
 import Livraisons from './Composants/Coach/Livraisons';
 import LandingPage from './Pages/LandingPage.js';
-
 import AddQuiz from './Composants/Coach/quizz/AddQuiz.js';
 import QuizDetails from './Composants/Coach/quizz/QuizDetails.js';
 import EditQuiz from './Composants/Coach/quizz/EditQuiz.js';
 import PlayQuiz from './Composants/Coach/quizz/PlayQuiz.js';
+import CoursEtudiant from './Composants/Etudiant/CoursEtudiant.js'
+import TachesEtudiant from './Composants/Etudiant/TachesEtudiant.js';
+import LivraisonsEtudiant from './Composants/Etudiant/LivraisonsEtudiant.js';
+import QuizzesEtudiants from './Composants/Etudiant/QuizzesEtudiants.js';
+import MessagerieEtudiant  from './Composants/Etudiant/MessagerieEtudiant.js';
+import ProjetsEtudiant from './Composants/Etudiant/ProjetsEtudiant.js';
 
 const router = createBrowserRouter([
   {
@@ -82,6 +87,14 @@ const router = createBrowserRouter([
             <StudentDashboard />
           </PrivateRoute>
         ),
+        children:[
+          { path: 'coursEtudiant', element: <CoursEtudiant />},
+          { path: 'tachesEtudiant', element: <TachesEtudiant /> },
+          { path: 'livraisonsEtudiant', element: <LivraisonsEtudiant /> },
+          { path: 'quizzesEtudiants', element: <QuizzesEtudiants /> },
+          { path: 'projetsEtudiant', element: <ProjetsEtudiant /> },
+          { path: 'messagerieEtudiant', element: <MessagerieEtudiant /> },
+        ]
       },
       { path: '*', element: <NotFound /> },
     ],

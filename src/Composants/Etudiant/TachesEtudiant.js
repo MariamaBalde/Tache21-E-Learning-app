@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
- const Taches = () => {
+const TachesEtudiant = () => {
   const task = {
     number: "1",
     duration: "168h",
@@ -131,4 +131,4 @@ import React, { useState } from 'react';
   );
 };
 
-export default Taches;
+export default TachesEtudiant;
