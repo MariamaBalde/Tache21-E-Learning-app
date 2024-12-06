@@ -3,9 +3,9 @@ import { Newspaper, Users, GraduationCap } from 'lucide-react';
 
 function Stats() {
     const stats = [
-        { number: '10k+', label: 'TOTAL COURSES', icon: <Newspaper className="w-6 h-6 text-blue-600" />, bgColor: 'bg-blue-100' },
-        { number: '500+', label: 'EXPERT MENTORS', icon: <Users className="w-6 h-6 text-orange-600" />, bgColor: 'bg-orange-100' },
-        { number: '300k+', label: 'STUDENTS GLOBALLY', icon: <GraduationCap className="w-6 h-6 text-purple-600" />, bgColor: 'bg-purple-100' },
+        { number: '10k+', label: 'COURS TOTAUX', icon: <Newspaper className="w-6 h-6 text-blue-600" />, bgColor: 'bg-blue-100' },
+        { number: '500+', label: 'MENTORS EXPERTS', icon: <Users className="w-6 h-6 text-orange-600" />, bgColor: 'bg-orange-100' },
+        { number: '300k+', label: 'ÉTUDIANTS', icon: <GraduationCap className="w-6 h-6 text-purple-600" />, bgColor: 'bg-purple-100' },
     ];
 
     return (

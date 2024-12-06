@@ -28,21 +28,21 @@ function Footer() {
 
                     {/* Links */}
                     <div>
-                        <h3 className="text-xl font-semibold mb-4">Links</h3>
+                        <h3 className="text-xl font-semibold mb-4">Liens</h3>
                         <ul className="space-y-2">
-                            <li><a href="#" className="text-gray-600 hover:text-gray-900">Home</a></li>
-                            <li><a href="#" className="text-gray-600 hover:text-gray-900">Courses</a></li>
+                            <li><a href="#" className="text-gray-600 hover:text-gray-900">Accueil</a></li>
+                            <li><a href="#" className="text-gray-600 hover:text-gray-900">Cours</a></li>
                             <li><a href="#" className="text-gray-600 hover:text-gray-900">Mentors</a></li>
-                            <li><a href="#" className="text-gray-600 hover:text-gray-900">About</a></li>
+                            <li><a href="#" className="text-gray-600 hover:text-gray-900">À propos</a></li>
                         </ul>
                     </div>
 
                     {/* Community */}
                     <div>
-                        <h3 className="text-xl font-semibold mb-4">Community</h3>
+                        <h3 className="text-xl font-semibold mb-4">Communauté</h3>
                         <ul className="space-y-2">
-                            <li><a href="#" className="text-gray-600 hover:text-gray-900">Help center</a></li>
-                            <li><a href="#" className="text-gray-600 hover:text-gray-900">Partners</a></li>
+                            <li><a href="#" className="text-gray-600 hover:text-gray-900">Aide</a></li>
+                            <li><a href="#" className="text-gray-600 hover:text-gray-900">Partenaires</a></li>
                             <li><a href="#" className="text-gray-600 hover:text-gray-900">Blog</a></li>
                         </ul>
                     </div>
@@ -52,8 +52,8 @@ function Footer() {
                         <h3 className="text-xl font-semibold mb-4">Resources</h3>
                         <ul className="space-y-2">
                             <li><a href="#" className="text-gray-600 hover:text-gray-900">Support</a></li>
-                            <li><a href="#" className="text-gray-600 hover:text-gray-900">Latest Updates</a></li>
-                            <li><a href="#" className="text-gray-600 hover:text-gray-900">Updates Newsletter</a></li>
+                            <li><a href="#" className="text-gray-600 hover:text-gray-900">Mises à jour</a></li>
+                            <li><a href="#" className="text-gray-600 hover:text-gray-900">Newsletter</a></li>
                         </ul>
                     </div>
                 </div>

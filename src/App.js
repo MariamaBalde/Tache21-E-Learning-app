@@ -16,7 +16,11 @@ import MessagerieCoach from './Composants/Coach/MessagerieCoach';
 import RecupererMotDePasse from './Composants/Auth/RecupererMotDePasse';
 import Livraisons from './Composants/Coach/Livraisons';
 import LandingPage from './Pages/LandingPage.js';
-import DomainsList from './Composants/Admin/DomainsList.js';
+
+import AddQuiz from './Composants/Coach/quizz/AddQuiz.js';
+import QuizDetails from './Composants/Coach/quizz/QuizDetails.js';
+import EditQuiz from './Composants/Coach/quizz/EditQuiz.js';
+import PlayQuiz from './Composants/Coach/quizz/PlayQuiz.js';
 
 const router = createBrowserRouter([
   {
@@ -43,15 +47,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: 'admin/domaine',
-        element: (
-          <PrivateRoute roleRequired="admin">
-            <DomainsList />
-          </PrivateRoute>
-        ),
-      },
-      {
-        path: 'coach/dashboard/*',
+        path: 'coach/dashboard',
         element: (
           <PrivateRoute roleRequired="coach">
             <CoachDashboard />
@@ -63,12 +59,19 @@ const router = createBrowserRouter([
           { path: 'cours', element: <Cours /> },
           { path: 'livraisons', element: <Livraisons /> },
           { path: 'quizzes', element: <Quizzes /> },
+
+          { path: 'quizzes', element: <Quizzes /> },
+          { path: 'quizzes/add-quiz', element: <AddQuiz /> },
+          { path: 'quizzes/quiz-details/:quizId', element: <QuizDetails /> },
+          // { path: 'quizzes/edit-quiz/:quizId', element: <EditQuiz /> },
+          { path: 'quizzes/edit-quiz/:id', element: <EditQuiz /> },
+
+          {
+            path: 'quizzes/quiz-details/:quizId/play-quiz/:playQuizId',
+            element: <PlayQuiz />,
+          },
           { path: 'projets', element: <Projets /> },
           { path: 'messagerie', element: <MessagerieCoach /> },
-          {
-            path: 'domains/:domaineId/sous-domaines/:sousDomaineId/cours',
-            element: <Cours />,
-          },
           { path: 'domains/:domaineId', element: <SousDomaines /> },
         ],
       },
@@ -88,5 +91,4 @@ const router = createBrowserRouter([
 const App = () => {
   return <RouterProvider router={router} />;
 };
-
 export default App;

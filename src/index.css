@@ -1,6 +1,13 @@
 @tailwind base;
-@tailwind components;
+@taiwind composents;
 @tailwind utilities;
+
 
 /* Ajouter votre CSS personnalisé après Tailwind */
 @import './Styles/Login.css';
+
+
+*{
+    /* outline: 1px solid red; */
+}
+
