@@ -33,7 +33,7 @@ const Modal = ({ show, onClose, taskTitle }) => {
   );
 };
 
-const Livraisons = () => {
+const LivraisonsEtudiant = () => {
   const tasks = [
     { id: 1, titleText: "Tâche 01", description: "Apprendre la structure de base d'une page web avec HTML." },
     { id: 2, titleText: "Tâche 02", description: "Découvrir les styles et la mise en page avec CSS." },
@@ -120,4 +120,4 @@ const Livraisons = () => {
   );
 };
 
-export default Livraisons;
+export default LivraisonsEtudiant;

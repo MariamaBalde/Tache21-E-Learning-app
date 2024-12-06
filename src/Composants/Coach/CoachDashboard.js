@@ -14,7 +14,6 @@ import Livraisons from './Livraisons';
 import PlayQuiz from './quizz/PlayQuiz';
 import AddQuiz from './quizz/AddQuiz';
 import QuizDetails from './quizz/QuizDetails';
-
 const CoachDashboard = () => {
   return (
     <div className="flex h-screen">
@@ -56,5 +55,4 @@ const CoachDashboard = () => {
     </div>
   );
 };
-
 export default CoachDashboard;

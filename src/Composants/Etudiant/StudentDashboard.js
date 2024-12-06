@@ -1,31 +1,56 @@
-import React, { useState, useEffect } from "react";
-import { db, auth } from "../../Config/firebaseConfig";
-import { collection, query, where, getDocs } from "firebase/firestore";
-import CourseItem from "../Etudiant/CourseItem";
+// src/Composants/Coach/CoachDashboard.js
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Sidebar from './Sidebar';
+import Navbar from './Navbar';
+import Dashboard from './Dashboard';
+import MessagerieEtudiant from './MessagerieEtudiant';
+import CoursEtudiant from './CoursEtudiant';
+import TachesEtudiant from './TachesEtudiant';
+import QuizzesEtudiants from './QuizzesEtudiants';
+import ProjetsEtudiant from './ProjetsEtudiant';
+import LivraisonsEtudiant from './LivraisonsEtudiant';
 
-const StudentDashboard = () => {
-    const [courses, setCourses] = useState([]);
 
-    const fetchCourses = async () => {
-        const q = query(collection(db, "courses"), where("status", "==", "active"));
-        const querySnapshot = await getDocs(q);
-        setCourses(querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
-    };
-
-    useEffect(() => {
-        fetchCourses();
-    }, []);
-
+const CoachDashboard = () => {
     return (
-        <div className="p-4">
-            <h1 className="text-2xl font-bold">Tableau de bord de l'apprenant</h1>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                {courses.map((course) => (
-                    <CourseItem key={course.id} course={course} />
-                ))}
+        <div className="flex h-screen">
+            <Sidebar />
+            <div className="flex-1 flex flex-col">
+                <Navbar />
+                <div className="flex-1 bg-gray-50 overflow-y-auto p-4">
+                    <Routes>
+                        <Route path="/" element={<Dashboard />} />
+                        <Route path="coursEtudiant" element={<CoursEtudiant />} />
+                        {/* <Route path="domains/:domaineId" element={<SousDomaines />} /> */}
+                        {/* <Route
+                            path="domains/:domaineId/sous-domaines/:sousDomaineId/cours"
+                            element={<Cours />}
+                        /> */}
+                        <Route path="tachesEtudiant" element={<TachesEtudiant />} />
+
+                        <Route path="livraisonsEtudiant" element={<LivraisonsEtudiant />} />
+                        <Route path="quizzesEtudiants" element={<QuizzesEtudiants />} />{' '}
+                        {/* Gestion des quizzes */}
+                        {/* <Route path="quizzes" element={<Quizzes />} />
+                        <Route path="quizzes" element={<Quizzes />} />
+                        <Route path="quizzes/add-quiz" element={<AddQuiz />} />
+                        <Route
+                            path="quizzes/quiz-details/:quizId"
+                            element={<QuizDetails />}
+                        />
+                        <Route
+                            path="quizzes/quiz-details/:quizId/play-quiz/:playQuizId"
+                            element={<PlayQuiz />}
+                        /> */}
+                        {/* Route pour gérer les quizzes */}
+                        <Route path="projetsEtudiant" element={<ProjetsEtudiant />} />
+                        <Route path="messagerieEtudiant" element={<MessagerieEtudiant />} />
+                    </Routes>
+                </div>
             </div>
         </div>
     );
 };
 
-export default StudentDashboard;
+export default CoachDashboard;

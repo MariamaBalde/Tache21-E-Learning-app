@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { FiMenu, FiX,FiHome, FiBookOpen, FiLayers, FiClipboard, FiHelpCircle } from 'react-icons/fi';
+import { FiMenu, FiX, FiHome, FiBookOpen, FiLayers, FiClipboard, FiHelpCircle } from 'react-icons/fi';
 import { FaPaperPlane, FaProjectDiagram, FaEnvelope, } from 'react-icons/fa';
 import logo from '../../Images/ImagesAdmin/1.png';
 
@@ -128,4 +128,3 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
-
