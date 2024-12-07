@@ -94,7 +94,7 @@ function Profil() {
                 </a>
               </li>
               <li>
-                <a href="#" className="block px-4 py-2">
+                <a href="/login" className="block px-4 py-2">
                   Déconnecter
                 </a>
               </li>

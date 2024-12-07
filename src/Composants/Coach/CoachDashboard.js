@@ -34,6 +34,7 @@ const CoachDashboard = () => {
             <Route path="quizzes" element={<Quizzes />} />
             <Route path="projets" element={<Projets />} />
             <Route path="messagerie" element={<MessagerieCoach />} />
+            <Route path="/coach/dashboard/messagerie" element={<MessagerieCoach />} />
           </Routes>
         </div>
       </div>
