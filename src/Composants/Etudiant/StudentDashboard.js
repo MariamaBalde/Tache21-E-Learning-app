@@ -1,4 +1,4 @@
-HEAD
+
 // CoachDashboard.js
 
 import React from 'react';
