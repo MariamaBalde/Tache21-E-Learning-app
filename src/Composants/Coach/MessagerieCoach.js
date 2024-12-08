@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function MessagerieCoach({ coachPhoto }) {
+function MessagerieCoach() {
     const [conversations, setConversations] = useState([
         {
             id: 1,
@@ -19,19 +19,23 @@ function MessagerieCoach({ coachPhoto }) {
         },
     ]);
 
-    const [selectedConversation, setSelectedConversation] = useState(null);
+    // État de la conversation sélectionnée
+    const [selectedConversation, setSelectedConversation] = useState(conversations[0]); // Initialisation avec la première conversation
     const [newMessage, setNewMessage] = useState("");
 
+    // Fonction pour sélectionner une conversation
     const selectConversation = (id) => {
         const conversation = conversations.find((conv) => conv.id === id);
-        setSelectedConversation(conversation);
+        setSelectedConversation(conversation);  // Mise à jour de l'état de la conversation sélectionnée
     };
 
+    // Fonction pour envoyer un message
     const sendMessage = () => {
         if (newMessage.trim() === "") return;
 
         const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
+        // Mise à jour des conversations avec le nouveau message
         const updatedConversations = conversations.map((conv) => {
             if (conv.id === selectedConversation.id) {
                 return {
@@ -43,11 +47,8 @@ function MessagerieCoach({ coachPhoto }) {
         });
 
         setConversations(updatedConversations);
-        setSelectedConversation(
-            updatedConversations.find((conv) => conv.id === selectedConversation.id)
-        );
-
-        setNewMessage("");
+        setSelectedConversation(updatedConversations.find((conv) => conv.id === selectedConversation.id));  // Mettre à jour la conversation affichée
+        setNewMessage("");  // Réinitialisation du champ de message
     };
 
     return (
@@ -58,10 +59,8 @@ function MessagerieCoach({ coachPhoto }) {
                 {conversations.map((conversation) => (
                     <div
                         key={conversation.id}
-                        className={`p-3 rounded cursor-pointer ${
-                            selectedConversation?.id === conversation.id ? "bg-blue-100" : "hover:bg-gray-100"
-                        }`}
-                        onClick={() => selectConversation(conversation.id)}
+                        className={`p-3 rounded cursor-pointer ${selectedConversation?.id === conversation.id ? "bg-blue-100" : "hover:bg-gray-100"}`}
+                        onClick={() => selectConversation(conversation.id)} // Mise à jour de la conversation sélectionnée
                     >
                         {conversation.name}
                     </div>
@@ -77,17 +76,11 @@ function MessagerieCoach({ coachPhoto }) {
                             {selectedConversation.messages.map((message, index) => (
                                 <div
                                     key={index}
-                                    className={`flex mb-4 ${
-                                        message.from === "Coach" ? "justify-end" : "justify-start"
-                                    }`}
+                                    className={`flex mb-4 ${message.from === "Coach" ? "justify-end" : "justify-start"}`}
                                 >
                                     <div className="max-w-xs">
                                         <div
-                                            className={`px-4 py-2 rounded-lg text-sm ${
-                                                message.from === "Coach"
-                                                    ? "bg-blue-500 text-white"
-                                                    : "bg-gray-200 text-gray-800"
-                                            }`}
+                                            className={`px-4 py-2 rounded-lg text-sm ${message.from === "Coach" ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"}`}
                                         >
                                             {message.text}
                                         </div>
@@ -104,11 +97,11 @@ function MessagerieCoach({ coachPhoto }) {
                                 className="flex-1 border rounded-l-lg p-2 text-gray-800"
                                 placeholder="Type your message..."
                                 value={newMessage}
-                                onChange={(e) => setNewMessage(e.target.value)}
+                                onChange={(e) => setNewMessage(e.target.value)} // Mise à jour de l'état du message
                             />
                             <button
                                 className="bg-blue-500 text-white px-4 rounded-r-lg"
-                                onClick={sendMessage}
+                                onClick={sendMessage} // Envoi du message
                             >
                                 Send
                             </button>
@@ -127,17 +120,3 @@ export default MessagerieCoach;
 
 
 
-// // components/Messagerie.js
-// // components/Messagerie.js
-// import React from "react";
-
-// function MessagerieCoach() {
-//     return (
-//         <div className="p-6">
-//             <h2 className="text-2xl font-bold text-gray-800 mb-4">Messagerie</h2>
-//             <p className="text-gray-600">Liste des conversations avec les étudiants...</p>
-//         </div>
-//     );
-// }
-
-// export default MessagerieCoach;
