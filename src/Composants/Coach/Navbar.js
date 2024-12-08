@@ -1,54 +1,60 @@
 
-import React from 'react';
-import { Bell, Search } from 'lucide-react';
-import { FaEnvelope, FaUserCircle } from 'react-icons/fa';
-
+import React, { useState } from 'react';
+import { FiBell, FiMail, FiX } from 'react-icons/fi'; // Icônes de messagerie et de fermeture
+import MessagerieCoach from './MessagerieCoach'; // Import du composant MessagerieCoach
+import Profil from './Profil'; // Import du composant Profil si nécessaire
 
 function Navbar() {
-  return (
-    <div className="bg-white shadow-md flex items-center justify-between px-6 py-3">
-      {/* Logo */}
-      {/* <div className="text-xl font-bold text-gray-800">E-Learning</div> */}
+    // État pour contrôler l'affichage du modal de messagerie
+    const [showMessagerie, setShowMessagerie] = useState(false);
 
-      {/* Search Bar */}
-      {/* <input
-        type="text"
-        placeholder="Rechercher..."
-        className="flex-grow mx-6 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-      /> */}
+    // Fonction pour basculer l'affichage du modal
+    const toggleMessagerie = () => {
+        setShowMessagerie(!showMessagerie); // Inverse l'état de showMessagerie
+    };
 
-<div className="flex items-center bg-white rounded-full px-4 py-2 w-1/2">
-            <Search className="h-5 w-5 text-gray-400 mr-2" />
-            <input
-              type="text"
-              placeholder="Rechercher..."
-              className="bg-transparent focus:outline-none flex-1"
-            />
-          </div>
+    return (
 
-      {/* Icons */}
-      {/* <div className="flex items-center space-x-4">
-        <i className="cursor-pointer text-gray-600 hover:text-blue-600">🔔</i>
-        <i className="cursor-pointer text-gray-600 hover:text-blue-600">✉️</i>
-        <div className="cursor-pointer text-gray-600 hover:text-blue-600">
-          👤
-        </div>
-      </div> */}
+        <header className="flex justify-between items-center p-4 bg-white shadow-md relative z-10">
+            <div className="flex-grow sm:max-w-xs ml-10 sm:ml-0">
+                <input
+                    type="text"
+                    placeholder="Search..."
+                    className="p-2 rounded-lg border border-gray-300 w-full"
+                />
+            </div>
 
-<div className="flex items-center space-x-4">
-            <button className="p-2 bg-white rounded-full">
-              <Bell className="h-5 w-5 text-gray-600" />
-            </button>
-            <button className="p-2 bg-white rounded-full">
-              <FaEnvelope className="h-5 w-5 text-gray-600" />
-            </button>
-            <button className="p-2 bg-white rounded-full">
-             <FaUserCircle className="h-5 w-5 text-gray-600" />
-           </button>
-          </div>
-    </div>
-  );
+            {/* Icônes de notification et utilisateur */}
+            <div className="flex items-center space-x-4 ml-3">
+                {/* Icône de messagerie qui déclenche l'ouverture du modal MessagerieCoach */}
+                <FiMail className="text-gray-600 cursor-pointer" onClick={toggleMessagerie} />
+
+                {/* Icône de notification */}
+                <FiBell className="text-gray-600" />
+
+                {/* Profil (si nécessaire) */}
+                <Profil className="text-gray-500" />
+            </div>
+
+            {/* Modal affiché si l'état showMessagerie est true */}
+            {showMessagerie && (
+                <div className="fixed inset-0 bg-gray-100 bg-opacity-75 z-50 flex justify-center items-center">
+                    <div className="relative w-full max-w-4xl bg-white p-6 rounded-lg shadow-lg">
+                        {/* Bouton de fermeture du modal */}
+                        <button
+                            className="absolute top-4 right-4 text-gray-500"
+                            onClick={toggleMessagerie} // Ferme le modal
+                        >
+                            <FiX className="text-xl" />
+                        </button>
+
+                        {/* Contenu du modal : composant MessagerieCoach */}
+                        <MessagerieCoach />
+                    </div>
+                </div>
+            )}
+        </header>
+    );
 }
 
 export default Navbar;
-
