@@ -1,3 +1,4 @@
+// src/Composants/Coach/quizz/EditQuiz.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { db } from '../../../Config/firebaseConfig';
@@ -16,7 +17,7 @@ const EditQuiz = () => {
       },
     ],
   });
-
+  const [isArchived, setIsArchived] = useState(false);
   const navigate = useNavigate();
 
   // Charger les données du quiz depuis Firestore
@@ -29,6 +30,7 @@ const EditQuiz = () => {
 
       if (docSnap.exists()) {
         setQuizData(docSnap.data());
+        setIsArchived(docSnap.data().archived); // Vérifiez si le quiz est archivé
       } else {
         console.log('Aucun quiz trouvé');
       }
@@ -87,6 +89,11 @@ const EditQuiz = () => {
 
   // Enregistrer les modifications dans Firestore
   const handleSaveChanges = async () => {
+    if (isArchived) {
+      alert('Ce quiz est archivé. Vous ne pouvez pas le modifier.');
+      return;
+    }
+
     const quizRef = doc(db, 'quizzes', id);
     
     const validQuestions = quizData.questions.filter(
@@ -99,11 +106,11 @@ const EditQuiz = () => {
 
     const quizToSave = {
       title: quizData.title || 'Untitled Quiz',
-      subject: quizData.subject || 'html-css', // Vérifie que le sujet est bien mis à jour
+      subject: quizData.subject || 'html-css',
       questions: validQuestions,
     };
 
-    console.log("Données à sauvegarder :", quizToSave); // Vérifie les données avant de les envoyer
+    console.log("Données à sauvegarder :", quizToSave);
 
     try {
       await updateDoc(quizRef, quizToSave);
@@ -120,119 +127,125 @@ const EditQuiz = () => {
       <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
         Modifier un Quiz
       </h2>
-      <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
-        <div>
-          <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-            Titre du quiz :
-          </label>
-          <input
-            id="title"
-            type="text"
-            name="title" // Assurez-vous que le name est bien "title"
-            value={quizData.title}
-            onChange={handleInputChange}
-            placeholder="Titre du Quiz"
-            className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
+      {isArchived ? (
+        <div className="bg-red-100 p-4 rounded">
+          <p>Ce quiz est archivé. Vous ne pouvez pas le modifier.</p>
         </div>
-
-        <div>
-          <label htmlFor="subject" className="block text-sm font-medium text-gray-700">
-            Sujet :
-          </label>
-          <select
-            id="subject"
-            name="subject" // Assurez-vous que le name est bien "subject"
-            value={quizData.subject}
-            onChange={handleInputChange}
-            className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          >
-            <option value="html-css">HTML/CSS</option>
-            <option value="javascript">JavaScript</option>
-            <option value="react">React</option>
-            <option value="bootstrap">Bootstrap</option>
-          </select>
-        </div>
-
-        {quizData.questions.map((q, index) => (
-          <div key={index} className="space-y-4 border p-4 rounded-md shadow-sm">
-            <h4 className="font-semibold text-lg text-gray-700">Question {index + 1}</h4>
-
+      ) : (
+        <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
+          <div>
+            <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+              Titre du quiz :
+            </label>
             <input
+              id="title"
               type="text"
-              value={q.question}
-              onChange={(e) => handleQuestionChange(index, 'question', e.target.value)}
-              placeholder="Entrez la question"
-              className="w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="title"
+              value={quizData.title}
+              onChange={handleInputChange}
+              placeholder="Titre du Quiz"
+              className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
+          </div>
 
-            {q.options.map((option, optIndex) => (
+          <div>
+            <label htmlFor="subject" className="block text-sm font-medium text-gray-700">
+              Sujet :
+            </label>
+            <select
+              id="subject"
+              name="subject"
+              value={quizData.subject}
+              onChange={handleInputChange}
+              className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            >
+              <option value="html-css">HTML/CSS</option>
+              <option value="javascript">JavaScript</option>
+              <option value="react">React</option>
+              <option value="bootstrap">Bootstrap</option>
+            </select>
+          </div>
+
+          {quizData.questions.map((q, index) => (
+            <div key={index} className="space-y-4 border p-4 rounded-md shadow-sm">
+              <h4 className="font-semibold text-lg text-gray-700">Question {index + 1}</h4>
+
               <input
-                key={optIndex}
                 type="text"
-                value={option}
-                onChange={(e) => handleOptionChange(index, optIndex, e.target.value)}
-                placeholder={`Option ${optIndex + 1}`}
-                className="mt-2 w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            ))}
-
-            <div className="mt-2">
-              <label className="text-sm font-medium text-gray-700">Réponse correcte :</label>
-              <select
-                value={q.correctAnswer}
-                onChange={(e) => handleQuestionChange(index, 'correctAnswer', parseInt(e.target.value))}
+                value={q.question}
+                onChange={(e) => handleQuestionChange(index, 'question', e.target.value)}
+                placeholder="Entrez la question"
                 className="w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
-              >
-                {q.options.map((_, optIndex) => (
-                  <option key={optIndex} value={optIndex}>
-                    Option {optIndex + 1}
-                  </option>
-                ))}
-              </select>
-            </div>
+              />
 
+              {q.options.map((option, optIndex) => (
+                <input
+                  key={optIndex}
+                  type="text"
+                  value={option}
+                  onChange={(e) => handleOptionChange(index, optIndex, e.target.value)}
+                  placeholder={`Option ${optIndex + 1}`}
+                  className="mt-2 w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              ))}
+
+              <div className="mt-2">
+                <label className="text-sm font-medium text-gray-700">Réponse correcte :</label>
+                <select
+                  value={q.correctAnswer}
+                  onChange={(e) => handleQuestionChange(index, 'correctAnswer', parseInt(e.target.value))}
+                  className="w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                >
+                  {q.options.map((_, optIndex) => (
+                    <option key={optIndex} value={optIndex}>
+                      Option {optIndex + 1}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => handleDeleteQuestion(index)}
+                className="mt-4 inline-block px-4 py-2 text-sm text-white bg-red-600 rounded-lg hover:bg-red-500"
+              >
+                Supprimer cette question
+              </button>
+            </div>
+          ))}
+
+          <div className="flex justify-between">
             <button
               type="button"
-              onClick={() => handleDeleteQuestion(index)}
-              className="mt-4 inline-block px-4 py-2 text-sm text-white bg-red-600 rounded-lg hover:bg-red-500"
+              onClick={handleAddQuestion}
+              className="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-500"
             >
-              Supprimer cette question
+              Ajouter une question
+            </button>
+            <button
+              type="submit"
+              onClick={handleSaveChanges}
+              className="px-6 py-2 text-white bg-green-600 rounded-lg hover:bg-green-500"
+            >
+              Sauvegarder les changements
             </button>
           </div>
-        ))}
 
-        <div className="flex justify-between">
-          <button
-            type="button"
-            onClick={handleAddQuestion}
-            className="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-500"
-          >
-            Ajouter une question
-          </button>
-          <button
-            type="submit"
-            onClick={handleSaveChanges}
-            className="px-6 py-2 text-white bg-green-600 rounded-lg hover:bg-green-500"
-          >
-            Sauvegarder les changements
-          </button>
-        </div>
-
-        <div className="mt-4 text-center">
-          <button
-            onClick={() => navigate('/coach/dashboard/quizzes')}
-            className="px-4 py-2 text-white bg-gray-600 rounded-lg hover:bg-gray-500"
-          >
-            Retour à la liste
-          </button>
-        </div>
-      </form>
+          <div className="mt-4 text-center">
+            <button
+              onClick={() => navigate('/coach/dashboard/quizzes')}
+              className="px-4 py-2 text-white bg-gray-600 rounded-lg hover:bg-gray-500"
+            >
+              Retour à la liste
+            </button>
+          </div>
+        </form>
+      )}
     </div>
   );
 };
