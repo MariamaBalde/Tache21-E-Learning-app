@@ -1,5 +1,5 @@
 // src/Composants/Coach/CoachDashboard.js
-import React from 'react';
+import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
@@ -17,9 +17,10 @@ import QuizDetails from './quizz/QuizDetails';
 import PlayQuizCours from './PlayQuizCours';
 
 const CoachDashboard = () => {
+
   return (
     <div className="flex h-screen">
-      <Sidebar />
+      <Sidebar  />
       <div className="flex-1 flex flex-col">
         <Navbar />
         <div className="flex-1 bg-gray-50 overflow-y-auto p-4">
@@ -54,11 +55,11 @@ const CoachDashboard = () => {
             {/* Route pour gérer les quizzes */}
             <Route path="projets" element={<Projets />} />
             <Route path="messagerie" element={<MessagerieCoach />} />
+            <Route path="/coach/dashboard/messagerie" element={<MessagerieCoach />} />
           </Routes>
         </div>
       </div>
     </div>
   );
 };
-
 export default CoachDashboard;
