@@ -21,6 +21,7 @@ import AddQuiz from './Composants/Coach/quizz/AddQuiz.js';
 import QuizDetails from './Composants/Coach/quizz/QuizDetails.js';
 import EditQuiz from './Composants/Coach/quizz/EditQuiz.js';
 import PlayQuiz from './Composants/Coach/quizz/PlayQuiz.js';
+import PlayQuizCours from './Composants/Coach/PlayQuizCours.js';
 
 const router = createBrowserRouter([
   {
@@ -76,6 +77,10 @@ const router = createBrowserRouter([
           {
             path: 'domains/:domaineId/sous-domaines/:sousDomaineId/cours',
             element: <Cours />,
+          },
+          {
+            path: 'domains/:domaineId/sous-domaines/:sousDomaineId/cours/play-quiz/:id',
+            element: <PlayQuiz />,
           },
         ],
       },
