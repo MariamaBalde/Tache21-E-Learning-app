@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import Login from './Composants/Auth/Login';
 import AdminDashboard from './Composants/Admin/Dashboard';
 import InscrireUtilisateur from './Composants/Admin/InscrireUtilisateur';
@@ -7,79 +8,105 @@ import CoachDashboard from './Composants/Coach/CoachDashboard.js';
 import StudentDashboard from './Composants/Etudiant/StudentDashboard.js';
 import NotFound from './Pages/NotFound.js';
 import PrivateRoute from './Utils/PrivateRoute.js';
-import Domains from './Composants/Coach/Domains'; // Importer les composants nécessaires
-import SousDomaines from './Composants/Coach/SousDomaines'; // Importer les composants nécessaires
-import Cours from './Composants/Coach/Cours'; // Importer les composants nécessaires
-import Quizzes from './Composants/Coach/Quizzes'; // Importer les composants nécessaires
-import Projets from './Composants/Coach/Projets'; // Importer les composants nécessaires
-import MessagerieCoach from './Composants/Coach/MessagerieCoach'; // Importer les composants nécessaires 
+import Domains from './Composants/Coach/Domains';
+import SousDomaines from './Composants/Coach/SousDomaines';
+import Cours from './Composants/Coach/Cours';
+import Quizzes from './Composants/Coach/Quizzes';
+import Projets from './Composants/Coach/Projets';
+import MessagerieCoach from './Composants/Coach/MessagerieCoach';
+import RecupererMotDePasse from './Composants/Auth/RecupererMotDePasse';
+import Livraisons from './Composants/Coach/Livraisons';
+import LandingPage from './Pages/LandingPage.js';
+import AddQuiz from './Composants/Coach/quizz/AddQuiz.js';
+import QuizDetails from './Composants/Coach/quizz/QuizDetails.js';
+import EditQuiz from './Composants/Coach/quizz/EditQuiz.js';
+import PlayQuiz from './Composants/Coach/quizz/PlayQuiz.js';
+import CoursEtudiant from './Composants/Etudiant/CoursEtudiant.js'
+import TachesEtudiant from './Composants/Etudiant/TachesEtudiant.js';
+import LivraisonsEtudiant from './Composants/Etudiant/LivraisonsEtudiant.js';
+import QuizzesEtudiants from './Composants/Etudiant/QuizzesEtudiants.js';
+import MessagerieEtudiant  from './Composants/Etudiant/MessagerieEtudiant.js';
+import ProjetsEtudiant from './Composants/Etudiant/ProjetsEtudiant.js';
 
-import RecupererMotDePasse from './Composants/Auth/RecupererMotDePasse'; // Importer le composant de récupération de mot de passe
-import Livraisons from './Composants/Coach/Livraisons'; // Importer les composants nécessaires
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Outlet />, // Conteneur pour les routes
+    children: [
+      { path: '/', element: <LandingPage /> },
+      { path: 'login', element: <Login /> },
+      { path: 'reset-password', element: <RecupererMotDePasse /> },
+      {
+        path: 'admin/dashboard',
+        element: (
+          <PrivateRoute roleRequired="admin">
+            <AdminDashboard />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: 'admin/inscrire-utilisateur',
+        element: (
+          <PrivateRoute roleRequired="admin">
+            <InscrireUtilisateur />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: 'coach/dashboard',
+        element: (
+          <PrivateRoute roleRequired="coach">
+            <CoachDashboard />
+          </PrivateRoute>
+        ),
+        children: [
+          { path: 'domains', element: <Domains /> },
+          { path: 'sous-domaines', element: <SousDomaines /> },
+          { path: 'cours', element: <Cours /> },
+          { path: 'livraisons', element: <Livraisons /> },
+          { path: 'quizzes', element: <Quizzes /> },
 
+          { path: 'quizzes', element: <Quizzes /> },
+          { path: 'quizzes/add-quiz', element: <AddQuiz /> },
+          { path: 'quizzes/quiz-details/:quizId', element: <QuizDetails /> },
+          // { path: 'quizzes/edit-quiz/:quizId', element: <EditQuiz /> },
+          { path: 'quizzes/edit-quiz/:id', element: <EditQuiz /> },
+
+          {
+            path: 'quizzes/quiz-details/:quizId/play-quiz/:playQuizId',
+            element: <PlayQuiz />,
+          },
+          { path: 'projets', element: <Projets /> },
+          { path: 'messagerie', element: <MessagerieCoach /> },
+          { path: 'domains/:domaineId', element: <SousDomaines /> },
+          {
+            path: 'domains/:domaineId/sous-domaines/:sousDomaineId/cours',
+            element: <Cours />,
+          },
+        ],
+      },
+      {
+        path: 'etudiant/dashboard',
+        element: (
+          <PrivateRoute roleRequired="etudiant">
+            <StudentDashboard />
+          </PrivateRoute>
+        ),
+        children:[
+          { path: 'coursEtudiant', element: <CoursEtudiant />},
+          { path: 'tachesEtudiant', element: <TachesEtudiant /> },
+          { path: 'livraisonsEtudiant', element: <LivraisonsEtudiant /> },
+          { path: 'quizzesEtudiants', element: <QuizzesEtudiants /> },
+          { path: 'projetsEtudiant', element: <ProjetsEtudiant /> },
+          { path: 'messagerieEtudiant', element: <MessagerieEtudiant /> },
+        ]
+      },
+      { path: '*', element: <NotFound /> },
+    ],
+  },
+]);
 
 const App = () => {
-  return (
-    <Router>
-      <Routes>
-        {/* Route de connexion */}
-        <Route path="/" element={<Login />} />
-        {/* Route de récupération du mot de passe */}
-        <Route path="/reset-password" element={<RecupererMotDePasse />} />
-        {/* Routes sécurisées avec PrivateRoute */}
-        <Route
-          path="/admin/dashboard"
-          element={
-            <PrivateRoute roleRequired="admin">
-              <AdminDashboard />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/admin/inscrire-utilisateur"
-          element={<InscrireUtilisateur />}
-        />
-
-        <Route
-          path="/coach/dashboard"
-          element={
-            <PrivateRoute roleRequired="coach">
-              <CoachDashboard />
-            </PrivateRoute>
-          }
-        >
-          {/* Définir ici les sous-routes */}
-          <Route path="domains" element={<Domains />} />
-          <Route path="sous-domaines" element={<SousDomaines />} />
-          <Route path="cours" element={<Cours />} />
-          <Route path="livraisons" element={<Livraisons />} />
-          <Route path="quizzes" element={<Quizzes />} />
-          <Route path="projets" element={<Projets />} />
-          <Route path="messagerie" element={<MessagerieCoach />} />
-          <Route
-            path="/coach/dashboard/domains/:domaineId"
-            element={<SousDomaines />}
-          />
-        </Route>
-
-
-        
-        <Route
-          path="/etudiant/dashboard"
-          element={
-            <PrivateRoute roleRequired="etudiant">
-              <StudentDashboard />
-            </PrivateRoute>
-          }
-        />
-
-        {/* Page introuvable */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </Router>
-  );
+  return <RouterProvider router={router} />;
 };
-
-export default App;  
-
- 
+export default App;

@@ -1,12 +1,22 @@
-import React from "react";
+// src/Composants/Coach/Quizzes.js
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import QuizList from './quizz/QuizList';
+import AddQuiz from './quizz/AddQuiz';
+import EditQuiz from './quizz/EditQuiz';
+import QuizDetails from './quizz/QuizDetails';
+import PlayQuiz from './quizz/PlayQuiz';
 
-function Quizzes() {
-    return (
-        <div className="p-6">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Quizzes</h2>
-        </div>
-    );
-}
+const Quizzes = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<QuizList />} />
+      <Route path="add-quiz" element={<AddQuiz />} />
+      <Route path="edit-quiz/:quizId" element={<EditQuiz />} />
+      <Route path="quiz-details/:quizId" element={<QuizDetails />} />
+      <Route path="play-quiz/:quizId" element={<PlayQuiz />} />
+    </Routes>
+  );
+};
 
 export default Quizzes;
-
