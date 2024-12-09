@@ -209,7 +209,7 @@ const Domains = () => {
       </div>
 
       {/* Domaines List */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {domains.map((domain) => {
           const studentCount = students.filter(
             (student) => student.domaineId === domain.id
@@ -218,7 +218,7 @@ const Domains = () => {
           return (
             <div
               key={domain.id}
-              className={`bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow p-6 h-64 flex flex-col justify-between border border-gray-200 ${
+              className={`bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow p-6  flex flex-col justify-between border border-blue-600 ${
                 domain.archived ? 'opacity-50 cursor-not-allowed' : ''
               }`}
               title={domain.archived ? 'Domaine archivé' : ''}
@@ -226,7 +226,7 @@ const Domains = () => {
               <div>
                 <Link
                   to={`/coach/dashboard/domains/${domain.id}`}
-                  className="text-xl font-semibold text-blue-600 hover:text-blue-800"
+                  className="font-bold text-xl text-blue-600 hover:text-blue-800"
                 >
                   {domain.name}
                 </Link>

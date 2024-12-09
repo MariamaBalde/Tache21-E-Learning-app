@@ -1,3 +1,4 @@
+// src/Composants/Coach/quizz/PlayQuiz.js
 import React, { useEffect, useState } from 'react';
 import { db } from '../../../Config/firebaseConfig';
 import { doc, getDoc } from 'firebase/firestore';
@@ -13,6 +14,7 @@ const PlayQuiz = () => {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isArchived, setIsArchived] = useState(false);
 
   useEffect(() => {
     const fetchQuizData = async () => {
@@ -21,6 +23,7 @@ const PlayQuiz = () => {
         const quizSnap = await getDoc(quizRef);
         if (quizSnap.exists()) {
           setQuizData(quizSnap.data());
+          setIsArchived(quizSnap.data().archived); // Vérifiez si le quiz est archivé
           setUserAnswers(new Array(quizSnap.data().questions.length).fill(null));
         } else {
           setError('Quiz non trouvé !');
@@ -34,6 +37,14 @@ const PlayQuiz = () => {
 
     fetchQuizData();
   }, [quizId]);
+
+  if (isArchived) {
+    return (
+      <div className="bg-red-100 p-4 rounded">
+        <h2>Ce quiz est archivé. Vous ne pouvez pas le jouer.</h2>
+      </div>
+    );
+  }
 
   const handleAnswerChange = (answer) => {
     const updatedAnswers = [...userAnswers];
@@ -116,7 +127,7 @@ const PlayQuiz = () => {
               Recommencer
             </button>
             <button
-              onClick={() => navigate('/coach/dashboard/quizzes')} // Rediriger vers la page des quizzes
+              onClick={() => navigate('/coach/dashboard/quizzes')}
               className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 transition duration-200"
             >
               Quitter
@@ -125,7 +136,9 @@ const PlayQuiz = () => {
         </div>
       ) : (
         <div>
-          <h3 className="text-lg font-semibold">Question {currentQuestionIndex + 1} :</h3>
+          <h3 className="text-lg font-semibold">
+            Question {currentQuestionIndex + 1} sur {quizData.questions.length} :
+          </h3>
           <p className="mt-2">{quizData.questions[currentQuestionIndex].question}</p>
           <ul className="list-disc pl-5 mt-4">
             {quizData.questions[currentQuestionIndex].options.map((option, index) => (

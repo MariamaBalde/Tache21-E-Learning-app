@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 
 // Modal Component
@@ -122,4 +121,3 @@ const LivraisonsEtudiant = () => {
 };
 
 export default LivraisonsEtudiant;
-

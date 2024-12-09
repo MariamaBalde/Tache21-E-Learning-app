@@ -1,32 +1,61 @@
-import React from 'react';
-import { ChevronLeft, ChevronRight, Search, Bell } from 'lucide-react';
+import React, { useState } from 'react';
+import { FiBell, FiMail, FiSend, FiX } from 'react-icons/fi'; // Icônes
+import MessagerieEtudiant from './MessagerieEtudiant'; // Import du composant MessagerieCoach
+import ProfileEtudiant from './ProfileEtudiant'; // Import du composant Profil si nécessaire
 
-export default function Navbar() {
+function Navbar() {
+  // État pour contrôler l'affichage du modal de messagerie
+  const [showMessagerie, setShowMessagerie] = useState(false);
+
+  // Fonction pour basculer l'affichage du modal
+  const toggleMessagerie = () => {
+    setShowMessagerie(!showMessagerie); // Inverse l'état de showMessagerie
+  };
+
   return (
-    <header className="flex justify-between items-center mb-8 px-4 sm:px-6 lg:px-8">
-      {/* Navigation controls */}
-      <div className="flex items-center space-x-2">
-        <ChevronLeft className="w-6 h-6 text-gray-500" />
-        <ChevronRight className="w-6 h-6 text-gray-500" />
-      </div>
-
-      {/* Search bar */}
-      <div className="relative">
-        <input
-          type="text"
-          placeholder="Search..."
-          className="bg-white rounded-full py-2 px-4 pl-10 w-64 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:w-48 md:w-64"
-        />
-        <Search className="w-5 h-5 text-gray-500 absolute left-3 top-2.5" />
-      </div>
-
-      {/* Profile and notification icons */}
-      <div className="flex items-center space-x-4">
-        <button className="text-gray-500">
-          <Bell className="w-6 h-6" />
+    <header className="flex justify-between items-center p-4 bg-white shadow-md relative z-10">
+      {/* Bouton "Envoyer mon travail" avec icône */}
+      <div className="ml-10">
+        <button className="bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-blue-600">
+          <FiSend className="text-lg" /> {/* Icône d'envoi */}
+          <span>Envoyer mon travail</span>
         </button>
-        <button className="w-8 h-8 bg-gray-200 rounded-full"></button>
       </div>
+
+      {/* Icônes de notification et utilisateur */}
+      <div className="flex items-center space-x-4 ml-3">
+        {/* Icône de messagerie qui déclenche l'ouverture du modal MessagerieCoach */}
+        <FiMail
+          className="text-gray-600 cursor-pointer"
+          onClick={toggleMessagerie}
+        />
+
+        {/* Icône de notification */}
+        <FiBell className="text-gray-600" />
+
+        {/* Profil (si nécessaire) */}
+        <ProfileEtudiant className="text-gray-500" />
+      </div>
+
+      {/* Modal affiché si l'état showMessagerie est true */}
+      {showMessagerie && (
+        <div className="fixed inset-0 bg-gray-100 bg-opacity-75 z-50 flex justify-center items-center">
+          <div className="relative w-full max-w-4xl bg-white p-6 rounded-lg shadow-lg">
+            {/* Bouton de fermeture du modal */}
+            <button
+              className="absolute top-4 right-4 text-gray-500"
+              onClick={toggleMessagerie} // Ferme le modal
+            >
+              <FiX className="text-xl" />
+            </button>
+
+            {/* Contenu du modal : composant MessagerieCoach */}
+            <MessagerieEtudiant />
+          </div>
+        </div>
+      )}
     </header>
   );
 }
+
+export default Navbar;

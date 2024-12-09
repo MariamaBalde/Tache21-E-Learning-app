@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-function Profil() {
+function ProfileEtudiant() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     nom: '',
@@ -198,5 +198,4 @@ function Profil() {
   );
 }
 
-export default Profil;
-
+export default ProfileEtudiant;
