@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-// import { useHistory } from 'react-router-dom';
 import { auth, db } from '../../Config/firebaseConfig';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom'; // Import pour la navigation
-import image1 from '../../Images/ImagesAdmin/logini.webp'
-import logoSite from '../../Images/ImagesAdmin/1.png'
-
+import image1 from '../../Images/ImagesAdmin/logini.webp';
+import logoSite from '../../Images/ImagesAdmin/1.png';
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -29,6 +27,17 @@ const Login = () => {
         const userData = userDoc.data();
         const role = userData.role;
 
+        // Stockez les informations de l'utilisateur dans localStorage
+        localStorage.setItem(
+          "userData",
+          JSON.stringify({
+            name: `${userData.nom} ${userData.prenom}`, // Nom complet
+            role: role,
+            email: userData.email,
+          })
+        );
+
+        // Redirigez vers le bon tableau de bord
         if (role === "admin") {
           navigate("/admin/dashboard");
         } else if (role === "coach") {
@@ -137,4 +146,3 @@ const Login = () => {
 };
 
 export default Login;
-

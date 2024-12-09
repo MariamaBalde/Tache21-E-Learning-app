@@ -1,6 +1,7 @@
 // The best
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+
 import {
   FiMenu,
   FiX,
@@ -10,7 +11,7 @@ import {
   FiClipboard,
   FiHelpCircle,
 } from 'react-icons/fi';
-import { FaPaperPlane, FaProjectDiagram } from 'react-icons/fa';
+import { FaPaperPlane, FaProjectDiagram, FaEnvelope } from 'react-icons/fa';
 
 import logo from '../../Images/ImagesAdmin/logo2.png';
 
@@ -42,11 +43,11 @@ const Sidebar = () => {
       )}
 
       <div
-        className={`fixed top-0 left-0 h-full w-42 p-4 text-white font-bold bg-[#191970] transform transition-transform duration-300 ease-in-out z-20 ${
+        className={`fixed top-0 left-0 h-full w-42 p-4 text-white  font-bold bg-[#191970] transform transition-transform duration-300 ease-in-out z-20 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         } lg:translate-x-0 lg:static lg:h-screen lg:w-56`}
       >
-        <img src={logo} alt="Logo" className="h-16 w-16 mb-6 mr-2" />
+        <img src={logo} alt="Logo" className="h-16 w-16 mb-6  mr-2" />
         <nav>
           <ul>
             <li>
@@ -147,6 +148,26 @@ const Sidebar = () => {
               >
                 <FaProjectDiagram className="mr-2" />
                 Projets
+              </NavLink>
+            </li>
+            <li>
+              {/* <NavLink
+                                to="/coach/dashboard/messagerie"
+                                className={`flex items-center py-2 px-3 ${activeLink === '/coach/dashboard/messagerie' ? 'bg-gray-400' : 'hover:bg-gray-400'} rounded`}
+                                onClick={() => handleLinkClick('/coach/dashboard/messagerie')}
+                            >
+                                <FaEnvelope className="mr-2" />
+                                Messagerie
+                            </NavLink> */}
+
+              <NavLink
+                to="/coach/dashboard/messagerie"
+                className="flex items-center py-2 px-3 hover:bg-gray-700 rounded"
+                activeClassName="bg-gray-700"
+                onClick={() => setIsOpen(false)}
+              >
+                <FaEnvelope className="mr-2" />
+                Messagerie
               </NavLink>
             </li>
           </ul>
