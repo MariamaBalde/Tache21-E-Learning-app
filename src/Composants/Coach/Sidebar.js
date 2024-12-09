@@ -1,12 +1,14 @@
 // The best
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+
 import { FiMenu, FiX, FiHome, FiBookOpen, FiLayers, FiClipboard, FiHelpCircle } from 'react-icons/fi';
 import { FaPaperPlane, FaProjectDiagram, FaEnvelope, } from 'react-icons/fa';
 
 import logo from '../../Images/ImagesAdmin/logo2.png';
 
 const Sidebar = () => {
+
     const [isOpen, setIsOpen] = useState(false);
     const [activeLink, setActiveLink] = useState(''); // Ajout d'un état pour le lien actif
 
@@ -110,16 +112,26 @@ const Sidebar = () => {
                                 Projets
                             </NavLink>
                         </li>
-                        {/* <li>
-                            <NavLink
+                        <li>
+                            {/* <NavLink
                                 to="/coach/dashboard/messagerie"
                                 className={`flex items-center py-2 px-3 ${activeLink === '/coach/dashboard/messagerie' ? 'bg-gray-400' : 'hover:bg-gray-400'} rounded`}
                                 onClick={() => handleLinkClick('/coach/dashboard/messagerie')}
                             >
                                 <FaEnvelope className="mr-2" />
                                 Messagerie
+                            </NavLink> */}
+
+                            <NavLink
+                                to="/coach/dashboard/messagerie"
+                                className="flex items-center py-2 px-3 hover:bg-gray-700 rounded"
+                                activeClassName="bg-gray-700"
+                                onClick={() => setIsOpen(false)}
+                            >
+                                <FaEnvelope className="mr-2" />
+                                Messagerie
                             </NavLink>
-                        </li> */}
+                        </li>
                     </ul>
                 </nav>
             </div>
