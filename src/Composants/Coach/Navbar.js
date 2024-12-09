@@ -1,12 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FiBell, FiMail, FiX } from 'react-icons/fi'; // Icônes de messagerie et de fermeture
 import MessagerieCoach from './MessagerieCoach'; // Import du composant MessagerieCoach
 import Profil from './Profil'; // Import du composant Profil si nécessaire
 
 function Navbar() {
+  const [userData, setUserData] = useState({});
+
+  useEffect(() => {
+    const storedUserData = localStorage.getItem("userData");
+    if (storedUserData) {
+      setUserData(JSON.parse(storedUserData));
+    }
+  }, []);
+
   // État pour contrôler l'affichage du modal de messagerie
   const [showMessagerie, setShowMessagerie] = useState(false);
-
   // Fonction pour basculer l'affichage du modal
   const toggleMessagerie = () => {
     setShowMessagerie(!showMessagerie); // Inverse l'état de showMessagerie
@@ -34,7 +42,7 @@ function Navbar() {
         <FiBell className="text-gray-600" />
 
         {/* Profil (si nécessaire) */}
-        <Profil className="text-gray-500" />
+        <Profil userData={userData} className="text-gray-500" />
       </div>
 
       {/* Modal affiché si l'état showMessagerie est true */}
@@ -59,3 +67,4 @@ function Navbar() {
 }
 
 export default Navbar;
+// original
