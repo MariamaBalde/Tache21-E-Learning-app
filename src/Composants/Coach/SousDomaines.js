@@ -1,5 +1,4 @@
-
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { db } from '../../Config/firebaseConfig';
 import {
@@ -15,7 +14,8 @@ import {
 import { FaPlus, FaTrashAlt } from 'react-icons/fa';
 
 const SousDomaines = () => {
-  const { domaineId } = useParams();
+  const { domaineId, sousDomaineId } = useParams();
+
   const [sousDomaines, setSousDomaines] = useState([]);
   const [newSousDomaine, setNewSousDomaine] = useState('');
   const [imageURL, setImageURL] = useState('');
@@ -103,7 +103,7 @@ const SousDomaines = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 toto">
       <h1 className="text-2xl font-semibold mb-6">
         Sous-domaines pour le domaine : {domaineName || 'Chargement...'}
       </h1>
@@ -122,9 +122,12 @@ const SousDomaines = () => {
             key={sousDomaine.id}
             className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-4"
           >
-            <h2 className="text-lg font-semibold text-blue-600">
+            <Link
+              to={`/coach/dashboard/domains/${domaineId}/sous-domaines/${sousDomaine.id}/cours`}
+              className="text-lg font-semibold text-blue-600"
+            >
               {sousDomaine.name}
-            </h2>
+            </Link>
             <img
               src={sousDomaine.imageURL || '/default-image.jpg'}
               alt={sousDomaine.name}
@@ -221,4 +224,3 @@ const SousDomaines = () => {
 };
 
 export default SousDomaines;
-

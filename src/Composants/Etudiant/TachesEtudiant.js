@@ -1,6 +1,7 @@
 import React from 'react';
 
-export const Taches = () => {
+const TachesEtudiant = () => {
+
   const task = {
     number: "1",
     duration: "168h",
@@ -69,5 +70,5 @@ export const Taches = () => {
   );
 };
 
-// Export par défaut
-export default Taches;
+
+export default TachesEtudiant;
