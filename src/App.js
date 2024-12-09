@@ -27,6 +27,7 @@ import LivraisonsEtudiant from './Composants/Etudiant/LivraisonsEtudiant.js';
 import QuizzesEtudiants from './Composants/Etudiant/QuizzesEtudiants.js';
 import MessagerieEtudiant from './Composants/Etudiant/MessagerieEtudiant.js';
 import ProjetsEtudiant from './Composants/Etudiant/ProjetsEtudiant.js';
+import DomainsList from './Composants/Admin/DomainsList.js';
 
 const router = createBrowserRouter([
   {
@@ -53,6 +54,14 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: 'admin/domaine',
+        element: (
+          <PrivateRoute roleRequired="admin">
+            <DomainsList />
+          </PrivateRoute>
+        ),
+      },
+      {
         path: 'coach/dashboard',
         element: (
           <PrivateRoute roleRequired="coach">
@@ -69,7 +78,7 @@ const router = createBrowserRouter([
           { path: 'quizzes', element: <Quizzes /> },
           { path: 'quizzes/add-quiz', element: <AddQuiz /> },
           { path: 'quizzes/quiz-details/:quizId', element: <QuizDetails /> },
-          // { path: 'quizzes/edit-quiz/:quizId', element: <EditQuiz /> },
+          { path: 'quizzes/edit-quiz/:quizId', element: <EditQuiz /> },
           { path: 'quizzes/edit-quiz/:id', element: <EditQuiz /> },
 
           {
@@ -84,7 +93,7 @@ const router = createBrowserRouter([
             element: <Cours />,
           },
           {
-            path: 'domains/:domaineId/sous-domaines/:sousDomaineId/cours/play-quiz/:id',
+            path: 'domains/:domaineId/sous-domaines/:sousDomaineId/cours/play-quiz/:quizId',
             element: <PlayQuiz />,
           },
         ],
