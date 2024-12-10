@@ -44,4 +44,4 @@ function Navbar({ initialUnreadMessages = 0, onMessageSend }) {
   );
 }
 
-export default Navbar;
+export default Navbar;   
