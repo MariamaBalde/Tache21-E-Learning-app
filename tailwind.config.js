@@ -1,9 +1,14 @@
 
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: ["./src/**/*.{js,jsx,ts,tsx}",],
+export default {
+  content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
+      screens:{
+        'xss' : '500px',
+        'xs' : '410px',
+        'xxs' : '320px',
+      },
       colors: {
         // primaryGreen: "#00B894", // Couleur pour le bouton "Démarrer"
         // secondaryGreen: "#F4FBF9", // Couleur de fond
@@ -13,9 +18,10 @@ module.exports = {
         pink200: '#EFD9D1', // Replace with actual hex colors
         blue200: '#D5C8E1',
         green200: '#B9E0D6',
+        'royal-blue': '#4169E1',
+        'light-blue': '#87CEEB',
       },
     },
   },
   plugins: [],
-}
-
+};
