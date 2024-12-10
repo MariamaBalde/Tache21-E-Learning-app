@@ -1,4 +1,5 @@
 
+
 // src/Composants/Coach/CoachDashboard.js
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
@@ -53,5 +54,6 @@ const StudentDashboard = () => {
         </div>
     );
 };
+
 
 export default StudentDashboard;
