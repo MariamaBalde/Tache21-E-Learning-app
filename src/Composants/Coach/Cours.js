@@ -11,6 +11,8 @@ import {
   updateDoc,
   deleteDoc,
 } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
+
 import { FaPlus, FaEdit, FaTrashAlt } from 'react-icons/fa';
 
 const Cours = () => {
@@ -29,6 +31,8 @@ const Cours = () => {
     description: '',
     link: '',
   });
+
+  const navigate = useNavigate(); // Instancier la fonction navigate
 
   // Récupérer les cours du sous-domaine
   const fetchCours = async () => {
@@ -175,6 +179,13 @@ const Cours = () => {
     }
   };
 
+  // Fonction pour aller sur la page "Jouer" d’un quiz
+  const handlePlayQuiz = (domaineId, sousDomaineId, quizId) => {
+    navigate(
+      `/domains/${domaineId}/sous-domaines/${sousDomaineId}/cours/play-quiz/${quizId}`
+    );
+  };
+
   const openEditQuizModal = (quizId) => {
     setQuizToEditId(quizId); // Définit le quiz à modifier
     setIsEditMode(true); // Active le mode édition
@@ -248,6 +259,11 @@ const Cours = () => {
                 <p className="text-sm text-gray-600">{quiz.description}</p>
               </div>
               <div className="flex space-x-2">
+                <div key={quiz.id}>
+                  <h2>{quiz.course}</h2>
+                  <button onClick={() => handlePlayQuiz(quiz.id)}>Jouer</button>
+                </div>
+
                 <button
                   onClick={() => openEditQuizModal(quiz.id)}
                   className="text-blue-600 hover:text-blue-800"
