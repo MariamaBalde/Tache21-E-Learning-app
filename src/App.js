@@ -4,7 +4,7 @@ import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import Login from './Composants/Auth/Login';
 import AdminDashboard from './Composants/Admin/Dashboard';
 import InscrireUtilisateur from './Composants/Admin/InscrireUtilisateur';
-import CoachDashboard from './Composants/Coach/CoachDashboard.js';
+import CoachDashboard from './Composants/Coach/CoachDashboard';
 import StudentDashboard from './Composants/Etudiant/StudentDashboard.js';
 import NotFound from './Pages/NotFound.js';
 import PrivateRoute from './Utils/PrivateRoute.js';
