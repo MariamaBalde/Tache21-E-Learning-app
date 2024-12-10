@@ -1,4 +1,3 @@
-// src/Composants/Coach/CoachDashboard.js
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Sidebar from './Sidebar';
@@ -53,4 +52,6 @@ const StudentDashboard = () => {
     );
 };
 
+
 export default StudentDashboard;
+
