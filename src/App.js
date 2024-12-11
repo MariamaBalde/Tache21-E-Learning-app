@@ -20,7 +20,6 @@ import AddQuiz from './Composants/Coach/quizz/AddQuiz.js';
 import QuizDetails from './Composants/Coach/quizz/QuizDetails.js';
 import EditQuiz from './Composants/Coach/quizz/EditQuiz.js';
 import PlayQuiz from './Composants/Coach/quizz/PlayQuiz.js';
-import PlayQuizCours from './Composants/Coach/PlayQuizCours.js';
 import CoursEtudiant from './Composants/Etudiant/CoursEtudiant.js';
 import TachesEtudiant from './Composants/Etudiant/TachesEtudiant.js';
 import LivraisonsEtudiant from './Composants/Etudiant/LivraisonsEtudiant.js';
