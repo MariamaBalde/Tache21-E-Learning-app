@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FiBell, FiMail, FiX, FiSend } from "react-icons/fi";
-import ProfileEtudiant from './ProfileEtudiant';
+import Profil from '../Coach/Profil';
 
 const Navbar = ({ onAddTask }) => {
   const [userData, setUserData] = useState({}); // Stocke les données utilisateur
@@ -74,7 +74,7 @@ const Navbar = ({ onAddTask }) => {
         <FiBell className="text-gray-600" />
         
         {/* Affichage du profil utilisateur */}
-        <ProfileEtudiant userData={userData} />
+        <Profil className="text-gray-500" />
       </div>
 
       {/* Modal pour soumettre une tâche */}
