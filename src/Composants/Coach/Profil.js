@@ -128,7 +128,7 @@ function Profil() {
             <h2 className="text-lg font-bold mb-4">Modifier le Profil</h2>
             <form onSubmit={handleSubmit}>
               {/* Image de profil */}
-              <div className="flex justify-center mb-6">
+              <div className="flex justify-center text-white mb-6">
                 <img
                   src={formData.photo || userData.image}
                   alt="Photo actuelle"
@@ -144,7 +144,7 @@ function Profil() {
                   name="nom"
                   value={formData.nom} // Utilise uniquement formData
                   onChange={handleChange}
-                  className="w-2/3 border border-gray-300 rounded-md p-2"
+                  className="w-2/3 border border-gray-300 text-white rounded-md p-2"
                 />
               </div>
 

@@ -1,6 +1,8 @@
 import React from 'react';
 import { FaBell, FaUserCircle, FaSearch } from 'react-icons/fa';
 import logo from '../../Images/ImagesAdmin/logo2.png';
+import Profil from '../Coach/Profil'; // Import du composant Profil si nécessaire
+
 
 const Navbar = () => {
   return (
@@ -22,14 +24,14 @@ const Navbar = () => {
               3
             </span>
           </button>
-          <button>
-            <FaUserCircle className="text-white text-2xl hover:text-gray-300" />
-          </button>
+          {/* <button> */}
+            {/* <FaUserCircle className="text-white text-2xl hover:text-gray-300" /> */}
+          <Profil className="text-gray-500" />
+          {/* </button> */}
         </div>
       </div>
     </nav>
   );
 };
 
-// Export du composant
 export default Navbar;
