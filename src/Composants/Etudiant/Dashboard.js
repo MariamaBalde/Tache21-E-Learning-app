@@ -1,31 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import GradientCard from "./GradientCard";
-import { ClipboardCheck, ClipboardList, Layers, Trash2 } from "lucide-react"; // Importation des icônes
+import { ClipboardCheck, ClipboardList, Layers, Trash2 } from "lucide-react";
 
 const Dashboard = () => {
+  const [tasks, setTasks] = useState([]); // État pour les tâches
+
   return (
     <main className="p-6">
       {/* Titre principal */}
-      <h2 className="text-xl text-sky-950 font-bold mb-4">Word Sets</h2>
+      <h2 className="text-xl text-sky-950 font-bold mb-4">Dashboard AAR Diangue</h2>
 
       {/* Cartes */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-        {/* Carte Tâches */}
         <GradientCard
           title="Tâches"
-          icon={ClipboardList} // Icône pour les tâches
+          icon={ClipboardList}
           gradient="bg-gradient-to-br from-blue-600 to-blue-300"
         />
-        {/* Carte Tâches Validées */}
         <GradientCard
           title="Tâches Validées"
-          icon={ClipboardCheck} // Icône pour les tâches validées
+          icon={ClipboardCheck}
           gradient="bg-gradient-to-br from-blue-300 to-[#FF66FF]"
         />
-        {/* Carte Programmes */}
         <GradientCard
           title="Programmes"
-          icon={Layers} // Icône pour les programmes
+          icon={Layers}
           gradient="bg-gradient-to-br from-white to-blue-800"
         />
       </div>
@@ -50,7 +49,7 @@ const Dashboard = () => {
           />
         </div>
 
-        {/* Icône Supprimer */}
+        {/* Bouton Supprimer */}
         <button
           className="flex items-center space-x-2 text-red-500 hover:text-red-700 ml-4"
           onClick={() => alert("Action Supprimer déclenchée !")}
