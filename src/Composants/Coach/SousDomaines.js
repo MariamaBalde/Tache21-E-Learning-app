@@ -123,7 +123,7 @@ const SousDomaines = () => {
             className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-4"
           >
             <Link
-              to={`/coach/dashboard/domains/${domaineId}/sous-domaines/${sousDomaine.id}/cours `}
+              to={`domains/${domaineId}/sous-domaines/${sousDomaine.id}/cours`}
               className="text-lg font-semibold text-blue-600"
             >
               {sousDomaine.name}

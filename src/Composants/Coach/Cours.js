@@ -181,9 +181,7 @@ const Cours = () => {
 
   // Fonction pour aller sur la page "Jouer" d’un quiz
   const handlePlayQuiz = (domaineId, sousDomaineId, quizId) => {
-    navigate(
-      `/domains/${domaineId}/sous-domaines/${sousDomaineId}/cours/play-quiz/${quizId}`
-    );
+    navigate(`/domains/${sousDomaineId}/cours/play-quiz/${quizId}`);
   };
 
   const openEditQuizModal = (quizId) => {
