@@ -120,11 +120,15 @@ const SousDomaines = () => {
         {sousDomaines.map((sousDomaine) => (
           <div
             key={sousDomaine.id}
-            className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-4"
+            className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-4 border border-blue-600"
           >
             <Link
               to={`/coach/dashboard/domains/${domaineId}/sous-domaines/${sousDomaine.id}/cours`}
+<<<<<<< HEAD
+              className="font-bold text-xl text-blue-600 hover:text-blue-800"
+=======
               className="text-lg font-semibold text-blue-600"
+>>>>>>> 830a6300951a4ba0b6bd6096fb543d0090188d1f
             >
               {sousDomaine.name}
             </Link>
