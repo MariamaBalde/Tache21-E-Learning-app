@@ -9,7 +9,11 @@ import {
   doc,
   deleteDoc,
 } from 'firebase/firestore';
-import { ArchiveIcon, TrashIcon, XIcon } from '@heroicons/react/solid'; // Importer les icônes
+import {
+  ArchiveBoxIcon,
+  TrashIcon,
+  XMarkIcon,
+} from '@heroicons/react/24/outline'; // Importer les icônes
 
 const DomainsList = () => {
   const [domains, setDomains] = useState([]);
@@ -134,9 +138,9 @@ const DomainsList = () => {
                   }`}
                 >
                   {domain.archived ? (
-                    <XIcon className="h-5 w-5 text-white" />
+                    <XMarkIcon className="h-5 w-5 text-white" />
                   ) : (
-                    <ArchiveIcon className="h-5 w-5 text-white" />
+                    <ArchiveBoxIcon className="h-5 w-5 text-white" />
                   )}
                 </button>
                 {/* Texte au survol pour l'archivage */}

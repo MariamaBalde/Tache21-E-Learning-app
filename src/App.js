@@ -1,9 +1,10 @@
+
 import React from 'react';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import Login from './Composants/Auth/Login';
 import AdminDashboard from './Composants/Admin/Dashboard';
 import InscrireUtilisateur from './Composants/Admin/InscrireUtilisateur';
-import CoachDashboard from './Composants/Coach/CoachDashboard.js';
+import CoachDashboard from './Composants/Coach/CoachDashboard';
 import StudentDashboard from './Composants/Etudiant/StudentDashboard.js';
 import NotFound from './Pages/NotFound.js';
 import PrivateRoute from './Utils/PrivateRoute.js';
@@ -20,12 +21,13 @@ import AddQuiz from './Composants/Coach/quizz/AddQuiz.js';
 import QuizDetails from './Composants/Coach/quizz/QuizDetails.js';
 import EditQuiz from './Composants/Coach/quizz/EditQuiz.js';
 import PlayQuiz from './Composants/Coach/quizz/PlayQuiz.js';
-import CoursEtudiant from './Composants/Etudiant/CoursEtudiant.js'
+import CoursEtudiant from './Composants/Etudiant/CoursEtudiant.js';
 import TachesEtudiant from './Composants/Etudiant/TachesEtudiant.js';
 import LivraisonsEtudiant from './Composants/Etudiant/LivraisonsEtudiant.js';
 import QuizzesEtudiants from './Composants/Etudiant/QuizzesEtudiants.js';
-import MessagerieEtudiant  from './Composants/Etudiant/MessagerieEtudiant.js';
+import MessagerieEtudiant from './Composants/Etudiant/MessagerieEtudiant.js';
 import ProjetsEtudiant from './Composants/Etudiant/ProjetsEtudiant.js';
+import DomainsList from './Composants/Admin/DomainsList.js';
 
 const router = createBrowserRouter([
   {
@@ -52,6 +54,14 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: 'admin/domaine',
+        element: (
+          <PrivateRoute roleRequired="admin">
+            <DomainsList />
+          </PrivateRoute>
+        ),
+      },
+      {
         path: 'coach/dashboard',
         element: (
           <PrivateRoute roleRequired="coach">
@@ -68,7 +78,7 @@ const router = createBrowserRouter([
           { path: 'quizzes', element: <Quizzes /> },
           { path: 'quizzes/add-quiz', element: <AddQuiz /> },
           { path: 'quizzes/quiz-details/:quizId', element: <QuizDetails /> },
-          // { path: 'quizzes/edit-quiz/:quizId', element: <EditQuiz /> },
+          { path: 'quizzes/edit-quiz/:quizId', element: <EditQuiz /> },
           { path: 'quizzes/edit-quiz/:id', element: <EditQuiz /> },
 
           {
@@ -82,6 +92,10 @@ const router = createBrowserRouter([
             path: 'domains/:domaineId/sous-domaines/:sousDomaineId/cours',
             element: <Cours />,
           },
+          {
+            path: 'domains/:domaineId/sous-domaines/:sousDomaineId/cours/play-quiz/:quizId',
+            element: <PlayQuiz />,
+          },
         ],
       },
       {
@@ -91,14 +105,14 @@ const router = createBrowserRouter([
             <StudentDashboard />
           </PrivateRoute>
         ),
-        children:[
-          { path: 'coursEtudiant', element: <CoursEtudiant />},
+        children: [
+          { path: 'coursEtudiant', element: <CoursEtudiant /> },
           { path: 'tachesEtudiant', element: <TachesEtudiant /> },
           { path: 'livraisonsEtudiant', element: <LivraisonsEtudiant /> },
           { path: 'quizzesEtudiants', element: <QuizzesEtudiants /> },
           { path: 'projetsEtudiant', element: <ProjetsEtudiant /> },
           { path: 'messagerieEtudiant', element: <MessagerieEtudiant /> },
-        ]
+        ],
       },
       { path: '*', element: <NotFound /> },
     ],
