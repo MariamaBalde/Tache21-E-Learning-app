@@ -1,5 +1,4 @@
 // src/Composants/Coach/CoachDashboard.js
-import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
@@ -14,7 +13,6 @@ import Livraisons from './Livraisons';
 import PlayQuiz from './quizz/PlayQuiz';
 import AddQuiz from './quizz/AddQuiz';
 import QuizDetails from './quizz/QuizDetails';
-import PlayQuizCours from './PlayQuizCours';
 
 const CoachDashboard = () => {
   return (
@@ -31,10 +29,6 @@ const CoachDashboard = () => {
               path="domains/:domaineId/sous-domaines/:sousDomaineId/cours"
               element={<Cours />}
             />
-            {/* <Route
-              path="/domains/:domaineId/sous-domaines/:sousDomaineId/cours/play-quiz/:quizId"
-              element={<PlayQuiz />}
-            /> */}
             <Route path="sous-domaines" element={<SousDomaines />} />
             <Route path="cours" element={<Cours />} />
             <Route path="livraisons" element={<Livraisons />} />
