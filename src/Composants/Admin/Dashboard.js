@@ -7,7 +7,7 @@ import {
   doc,
   deleteDoc,
 } from 'firebase/firestore';
-import Navbar from '../Shared/Navbar';
+import Navbar from '../Admin/Navbar';
 import { useNavigate } from 'react-router-dom';
 
 const AdminDashboard = () => {
@@ -176,5 +176,6 @@ const AdminDashboard = () => {
     </div>
   );
 };
+
 
 export default AdminDashboard;

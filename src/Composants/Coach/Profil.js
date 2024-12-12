@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-
+import { auth, db } from "../../Config/firebaseConfig"; // Import des instances Firebase
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 function Profil() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userData, setUserData] = useState({
     name: "Utilisateur",
-    firstName: "",
     email: "",
     phone: "",
     image: "https://via.placeholder.com/40",
@@ -18,22 +18,35 @@ function Profil() {
     photo: null,
   });
 
-  // Charger les données utilisateur depuis le localStorage
+  // Charger les données utilisateur depuis Firebase
   useEffect(() => {
-    const storedUserData = localStorage.getItem("userData");
-    if (storedUserData) {
-      const parsedUserData = JSON.parse(storedUserData);
-      setUserData(parsedUserData);
+    const fetchUserData = async () => {
+      const user = auth.currentUser;
+      if (user) {
+        try {
+          const userDoc = await getDoc(doc(db, "users", user.uid));
+          if (userDoc.exists()) {
+            const data = userDoc.data();
+            setUserData({
+              name: `${data.nom} ${data.prenom}`,
+              email: data.email,
+              phone: data.telephone || "",
+              image: data.photo || "https://via.placeholder.com/40",
+            });
+            setFormData({
+              nom: data.nom || "",
+              prenom: data.prenom || "",
+              telephone: data.telephone || "",
+              photo: null,
+            });
+          }
+        } catch (error) {
+          console.error("Erreur lors du chargement des données utilisateur :", error);
+        }
+      }
+    };
 
-      // Pré-remplir le formulaire avec les valeurs par défaut
-      const [name, firstName] = parsedUserData.name.split(" ");
-      setFormData({
-        nom: name || "",
-        prenom: firstName || "",
-        telephone: parsedUserData.phone || "",
-        photo: null,
-      });
-    }
+    fetchUserData();
   }, []);
 
   const toggleDropdown = () => {
@@ -49,23 +62,35 @@ function Profil() {
     setIsModalOpen(!isModalOpen);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setUserData({
-      name: `${formData.nom} ${formData.prenom}`,
-      phone: formData.telephone,
-      image: formData.photo || userData.image,
-    });
-    localStorage.setItem(
-      "userData",
-      JSON.stringify({
-        name: `${formData.nom} ${formData.prenom}`,
-        email: userData.email,
-        phone: formData.telephone,
-        image: formData.photo || userData.image,
-      })
-    );
-    toggleModal(); // Fermer la modal après l'enregistrement
+    const user = auth.currentUser;
+
+    if (user) {
+      try {
+        // Mettre à jour les données dans Firestore
+        const userRef = doc(db, "users", user.uid);
+        await updateDoc(userRef, {
+          nom: formData.nom,
+          prenom: formData.prenom,
+          telephone: formData.telephone,
+          photo: formData.photo || userData.image,
+        });
+
+        // Mettre à jour localement
+        setUserData({
+          name: `${formData.nom} ${formData.prenom}`,
+          email: userData.email,
+          phone: formData.telephone,
+          image: formData.photo || userData.image,
+        });
+
+        // Fermer la modal
+        toggleModal();
+      } catch (error) {
+        console.error("Erreur lors de la mise à jour des données utilisateur :", error);
+      }
+    }
   };
 
   const handleChange = (e) => {
@@ -128,7 +153,7 @@ function Profil() {
             <h2 className="text-lg font-bold mb-4">Modifier le Profil</h2>
             <form onSubmit={handleSubmit}>
               {/* Image de profil */}
-              <div className="flex justify-center mb-6">
+              <div className="flex justify-center text-white mb-6">
                 <img
                   src={formData.photo || userData.image}
                   alt="Photo actuelle"
@@ -142,7 +167,7 @@ function Profil() {
                 <input
                   type="text"
                   name="nom"
-                  value={formData.nom} // Utilise uniquement formData
+                  value={formData.nom}
                   onChange={handleChange}
                   className="w-2/3 border border-gray-300 rounded-md p-2"
                 />
@@ -154,7 +179,7 @@ function Profil() {
                 <input
                   type="text"
                   name="prenom"
-                  value={formData.prenom} // Utilise uniquement formData
+                  value={formData.prenom}
                   onChange={handleChange}
                   className="w-2/3 border border-gray-300 rounded-md p-2"
                 />
@@ -206,13 +231,9 @@ function Profil() {
     </div>
   );
 }
-
 export default Profil;
 
-
-
 // import React, { useState, useEffect } from "react";
-
 // function Profil() {
 //   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 //   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -235,7 +256,17 @@ export default Profil;
 //   useEffect(() => {
 //     const storedUserData = localStorage.getItem("userData");
 //     if (storedUserData) {
-//       setUserData(JSON.parse(storedUserData));
+//       const parsedUserData = JSON.parse(storedUserData);
+//       setUserData(parsedUserData);
+
+//       // Pré-remplir le formulaire avec les valeurs par défaut
+//       const [name, firstName] = parsedUserData.name.split(" ");
+//       setFormData({
+//         nom: name || "",
+//         prenom: firstName || "",
+//         telephone: parsedUserData.phone || "",
+//         photo: null,
+//       });
 //     }
 //   }, []);
 
@@ -268,7 +299,7 @@ export default Profil;
 //         image: formData.photo || userData.image,
 //       })
 //     );
-//     toggleModal(); // Close the modal after save
+//     toggleModal(); // Fermer la modal après l'enregistrement
 //   };
 
 //   const handleChange = (e) => {
@@ -310,7 +341,7 @@ export default Profil;
 //           <ul className="py-2">
 //             <li
 //               className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-//               onClick={toggleModal} // Ouvrir le modal
+//               onClick={toggleModal}
 //             >
 //               Profil
 //             </li>
@@ -331,7 +362,7 @@ export default Profil;
 //             <h2 className="text-lg font-bold mb-4">Modifier le Profil</h2>
 //             <form onSubmit={handleSubmit}>
 //               {/* Image de profil */}
-//               <div className="flex justify-center mb-6">
+//               <div className="flex justify-center text-white mb-6">
 //                 <img
 //                   src={formData.photo || userData.image}
 //                   alt="Photo actuelle"
@@ -345,9 +376,9 @@ export default Profil;
 //                 <input
 //                   type="text"
 //                   name="nom"
-//                   value={formData.nom || userData.name.split(" ")[0]} // Pré-remplir le nom
+//                   value={formData.nom} // Utilise uniquement formData
 //                   onChange={handleChange}
-//                   className="w-2/3 border border-gray-300 rounded-md p-2"
+//                   className="w-2/3 border border-gray-300  rounded-md p-2"
 //                 />
 //               </div>
 
@@ -357,7 +388,7 @@ export default Profil;
 //                 <input
 //                   type="text"
 //                   name="prenom"
-//                   value={formData.prenom || userData.name.split(" ")[1]} // Pré-remplir le prénom
+//                   value={formData.prenom} // Utilise uniquement formData
 //                   onChange={handleChange}
 //                   className="w-2/3 border border-gray-300 rounded-md p-2"
 //                 />
@@ -369,7 +400,7 @@ export default Profil;
 //                 <input
 //                   type="tel"
 //                   name="telephone"
-//                   value={formData.telephone || userData.phone}
+//                   value={formData.telephone}
 //                   onChange={handleChange}
 //                   className="w-2/3 border border-gray-300 rounded-md p-2"
 //                 />
@@ -409,10 +440,5 @@ export default Profil;
 //     </div>
 //   );
 // }
-
 // export default Profil;
-
-
-
-
 

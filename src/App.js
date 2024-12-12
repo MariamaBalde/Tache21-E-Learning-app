@@ -1,9 +1,10 @@
+
 import React from 'react';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import Login from './Composants/Auth/Login';
 import AdminDashboard from './Composants/Admin/Dashboard';
 import InscrireUtilisateur from './Composants/Admin/InscrireUtilisateur';
-import CoachDashboard from './Composants/Coach/CoachDashboard.js';
+import CoachDashboard from './Composants/Coach/CoachDashboard';
 import StudentDashboard from './Composants/Etudiant/StudentDashboard.js';
 import NotFound from './Pages/NotFound.js';
 import PrivateRoute from './Utils/PrivateRoute.js';
@@ -20,7 +21,6 @@ import AddQuiz from './Composants/Coach/quizz/AddQuiz.js';
 import QuizDetails from './Composants/Coach/quizz/QuizDetails.js';
 import EditQuiz from './Composants/Coach/quizz/EditQuiz.js';
 import PlayQuiz from './Composants/Coach/quizz/PlayQuiz.js';
-import PlayQuizCours from './Composants/Coach/PlayQuizCours.js';
 import CoursEtudiant from './Composants/Etudiant/CoursEtudiant.js';
 import TachesEtudiant from './Composants/Etudiant/TachesEtudiant.js';
 import LivraisonsEtudiant from './Composants/Etudiant/LivraisonsEtudiant.js';
