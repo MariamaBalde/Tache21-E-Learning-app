@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { db } from '../../Config/firebaseConfig';
@@ -203,8 +204,9 @@ const Domains = () => {
         <button
           onClick={() => setShowAddDomainModal(true)}
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+          title="Ajouter un Nouveau Domaine" // Ajout du nom de l'action
         >
-          Ajouter un Domaine
+          Ajouter 
         </button>
       </div>
 
@@ -227,6 +229,7 @@ const Domains = () => {
                 <Link
                   to={`/coach/dashboard/domains/${domain.id}`}
                   className="font-bold text-xl text-blue-600 hover:text-blue-800"
+                  title="Voir " // Ajout du nom de l'action
                 >
                   {domain.name}
                 </Link>
@@ -235,35 +238,30 @@ const Domains = () => {
                 {/* Boutons pour éditer ou archiver un domaine */}
                 <button
                   onClick={() => editDomain(domain)} // Ouvre le formulaire de modification
-                  className={`text-yellow-500 hover:text-yellow-700 text-xl ${
-                    domain.archived ? 'disabled' : ''
-                  }`}
+                  className={`text-yellow-500 hover:text-yellow-700 text-xl ${domain.archived ? 'disabled' : ''}`}
                   disabled={domain.archived}
+                  title="Modifier" // Ajout du nom de l'action
                 >
                   <FaEdit />
                 </button>
                 <button
                   onClick={() => archiveDomain(domain.id)}
-                  className={`text-red-500 hover:text-red-700 text-xl ${
-                    domain.archived ? 'disabled' : ''
-                  }`}
+                  className={`text-red-500 hover:text-red-700 text-xl ${domain.archived ? 'disabled' : ''}`}
                   disabled={domain.archived}
+                  title="Archiver" // Ajout du nom de l'action
                 >
                   <FaArchive />
                 </button>
 
                 <button
                   onClick={() => showStudentsInDomain(domain.id)}
-                  className={`relative text-gray-500 hover:text-gray-700 text-xl ${
-                    domain.archived ? 'disabled' : ''
-                  }`}
+                  className={`relative text-gray-500 hover:text-gray-700 text-xl ${domain.archived ? 'disabled' : ''}`}
                   disabled={domain.archived}
+                  title="Voir " // Ajout du nom de l'action
                 >
                   <FaUsers />
                   <span
-                    className={`absolute top-0 left-0 text-xs font-bold ${
-                      studentCount === 0 ? 'text-gray-500' : 'text-red-500'
-                    }`}
+                    className={`absolute top-0 left-0 text-xs font-bold ${studentCount === 0 ? 'text-gray-500' : 'text-red-500'}`}
                     style={{ transform: 'translate(-50%, -50%)' }}
                   >
                     {studentCount === 0 ? '0' : studentCount}
@@ -274,10 +272,9 @@ const Domains = () => {
                     setSelectedDomain(domain.id); // Sélectionner le domaine
                     setShowModal(true);
                   }}
-                  className={`text-green-500 hover:text-green-700 text-xl ${
-                    domain.archived ? 'disabled' : ''
-                  }`}
+                  className={`text-green-500 hover:text-green-700 text-xl ${domain.archived ? 'disabled' : ''}`}
                   disabled={domain.archived}
+                  title="Ajouter " // Ajout du nom de l'action
                 >
                   <FaPlus />
                 </button>
@@ -287,140 +284,44 @@ const Domains = () => {
         })}
       </div>
 
-      {/* Modal for Editing Domain */}
-      {showEditDomainModal && domainToEdit && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-96">
-            <h2 className="text-xl font-semibold mb-4">Modifier le Domaine</h2>
-            <form onSubmit={handleEditDomainSubmit}>
+      {/* Modal pour ajouter un étudiant */}
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+            <h3 className="text-xl font-semibold text-center mb-4 bg-black text-white">Ajouter </h3>
+            <div className="mb-4">
               <input
                 type="text"
-                value={domainToEdit.name}
-                onChange={(e) =>
-                  setDomainToEdit({ ...domainToEdit, name: e.target.value })
-                }
-                className="border rounded w-full px-4 py-2 mb-4"
-                placeholder="Nom du domaine"
+                value={searchTerm}
+                onChange={(e) => handleSearch(e.target.value)}
+                className="w-full px-4 py-2 border rounded"
+                placeholder="Rechercher un étudiant..."
               />
-              <div className="flex justify-between">
-                <button
-                  type="submit"
-                  className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700"
-                >
-                  Sauvegarder
-                </button>
-                <button
-                  onClick={() => setShowEditDomainModal(false)}
-                  className="text-red-500 hover:text-red-700"
-                >
-                  Annuler
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+              {searchError && (
+                <p className="text-red-500 text-sm mt-2">
+                  Aucun étudiant trouvé avec ce nom.
+                </p>
+              )}
+            </div>
 
-      {/* Modal for Adding Student to Domain */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-96">
-            <h2 className="text-xl font-semibold mb-4">Ajouter un Étudiant</h2>
-            <input
-              type="text"
-              placeholder="Rechercher un étudiant"
-              value={searchTerm}
-              onChange={(e) => handleSearch(e.target.value)}
-              className="border rounded w-full px-4 py-2 mb-4"
-            />
-            {searchError && (
-              <div className="text-red-500 text-sm mb-4">
-                Aucun étudiant trouvé
-              </div>
-            )}
-            <ul>
+            <div className="space-y-2 max-h-60 overflow-y-auto">
               {filteredStudents.map((student) => (
-                <li
-                  key={student.id}
-                  className="flex justify-between items-center mb-2"
-                >
-                  <span>
-                    {student.nom} {student.prenom}
-                  </span>
+                <div key={student.id} className="flex justify-between items-center">
+                  <span>{student.nom} {student.prenom}</span>
                   <button
                     onClick={() => assignStudentToDomain(student.id)}
                     className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
-                    disabled={student.domaineId === selectedDomain} // Désactive le bouton si l'étudiant est déjà assigné au domaine
+                    title="Assigner cet étudiant au domaine" // Ajout du nom de l'action
                   >
-                    {student.domaineId === selectedDomain
-                      ? 'Déjà assigné'
-                      : 'Ajouter'}
+                    Assigner
                   </button>
-                </li>
+                </div>
               ))}
-            </ul>
+            </div>
             <button
               onClick={() => setShowModal(false)}
-              className="mt-4 text-red-500 hover:text-red-700"
-            >
-              Fermer
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Modal for Adding a New Domain */}
-      {showAddDomainModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-96">
-            <h2 className="text-xl font-semibold mb-4">
-              Ajouter un Nouveau Domaine
-            </h2>
-            <input
-              type="text"
-              placeholder="Nom du Domaine"
-              value={newDomainName}
-              onChange={(e) => setNewDomainName(e.target.value)}
-              className="border rounded w-full px-4 py-2 mb-4"
-            />
-            <div className="flex justify-between">
-              <button
-                onClick={handleAddDomain}
-                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700"
-              >
-                Ajouter
-              </button>
-              <button
-                onClick={() => setShowAddDomainModal(false)}
-                className="text-red-500 hover:text-red-700"
-              >
-                Annuler
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Modal for Viewing Students in Domain */}
-      {showStudentsList && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-96">
-            <h2 className="text-xl font-semibold mb-4">Étudiants du Domaine</h2>
-            {/* Afficher les étudiants ou un message s'il n'y en a aucun */}
-            {studentsInDomain.length === 0 ? (
-              <p>Aucun étudiant assigné pour ce domaine</p>
-            ) : (
-              <ul>
-                {studentsInDomain.map((student) => (
-                  <li key={student.id}>
-                    {student.nom} {student.prenom}
-                  </li>
-                ))}
-              </ul>
-            )}
-            <button
-              onClick={() => setShowStudentsList(false)}
-              className="text-red-500 hover:text-red-700 mt-4"
+              className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700"
+              title="Fermer le Modal" // Ajout du nom de l'action
             >
               Fermer
             </button>
