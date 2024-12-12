@@ -52,7 +52,7 @@ function MessagerieCoach() {
     };
 
     return (
-        <div className="grid grid-cols-5 mx-auto h-4/5 bg-gray-50">
+        <div className="grid grid-cols-5 h-4/5 bg-gray-50">
             {/* Liste des conversations */}
             <div className="col-span-1 bg-white p-4 border-r">
                 <h2 className="text-xl font-bold mb-4">Conversations</h2>

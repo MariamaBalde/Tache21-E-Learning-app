@@ -1,117 +1,118 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
 function Profil() {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [userData, setUserData] = useState({
-    name: "Utilisateur",
-    firstName: "",
-    email: "",
-    phone: "",
-    image: "https://via.placeholder.com/40",
-  });
-
+  const [isModalOpen, setModalOpen] = useState(false);
   const [formData, setFormData] = useState({
-    nom: "",
-    prenom: "",
-    telephone: "",
-    photo: null,
+    nom: '',
+    prenom: '',
+    telephone: '',
+    email: '',
   });
+  const [profileImage, setProfileImage] = useState(
+    'https://via.placeholder.com/100' // Image par défaut
+  );
+  const [isProfileEdited, setIsProfileEdited] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  // Charger les données utilisateur depuis le localStorage
   useEffect(() => {
-    const storedUserData = localStorage.getItem("userData");
-    if (storedUserData) {
-      setUserData(JSON.parse(storedUserData));
+    const savedData = JSON.parse(localStorage.getItem('profileData'));
+    if (savedData) {
+      setFormData(savedData.formData || {});
+      setProfileImage(savedData.profileImage || 'https://via.placeholder.com/100');
+      setIsProfileEdited(true);
     }
   }, []);
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+  const saveProfileData = () => {
+    const profileData = {
+      formData,
+      profileImage,
+    };
+    localStorage.setItem('profileData', JSON.stringify(profileData));
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("userData");
-    window.location.href = "/login";
-  };
-
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setUserData({
-      name: `${formData.nom} ${formData.prenom}`,
-      phone: formData.telephone,
-      image: formData.photo || userData.image,
-    });
-    localStorage.setItem(
-      "userData",
-      JSON.stringify({
-        name: `${formData.nom} ${formData.prenom}`,
-        email: userData.email,
-        phone: formData.telephone,
-        image: formData.photo || userData.image,
-      })
-    );
-    toggleModal(); // Close the modal after save
-  };
+  const toggleModal = () => setModalOpen(!isModalOpen);
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
   };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setFormData({ ...formData, photo: imageUrl });
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const imageBase64 = reader.result; // Convertir l'image en base64
+        setProfileImage(imageBase64);
+        localStorage.setItem(
+          'profileData',
+          JSON.stringify({ formData, profileImage: imageBase64 })
+        ); // Sauvegarder immédiatement
+      };
+      reader.readAsDataURL(file);
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsProfileEdited(true);
+    saveProfileData();
+    toggleModal();
+  };
+
+  const toggleMenu = () => setMenuOpen(!menuOpen);
+
+  const openProfileModal = () => {
+    toggleMenu();
+    toggleModal();
+  };
+
   return (
-    <div className="relative">
-      {/* Bouton principal */}
-      <div
-        onClick={toggleDropdown}
-        className="flex items-center cursor-pointer space-x-2"
-      >
+    <div className="relative flex items-center">
+      <div>
         <img
-          src={userData.image}
-          alt="Profil utilisateur"
-          className="w-10 h-10 rounded-full object-cover"
+          src={profileImage}
+          alt="Photo de profil"
+          className="w-8 h-8 rounded-full object-cover border border-gray-300 cursor-pointer"
+          onClick={toggleMenu}
         />
-        <span className="font-medium text-gray-800">
-          {userData.name || "Utilisateur"}
-        </span>
-        <span className="text-gray-500">▼</span>
+        {menuOpen && (
+          <div className="absolute bg-white rounded-lg shadow w-32 top-full right-0 z-10">
+            <ul className="py-2 text-sm text-gray-950">
+              <li>
+                <a href="#" onClick={openProfileModal} className="block px-4 py-2">
+                  Profil
+                </a>
+              </li>
+              <li>
+                <a href="#" className="block px-4 py-2">
+                  Settings
+                </a>
+              </li>
+              <li>
+                <a href="/login" className="block px-4 py-2">
+                  Déconnecter
+                </a>
+              </li>
+            </ul>
+          </div>
+        )}
       </div>
 
-      {/* Menu déroulant */}
-      {isDropdownOpen && (
-        <div className="absolute right-0 mt-2 bg-white shadow-md rounded-lg w-48 z-10">
-          <ul className="py-2">
-            <li
-              className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-              onClick={toggleModal} // Ouvrir le modal
-            >
-              Profil
-            </li>
-            <li
-              className="px-4 py-2 hover:bg-red-100 text-red-600 cursor-pointer"
-              onClick={handleLogout}
-            >
-              Déconnexion
-            </li>
-          </ul>
+      {isProfileEdited ? (
+        <div className="ml-2 text-sm">
+          <span>{formData.nom} {formData.prenom}</span>
         </div>
+      ) : (
+        <button onClick={toggleModal} className="ml-2 p-1 bg-blue-500 text-white rounded-full text-xs">
+          Modifier
+        </button>
       )}
 
-      {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-lg w-96 p-6">
@@ -120,7 +121,7 @@ function Profil() {
               {/* Image de profil */}
               <div className="flex justify-center mb-6">
                 <img
-                  src={formData.photo || userData.image}
+                  src={profileImage}
                   alt="Photo actuelle"
                   className="w-20 h-20 rounded-full object-cover border border-gray-300"
                 />
@@ -132,7 +133,7 @@ function Profil() {
                 <input
                   type="text"
                   name="nom"
-                  value={formData.nom || userData.name.split(" ")[0]} // Pré-remplir le nom
+                  value={formData.nom}
                   onChange={handleChange}
                   className="w-2/3 border border-gray-300 rounded-md p-2"
                 />
@@ -144,7 +145,7 @@ function Profil() {
                 <input
                   type="text"
                   name="prenom"
-                  value={formData.prenom || userData.name.split(" ")[1]} // Pré-remplir le prénom
+                  value={formData.prenom}
                   onChange={handleChange}
                   className="w-2/3 border border-gray-300 rounded-md p-2"
                 />
@@ -156,7 +157,7 @@ function Profil() {
                 <input
                   type="tel"
                   name="telephone"
-                  value={formData.telephone || userData.phone}
+                  value={formData.telephone}
                   onChange={handleChange}
                   className="w-2/3 border border-gray-300 rounded-md p-2"
                 />
@@ -198,7 +199,3 @@ function Profil() {
 }
 
 export default Profil;
-
-
-
-

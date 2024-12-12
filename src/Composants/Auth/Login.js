@@ -36,6 +36,8 @@ const Login = () => {
             email: userData.email,
           })
         );
+        console.log(localStorage.getItem("userData"));
+
 
         // Redirigez vers le bon tableau de bord
         if (role === "admin") {
