@@ -4,7 +4,7 @@ import Profil from '../Coach/Profil';
 import { storage, db } from "../../Config/firebaseConfig"; // Remplace par ton fichier de config Firebase
 
 
-const Navbar = ({ onAddTask }) => {
+const Navbar = () => {
   const [userData, setUserData] = useState({}); // Stocke les données utilisateur
   const [showModal, setShowModal] = useState(false); // État pour afficher le modal
   const [showMessagerie, setShowMessagerie] = useState(false); // État pour afficher la messagerie
