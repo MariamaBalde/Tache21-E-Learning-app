@@ -31,7 +31,7 @@ import DomainsList from './Composants/Admin/DomainsList.js';
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: '/', 
     element: <Outlet />, // Conteneur pour les routes
     children: [
       { path: '/', element: <LandingPage /> },

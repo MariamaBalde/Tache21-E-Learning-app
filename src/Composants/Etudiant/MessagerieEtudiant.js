@@ -1,62 +1,108 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 const MessagerieEtudiant = () => {
-    const [messages, setMessages] = useState([
-        { id: 1, sender: 'coach', text: 'Bonjour, comment puis-je vous aider ?', timestamp: '2024-12-05 10:00' },
-        { id: 2, sender: 'student', text: 'Bonjour Coach, j’ai une question sur le dernier cours.', timestamp: '2024-12-05 10:05' },
-    ]); // Messages fictifs pour l'exemple
+    const [conversations, setConversations] = useState([
+        {
+            id: 1,
+            name: 'Coach',
+            messages: [
+                { from: 'Coach', text: 'Bonjour, comment puis-je vous aider ?', time: '10:00' },
+                { from: 'Moi', text: 'Bonjour Coach, j’ai une question sur le dernier cours.', time: '10:05' },
+            ],
+        },
+    ]); // Liste des conversations initiales
+
+    const [selectedConversation, setSelectedConversation] = useState(conversations[0]);
     const [newMessage, setNewMessage] = useState('');
 
     // Fonction pour envoyer un message
     const sendMessage = () => {
         if (newMessage.trim() === '') return;
 
-        const newMsg = {
-            id: messages.length + 1,
-            sender: 'student',
-            text: newMessage,
-            timestamp: new Date().toLocaleString(),
-        };
+        const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-        setMessages((prevMessages) => [...prevMessages, newMsg]);
+        const updatedConversations = conversations.map((conv) => {
+            if (conv.id === selectedConversation.id) {
+                return {
+                    ...conv,
+                    messages: [...conv.messages, { from: 'Moi', text: newMessage, time: currentTime }],
+                };
+            }
+            return conv;
+        });
+
+        setConversations(updatedConversations);
+        setSelectedConversation(updatedConversations.find((conv) => conv.id === selectedConversation.id));
         setNewMessage('');
     };
 
     return (
-        <div className="messagerie-container bg-gray-100 p-4 rounded shadow-md max-w-md mx-auto">
-            <h1 className="text-2xl font-bold mb-4 text-blue-700 text-center">Messagerie</h1>
-
-            {/* Zone d'affichage des messages */}
-            <div className="messages-box bg-white p-4 rounded h-64 overflow-y-auto shadow-inner">
-                {messages.map((message) => (
+        <div className="grid grid-cols-5 mx-auto h-4/5 bg-gray-50 shadow rounded">
+            {/* Liste des conversations */}
+            <div className="col-span-1 bg-white p-4 border-r">
+                <h2 className="text-xl font-bold mb-4">Conversations</h2>
+                {conversations.map((conversation) => (
                     <div
-                        key={message.id}
-                        className={`message-item my-2 p-2 rounded ${message.sender === 'student' ? 'bg-blue-100 text-right' : 'bg-gray-200 text-left'
+                        key={conversation.id}
+                        className={`p-3 rounded cursor-pointer ${selectedConversation?.id === conversation.id
+                            ? 'bg-blue-100'
+                            : 'hover:bg-gray-100'
                             }`}
+                        onClick={() => setSelectedConversation(conversation)}
                     >
-                        <p className="text-sm">{message.text}</p>
-                        <span className="text-xs text-gray-500">
-                            {message.sender === 'student' ? 'Moi' : 'Coach'} • {message.timestamp}
-                        </span>
+                        {conversation.name}
                     </div>
                 ))}
             </div>
 
-            {/* Zone de saisie pour un nouveau message */}
-            <div className="message-input mt-4 flex items-center">
-                <input
-                    type="text"
-                    placeholder="Écrivez un message..."
-                    className="flex-1 p-2 border border-gray-300 rounded-l"
-                    value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                />
-                <button
-                    className="bg-blue-500 text-white px-4 py-2 rounded-r hover:bg-blue-700"
-                    onClick={sendMessage}
-                >
-                    Envoyer
-                </button>
+            {/* Zone de discussion */}
+            <div className="col-span-4 p-7 flex flex-col">
+                {selectedConversation ? (
+                    <>
+                        <h2 className="text-2xl font-bold mb-4">
+                            Discussion avec {selectedConversation.name}
+                        </h2>
+                        <div className="flex-1 overflow-y-auto p-4 bg-white shadow rounded-lg">
+                            {selectedConversation.messages.map((message, index) => (
+                                <div
+                                    key={index}
+                                    className={`flex mb-4 ${message.from === 'Moi' ? 'justify-end' : 'justify-start'}`}
+                                >
+                                    <div className="max-w-xs">
+                                        <div
+                                            className={`px-4 py-2 rounded-lg text-sm ${message.from === 'Moi'
+                                                ? 'bg-blue-500 text-white'
+                                                : 'bg-gray-200 text-gray-800'
+                                                }`}
+                                        >
+                                            {message.text}
+                                        </div>
+                                        <p className="text-xs text-gray-500 mt-1">{message.time}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Zone d'envoi de message */}
+                        <div className="flex mt-4">
+                            <input
+                                type="text"
+                                className="flex-1 border rounded-l-lg p-2 text-gray-800"
+                                placeholder="Écrivez votre message..."
+                                value={newMessage}
+                                onChange={(e) => setNewMessage(e.target.value)}
+                            />
+                            <button
+                                className="bg-blue-500 text-white px-4 rounded-r-lg"
+                                onClick={sendMessage}
+                            >
+                                Envoyer
+                            </button>
+                       </div>
+                 </>
+                ) : (
+                    <p className="text-gray-600">Sélectionnez une conversation pour commencer à discuter...</p>
+                )}
             </div>
         </div>
     );

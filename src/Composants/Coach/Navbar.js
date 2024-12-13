@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { FiBell, FiMail } from 'react-icons/fi'; // Icônes de messagerie et notification
 import Profil from './Profil'; // Import du composant Profil si nécessaire
