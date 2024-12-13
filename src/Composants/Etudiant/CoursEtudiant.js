@@ -1,30 +1,81 @@
+import { useEffect, useState } from 'react';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../../Config/firebaseConfig'; // Importez votre configuration Firebase
 
+const StudentInterface = ({ studentId }) => {
+    const [subDomainData, setSubDomainData] = useState(null); // Renommé pour récupérer les sous-domaines
+    const [loading, setLoading] = useState(true);
 
-import React from 'react';
+    const getSubDomainForStudent = async (studentId) => {
+        try {
+            // Vérifier si l'ID de l'étudiant est défini
+            console.log("ID étudiant:", studentId);
 
-const CoursEtudiant = ({ title, description, image }) => {
+            const studentDoc = await getDoc(doc(db, 'users', studentId));
+
+            // Vérifier si les données de l'étudiant existent
+            if (studentDoc.exists()) {
+                const studentData = studentDoc.data();
+                console.log("Données de l'étudiant:", studentData); // Ajoutez cette ligne pour déboguer
+
+                // Vérifier si sousDomaineId est défini
+                if (!studentData || !studentData.sousDomaineId) {
+                    console.warn("Aucun sousDomaineId trouvé dans les données de l'étudiant.");
+                    return null;
+                }
+
+                const sousDomaineId = studentData.sousDomaineId;
+                console.log("Sous-domaine ID trouvé:", sousDomaineId); // Ajoutez cette ligne pour déboguer
+
+                // Récupérer le sous-domaine lié
+                const subDomainDoc = await getDoc(doc(db, 'sous-domaines', sousDomaineId));
+
+                // Vérifier si le sous-domaine est trouvé
+                if (subDomainDoc.exists()) {
+                    console.log("Sous-domaine trouvé:", subDomainDoc.data()); // Ajoutez cette ligne pour déboguer
+                    return subDomainDoc.data();
+                } else {
+                    console.warn("Sous-domaine introuvable pour cet ID :", sousDomaineId);
+                    return null;
+                }
+            } else {
+                console.warn("Étudiant introuvable !");
+                return null;
+            }
+        } catch (error) {
+            console.error("Erreur lors de la récupération du sous-domaine :", error);
+            return null;
+        }
+    };
+
+    useEffect(() => {
+        const fetchSubDomain = async () => {
+            setLoading(true);
+            const subDomain = await getSubDomainForStudent(studentId); // studentId est l'ID de l'étudiant
+            setSubDomainData(subDomain);
+            setLoading(false);
+        };
+
+        fetchSubDomain();
+    }, [studentId]);
+
     return (
-        <div className="max-w-sm rounded overflow-hidden shadow-lg p-4 bg-white hover:bg-gray-100 transition duration-300 flex flex-col justify-between">
-            {/* Affichage de l'image */}
-            <img src={image} alt={title} className="w-full h-48 object-cover mb-4" />
-
-            {/* Titre et description */}
-            <div className="flex-grow">
-                <h2 className="font-bold text-xl mb-2">{title}</h2>
-                <p className="text-gray-700 text-base mb-4">{description}</p>
-            </div>
-
-            {/* Progress bar et bouton d'action */}
-            <div className="mt-auto">
-                <div className="w-full bg-gray-200 rounded-full h-4 mb-4">
-                    <div className="bg-blue-600 h-4 rounded-full" style={{ width: '0%' }}></div>
+        <div>
+            {loading ? (
+                <p>Chargement...</p>
+            ) : subDomainData ? (
+                <div>
+                    <h2>Sous-domaine assigné</h2>
+                    <p><strong>Nom :</strong> {subDomainData.domaineName || 'Nom inconnu'}</p>
+                    <p><strong>Description :</strong> {subDomainData.description || 'Description non disponible'}</p>
+                    <img src={subDomainData.imageURL} alt={subDomainData.domaineName} style={{ maxWidth: '100%' }} />
                 </div>
-                <button className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Démarrer
-                </button>
-            </div>
+            ) : (
+                <p>Aucun sous-domaine assigné.</p>
+            )}
         </div>
     );
 };
 
-export default CoursEtudiant;
+export default StudentInterface;
+

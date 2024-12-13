@@ -4,7 +4,7 @@ import Profil from '../Coach/Profil';
 import { storage, db } from "../../Config/firebaseConfig"; // Remplace par ton fichier de config Firebase
 
 
-const Navbar = ({ onAddTask }) => {
+const Navbar = () => {
   const [userData, setUserData] = useState({}); // Stocke les données utilisateur
   const [showModal, setShowModal] = useState(false); // État pour afficher le modal
   const [showMessagerie, setShowMessagerie] = useState(false); // État pour afficher la messagerie
@@ -30,46 +30,6 @@ const Navbar = ({ onAddTask }) => {
 
   // Gestion de l'affichage de la messagerie
   const toggleMessagerie = () => setShowMessagerie(!showMessagerie);
-
-  // Gestion de la soumission du formulaire
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   if (!selectedTask || !description) {
-  //     alert("Veuillez remplir tous les champs !");
-  //     return;
-  //   }
-
-  //   try {
-  //     // Étape 1 : Upload du fichier dans Firebase Storage
-  //     let fileUrl = "";
-  //     if (file) {
-  //       const storageRef = storage.ref(`deliveries/${userData.uid}/${file.name}`);
-  //       await storageRef.put(file);
-  //       fileUrl = await storageRef.getDownloadURL();
-  //     }
-
-  //     // Étape 2 : Enregistrement dans Firestore
-  //     const deliveryRef = db.collection("deliveries").doc();
-  //     await deliveryRef.set({
-  //       userId: userData.uid,
-  //       task: selectedTask,
-  //       description,
-  //       fileUrl,
-  //       date: new Date().toISOString(),
-  //       status: "pending", // Statut initial
-  //     });
-
-  //     // Réinitialiser les champs et fermer le modal
-  //     setSelectedTask("");
-  //     setDescription("");
-  //     setFile(null);
-  //     toggleModal();
-  //     alert("Travail envoyé avec succès !");
-  //   } catch (error) {
-  //     console.error("Erreur lors de l'envoi :", error);
-  //     alert("Une erreur est survenue. Veuillez réessayer.");
-  //   }
-  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -125,7 +85,7 @@ const Navbar = ({ onAddTask }) => {
 
 
   return (
-    <header className="flex justify-between items-center p-4 bg-white shadow-md">
+    <header className="flex justify-between items-center p-4 bg-[#191970] shadow-md">
       {/* Bouton "Envoyer mon travail" */}
       <button
         onClick={toggleModal}
@@ -138,10 +98,10 @@ const Navbar = ({ onAddTask }) => {
       {/* Icônes de messagerie, notification et profil utilisateur */}
       <div className="flex items-center space-x-4">
         <FiMail
-          className="text-gray-600 cursor-pointer"
+          className="text-white text-3xl cursor-pointer"
           onClick={toggleMessagerie}
         />
-        <FiBell className="text-gray-600" />
+        <FiBell className="text-white text-3xl" />
         
         {/* Affichage du profil utilisateur */}
         <Profil className="text-gray-500" />
@@ -208,3 +168,4 @@ const Navbar = ({ onAddTask }) => {
 };
 
 export default Navbar;
+
