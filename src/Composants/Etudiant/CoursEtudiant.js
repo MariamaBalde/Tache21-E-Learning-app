@@ -1,69 +1,9 @@
-// import { useState, useEffect } from 'react';
-// import { getFirestore, collection, getDocs } from 'firebase/firestore';
-// import { db } from '../../Config/firebaseConfig';
-// function Cours() {
-//     const [courses, setCourses] = useState([]);
-//     const [duration, setDuration] = useState(0);
-//     const [timeLeft, setTimeLeft] = useState(duration);
-
-//     // Récupérer les cours associés à un sous-domaine
-//     useEffect(() => {
-//         const fetchCourses = async () => {
-//             const coursesRef = collection(db, 'courses');
-//             const coursesSnapshot = await getDocs(coursesRef);
-//             const coursesList = coursesSnapshot.docs.map(doc => doc.data());
-//             setCourses(coursesList);
-//         };
-//         fetchCourses();
-//     }, []);
-
-//     // Logique du compte à rebours
-//     useEffect(() => {
-//         let timer;
-//         if (timeLeft > 0) {
-//             timer = setInterval(() => {
-//                 setTimeLeft(prevTime => prevTime - 1);
-//             }, 1000);
-//         }
-//         return () => clearInterval(timer); // Clean up when timeLeft reaches 0 or component unmounts
-//     }, [timeLeft]);
-
-//     const startCourse = (courseDuration) => {
-//         setDuration(courseDuration);
-//         setTimeLeft(courseDuration);
-//     };
-
-//     return (
-//         <div>
-//             <h2>Cours Disponibles</h2>
-//             <div>
-//                 {courses.map((course) => (
-//                     <div key={course.name}>
-//                         <h3>{course.name}</h3>
-//                         <p>{course.description}</p>
-//                         <p>Durée: {course.duration} minutes</p>
-//                         <button onClick={() => startCourse(course.duration)}>Démarrer</button>
-//                     </div>
-//                 ))}
-//             </div>
-
-//             {timeLeft > 0 && (
-//                 <div>
-//                     <p>Temps restant: {timeLeft} secondes</p>
-//                 </div>
-//             )}
-//             {timeLeft === 0 && <p>Cours terminé !</p>}
-//         </div>
-//     );
-// }
-// export default Cours;
-
 import { useState, useEffect } from "react";
 import { getAuth } from "firebase/auth";
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../Config/firebaseConfig"; // Assurez-vous que le chemin est correct
 
-const Dashboard = () => {
+const CoursEtudiant = () => {
     const [studentData, setStudentData] = useState(null);
     const [subDomains, setSubDomains] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -155,4 +95,4 @@ const Dashboard = () => {
         </div>
     );
 };
-export default Dashboard;
+export default CoursEtudiant;
