@@ -275,6 +275,7 @@ const Cours = () => {
                   <FaArchive />
                 </button>
               </div>
+              
             </div>
           </li>
         ))}
