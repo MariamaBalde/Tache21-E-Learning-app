@@ -30,7 +30,7 @@ const Sidebar = () => {
   return (
     <>
       <button
-        className="fixed top-5 left-2 z-20 lg:hidden text-gray-600 focus:outline-none"
+        className="fixed top-5 left-2 z-20 lg:hidden text-white focus:outline-none"
         onClick={toggleSidebar}
       >
         {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
