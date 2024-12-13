@@ -65,8 +65,7 @@ const CoursEtudiant = () => {
 
     return (
         <div>
-            <h1>Bienvenue, {studentData.name}</h1>
-            <h2 className="text-2xl text-center mb-3 font-bold text-blue-800">Cours</h2>
+            <h2 className="text-xl  font-semibold text-blue-800">Liste de vos Cours</h2>
             {subDomains.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {subDomains.map((subdomain, index) => (

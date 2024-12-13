@@ -72,68 +72,90 @@ const TachesEtudiant = () => {
   if (!studentData) {
     return <div>Aucun étudiant trouvé</div>;
   }
+  const handleStartTask = (sousDomaineId) => {
+    console.log(`Tâche démarrée : ${sousDomaineId}`);
+    // Exemple : Mettre à jour l'état de la tâche dans Firestore
+    db
+      .collection("cours")
+      .doc(sousDomaineId)
+      .update({ status: "started", startDate: new Date() })
+      .then(() => {
+        alert("Tâche démarrée !");
+      })
+      .catch((error) => {
+        console.error("Erreur lors du démarrage de la tâche :", error);
+      });
+  };
+
+  const handleFinishTask = (sousDomaineId) => {
+    console.log(`Tâche terminée : ${sousDomaineId}`);
+    // Exemple : Mettre à jour l'état de la tâche dans Firestore
+    db
+      .collection("cours")
+      .doc(sousDomaineId)
+      .update({ status: "finished", endDate: new Date() })
+      .then(() => {
+        alert("Tâche terminée !");
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la terminaison de la tâche :", error);
+      });
+  };
+
 
   return (
-    // <div>
-    //   <h1>Bienvenue, {studentData.name}</h1>
-    //   <h2>Les cours associés à vos sous-domaines :</h2>
-    //   {courses.length > 0 ? (
-    //     <ul>
-    //       {courses.map((course, index) => (
-    //         <li key={index}>
-    //           <strong>{course.name}</strong>
-    //           <p>{course.description}</p>
-    //           <p>Durée : {course.duration} jours</p>
-    //           {course.link && (
-    //             <p>
-    //               <a
-    //                 href={course.link}
-    //                 target="_blank"
-    //                 rel="noopener noreferrer"
-    //                 className="text-blue-500 underline"
-    //               >
-    //                 Accéder au cours
-    //               </a>
-    //             </p>
-    //           )}
-    //         </li>
-    //       ))}
-    //     </ul>
-    //   ) : (
-    //     <p>Aucun cours trouvé pour vos sous-domaines.</p>
-    //   )}
-    // </div>
-    <div className="px-6 py-0">
-      <h1 className="text-2xl font-bold">Bienvenue, {studentData.name}</h1>
-      {/* <h2 className="text-xl font-semibold mb-4">Les cours associés à vos sous-domaines :</h2> */}
+    <div>
+      <h2 className="text-xl font-semibold mb-4">Liste de vos tâches :</h2>
       {courses.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="space-y-4">
           {courses.map((course, index) => (
             <div
               key={index}
-              className="bg-white shadow-lg rounded-lg p-4 border hover:shadow-xl transition duration-300"
+              className="bg-white border border-gray-200 rounded-lg shadow-md p-4"
             >
-              <h3 className="text-lg font-bold mb-2">{course.name}</h3>
-              <p className="text-gray-600 mb-2">{course.description}</p>
-              <p className="text-sm text-gray-500 mb-4">Durée : {course.duration} jours</p>
+              <div className="flex justify-between items-center mb-3">
+                <h3 className="text-lg font-bold">
+                  Tâche {index + 1} : {course.name}
+                </h3>
+             
+              </div>
+              <p className="text-gray-600 mb-3">{course.description}</p>
               {course.link && (
-                <a
-                  href={course.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-500 font-semibold underline hover:text-blue-700"
-                >
-                  Accéder au cours
-                </a>
+                <p className="text-blue-500 underline mb-3">
+                  <a
+                    href={course.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-blue-700"
+                  >
+                    Voir le cours
+                  </a>
+                </p>
               )}
+              <div className="flex items-center space-x-4">
+                <button
+                  className="bg-blue-500 text-white text-sm px-4 py-2 rounded-md hover:bg-blue-600"
+                  onClick={() => handleStartTask(course.id)}
+                >
+                  Démarrer
+                </button>
+                <button
+                  className="bg-red-500 text-white text-sm px-4 py-2 rounded-md hover:bg-red-600"
+                  onClick={() => handleFinishTask(course.id)}
+                >
+                  Terminer
+                </button>
+              </div>
             </div>
           ))}
         </div>
       ) : (
-        <p className="text-gray-500">Aucun cours trouvé pour vos sous-domaines.</p>
+        <p className="text-gray-500">Aucune tâche trouvée pour vos sous-domaines.</p>
       )}
     </div>
   );
+
+
 };
 
 export default TachesEtudiant;
