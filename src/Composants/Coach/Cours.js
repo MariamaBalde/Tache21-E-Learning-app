@@ -13,7 +13,7 @@ import {
 } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 
-import { FaPlus, FaEdit, FaTrashAlt } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrashAlt, FaPlay, FaArchive } from 'react-icons/fa';
 
 const Cours = () => {
   const { sousDomaineId } = useParams();
@@ -179,6 +179,35 @@ const Cours = () => {
     }
   };
 
+  // Supprimer un quiz associé
+  const handleDeleteQuiz = async (quizId) => {
+    try {
+      const assocRef = collection(db, 'sousDomainesQuizzes');
+      const q = query(
+        assocRef,
+        where('sousDomaineId', '==', sousDomaineId),
+        where('quizId', '==', quizId)
+      );
+      const querySnapshot = await getDocs(q);
+
+      // Vérifie s'il y a un document correspondant
+      if (!querySnapshot.empty) {
+        const assocDocId = querySnapshot.docs[0].id; // Récupère l'ID du document
+        const assocDoc = doc(db, 'sousDomainesQuizzes', assocDocId);
+
+        // Supprime le document
+        await deleteDoc(assocDoc);
+
+        alert('Quiz supprimé avec succès !');
+        fetchAssociatedQuizzes(); // Recharge la liste des quizzes associés
+      } else {
+        alert('Aucune association trouvée pour ce quiz.');
+      }
+    } catch (error) {
+      console.error('Erreur lors de la suppression du quiz :', error);
+    }
+  };
+
   // Fonction pour aller sur la page "Jouer" d’un quiz
   const handlePlayQuiz = (domaineId, sousDomaineId, quizId) => {
     navigate(`/domains/${sousDomaineId}/cours/play-quiz/${quizId}`);
@@ -209,13 +238,22 @@ const Cours = () => {
         Cours du sous-domaine
       </h1>
 
-      <ul className="list-disc pl-5 space-y-4">
+      <ul className="pl-5 space-y-4">
         {cours.map((coursItem) => (
-          <li key={coursItem.id} className="p-4 bg-white rounded-lg shadow-md">
+          <li
+            key={coursItem.id}
+            className="p-4 bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow p-6 border border-blue-600"
+          >
             <div className="flex justify-between items-center">
               <div>
                 <h3 className="text-lg font-semibold">{coursItem.name}</h3>
-                <p className="text-sm text-gray-600">{coursItem.description}</p>
+                <p className="text-md text-gray-600">{coursItem.description}</p>
+                <button
+                  className="text-lg font-semibold text-blue-600 hover:text-blue-800"
+                  onClick={() => (window.location.href = coursItem.link)} // Redirection
+                >
+                  {coursItem.link}
+                </button>
               </div>
               <div className="flex space-x-2">
                 <button
@@ -230,7 +268,7 @@ const Cours = () => {
                   onClick={() => handleArchiveCours(coursItem.id)}
                   className="text-red-600 hover:text-red-800"
                 >
-                  <FaTrashAlt />
+                  <FaArchive />
                 </button>
               </div>
             </div>
@@ -238,10 +276,10 @@ const Cours = () => {
         ))}
       </ul>
 
-      <h2 className="text-xl font-semibold mt-6 text-center text-gray-800">
+      <h2 className="text-2xl font-semibold my-6 text-center text-gray-800">
         Quizzes associés
       </h2>
-      <ul className="list-disc pl-5 space-y-4">
+      <ul className="pl-5 space-y-4">
         {associatedQuizzes.map((quiz) => (
           <li key={quiz.id} className="p-4 bg-white rounded-lg shadow-md">
             <div className="flex justify-between items-center">
@@ -258,13 +296,19 @@ const Cours = () => {
               </div>
               <div className="flex space-x-2">
                 <div key={quiz.id}>
-                  <h2>{quiz.course}</h2>
-                  <button onClick={() => handlePlayQuiz(quiz.id)}>Jouer</button>
+                  <button
+                    onClick={() => handlePlayQuiz(quiz.id)}
+                    className="text-blue-600 hover:text-blue-800"
+                    title="Jouer au quiz"
+                  >
+                    <FaPlay />
+                  </button>
                 </div>
 
                 <button
                   onClick={() => openEditQuizModal(quiz.id)}
                   className="text-blue-600 hover:text-blue-800"
+                  title="Editer le quiz"
                 >
                   <FaEdit />
                 </button>
@@ -272,6 +316,15 @@ const Cours = () => {
                 <button
                   onClick={() => handleArchiveQuiz(quiz.id)}
                   className="text-red-600 hover:text-red-800"
+                  title="Archiver le quiz"
+                >
+                  <FaArchive />
+                </button>
+
+                <button
+                  onClick={() => handleDeleteQuiz(quiz.id)}
+                  className="text-red-600 hover:text-red-800"
+                  title="Supprimer le quiz"
                 >
                   <FaTrashAlt />
                 </button>

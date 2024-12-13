@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { FiBell, FiMail, FiX, FiSend } from "react-icons/fi";
 import Profil from '../Coach/Profil';
+import { storage, db } from "../../Config/firebaseConfig"; // Remplace par ton fichier de config Firebase
 
-const Navbar = ({ onAddTask }) => {
+
+const Navbar = () => {
   const [userData, setUserData] = useState({}); // Stocke les données utilisateur
   const [showModal, setShowModal] = useState(false); // État pour afficher le modal
   const [showMessagerie, setShowMessagerie] = useState(false); // État pour afficher la messagerie
@@ -30,29 +32,97 @@ const Navbar = ({ onAddTask }) => {
   const toggleMessagerie = () => setShowMessagerie(!showMessagerie);
 
   // Gestion de la soumission du formulaire
-  const handleSubmit = (e) => {
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (!selectedTask || !description) {
+  //     alert("Veuillez remplir tous les champs !");
+  //     return;
+  //   }
+
+  //   try {
+  //     // Étape 1 : Upload du fichier dans Firebase Storage
+  //     let fileUrl = "";
+  //     if (file) {
+  //       const storageRef = storage.ref(`deliveries/${userData.uid}/${file.name}`);
+  //       await storageRef.put(file);
+  //       fileUrl = await storageRef.getDownloadURL();
+  //     }
+
+  //     // Étape 2 : Enregistrement dans Firestore
+  //     const deliveryRef = db.collection("deliveries").doc();
+  //     await deliveryRef.set({
+  //       userId: userData.uid,
+  //       task: selectedTask,
+  //       description,
+  //       fileUrl,
+  //       date: new Date().toISOString(),
+  //       status: "pending", // Statut initial
+  //     });
+
+  //     // Réinitialiser les champs et fermer le modal
+  //     setSelectedTask("");
+  //     setDescription("");
+  //     setFile(null);
+  //     toggleModal();
+  //     alert("Travail envoyé avec succès !");
+  //   } catch (error) {
+  //     console.error("Erreur lors de l'envoi :", error);
+  //     alert("Une erreur est survenue. Veuillez réessayer.");
+  //   }
+  // };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!selectedTask || !description) {
       alert("Veuillez remplir tous les champs !");
       return;
     }
 
-    // Ajout de la tâche via la fonction `onAddTask`
-    onAddTask({
-      task: selectedTask,
-      description,
-      file: file ? file.name : "Aucun fichier",
-      date: new Date().toLocaleDateString(),
-    });
+    try {
+      console.log("Début de l'envoi...");
+      console.log("userData.uid :", userData.uid);
+      console.log("selectedTask :", selectedTask);
+      console.log("description :", description);
+      console.log("file :", file);
 
-    // Réinitialisation des champs
-    setSelectedTask("");
-    setDescription("");
-    setFile(null);
+      // Étape 1 : Upload du fichier dans Firebase Storage
+      let fileUrl = "";
+      if (file) {
+        const storageRef = storage.ref(`deliveries/${userData.uid}/${file.name}`);
+        console.log("Uploading file to:", storageRef.fullPath);
+        await storageRef.put(file);
+        fileUrl = await storageRef.getDownloadURL();
+        console.log("File uploaded, URL:", fileUrl);
+      }
 
-    // Fermeture du modal
-    toggleModal();
+      // Étape 2 : Enregistrement dans Firestore
+      const deliveryRef = db.collection("deliveries").doc();
+      console.log("Adding document to Firestore...");
+      await deliveryRef.set({
+        userId: userData.uid,
+        task: selectedTask,
+        description,
+        fileUrl,
+        date: new Date().toISOString(),
+        status: "pending", // Statut initial
+      });
+      console.log("Document ajouté dans Firestore :", deliveryRef.id);
+
+      // Réinitialiser les champs et fermer le modal
+      setSelectedTask("");
+      setDescription("");
+      setFile(null);
+      toggleModal();
+      alert("Travail envoyé avec succès !");
+    } catch (error) {
+      console.error("Erreur lors de l'envoi :", error.message, error.stack);
+      alert("Une erreur est survenue. Veuillez réessayer.");
+    }
   };
+
+
+
+
 
   return (
     <header className="flex justify-between items-center p-4 bg-white shadow-md">
