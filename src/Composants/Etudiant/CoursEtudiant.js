@@ -1,81 +1,97 @@
-import { useEffect, useState } from 'react';
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../../Config/firebaseConfig'; // Importez votre configuration Firebase
+import { useState, useEffect } from "react";
+import { getAuth } from "firebase/auth";
+import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
+import { db } from "../../Config/firebaseConfig"; // Assurez-vous que le chemin est correct
 
-const StudentInterface = ({ studentId }) => {
-    const [subDomainData, setSubDomainData] = useState(null); // Renommé pour récupérer les sous-domaines
+const CoursEtudiant = () => {
+    const [studentData, setStudentData] = useState(null);
+    const [subDomains, setSubDomains] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const getSubDomainForStudent = async (studentId) => {
-        try {
-            // Vérifier si l'ID de l'étudiant est défini
-            console.log("ID étudiant:", studentId);
-
-            const studentDoc = await getDoc(doc(db, 'users', studentId));
-
-            // Vérifier si les données de l'étudiant existent
-            if (studentDoc.exists()) {
-                const studentData = studentDoc.data();
-                console.log("Données de l'étudiant:", studentData); // Ajoutez cette ligne pour déboguer
-
-                // Vérifier si sousDomaineId est défini
-                if (!studentData || !studentData.sousDomaineId) {
-                    console.warn("Aucun sousDomaineId trouvé dans les données de l'étudiant.");
-                    return null;
-                }
-
-                const sousDomaineId = studentData.sousDomaineId;
-                console.log("Sous-domaine ID trouvé:", sousDomaineId); // Ajoutez cette ligne pour déboguer
-
-                // Récupérer le sous-domaine lié
-                const subDomainDoc = await getDoc(doc(db, 'sous-domaines', sousDomaineId));
-
-                // Vérifier si le sous-domaine est trouvé
-                if (subDomainDoc.exists()) {
-                    console.log("Sous-domaine trouvé:", subDomainDoc.data()); // Ajoutez cette ligne pour déboguer
-                    return subDomainDoc.data();
-                } else {
-                    console.warn("Sous-domaine introuvable pour cet ID :", sousDomaineId);
-                    return null;
-                }
-            } else {
-                console.warn("Étudiant introuvable !");
-                return null;
-            }
-        } catch (error) {
-            console.error("Erreur lors de la récupération du sous-domaine :", error);
-            return null;
-        }
-    };
-
     useEffect(() => {
-        const fetchSubDomain = async () => {
-            setLoading(true);
-            const subDomain = await getSubDomainForStudent(studentId); // studentId est l'ID de l'étudiant
-            setSubDomainData(subDomain);
-            setLoading(false);
-        };
+        const auth = getAuth();
+        const user = auth.currentUser;
 
-        fetchSubDomain();
-    }, [studentId]);
+        if (user) {
+            const studentId = user.uid;
+            console.log("ID de l'étudiant:", studentId);
+
+            // Récupérer les données de l'étudiant
+            const fetchStudentData = async () => {
+                try {
+                    const studentRef = doc(db, "users", studentId);
+                    const studentSnapshot = await getDoc(studentRef);
+
+                    if (studentSnapshot.exists()) {
+                        const student = studentSnapshot.data();
+                        setStudentData(student);
+
+                        // Récupérer le domaineId de l'étudiant
+                        const domaineId = student.domaineId;
+                        console.log("Domaine ID de l'étudiant:", domaineId);
+
+                        // Maintenant, on va chercher les sous-domaines associés à ce domaineId
+                        const subdomainsRef = collection(db, "sous-domaines");
+                        const q = query(subdomainsRef, where("domaineId", "==", domaineId));
+                        const querySnapshot = await getDocs(q);
+
+                        const subdomainsList = querySnapshot.docs.map((doc) => doc.data());
+                        setSubDomains(subdomainsList);
+
+                    } else {
+                        console.log("Aucun étudiant trouvé pour l'ID:", studentId);
+                    }
+                } catch (error) {
+                    console.error("Erreur lors de la récupération des données de l'étudiant:", error);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            fetchStudentData();
+        } else {
+            console.log("Aucun utilisateur connecté");
+            setLoading(false);
+        }
+    }, []);
+
+    if (loading) {
+        return <div>Chargement...</div>;
+    }
+
+    if (!studentData) {
+        return <div>Aucun étudiant trouvé</div>;
+    }
 
     return (
         <div>
-            {loading ? (
-                <p>Chargement...</p>
-            ) : subDomainData ? (
-                <div>
-                    <h2>Sous-domaine assigné</h2>
-                    <p><strong>Nom :</strong> {subDomainData.domaineName || 'Nom inconnu'}</p>
-                    <p><strong>Description :</strong> {subDomainData.description || 'Description non disponible'}</p>
-                    <img src={subDomainData.imageURL} alt={subDomainData.domaineName} style={{ maxWidth: '100%' }} />
+            <h2 className="text-xl  font-semibold text-blue-800">Liste de vos Cours</h2>
+            {subDomains.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {subDomains.map((subdomain, index) => (
+                        <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
+                            {/* Image du sous-domaine */}
+                            {subdomain.imageURL && (
+                                <img
+                                    src={subdomain.imageURL}
+                                    alt={subdomain.name}
+                                    className="w-full h-48 object-cover rounded-md mb-4"
+                                />
+                            )}
+
+                            <h3 className="text-xl font-semibold mb-4">{subdomain.name}</h3>
+                            <p className="text-gray-600">{subdomain.description || "Aucune description disponible"}</p>
+
+                            <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200">
+                                Démarrer
+                            </button>
+                        </div>
+                    ))}
                 </div>
             ) : (
-                <p>Aucun sous-domaine assigné.</p>
+                <p>Aucun sous-domaine trouvé pour votre domaine.</p>
             )}
         </div>
     );
 };
-
-export default StudentInterface;
-
+export default CoursEtudiant;
