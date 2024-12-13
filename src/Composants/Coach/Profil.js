@@ -120,10 +120,10 @@ function Profil() {
           alt="Profil utilisateur"
           className="w-10 h-10 rounded-full object-cover"
         />
-        <span className="font-medium text-gray-800">
+        <span className="font-medium text-white">
           {userData.name || "Utilisateur"}
         </span>
-        <span className="text-gray-500">▼</span>
+        <span className="text-white">▼</span>
       </div>
 
       {/* Menu déroulant */}
