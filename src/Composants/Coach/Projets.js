@@ -1,123 +1,97 @@
 import React, { useState, useEffect } from "react";
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css"; // Importer les styles de Quill
-import { FaEdit, FaArchive, FaBook, FaPaperPlane } from "react-icons/fa"; // Ajouter l'icône d'envoi
-import { ToastContainer, toast } from "react-toastify"; // Importer Toastify
-import "react-toastify/dist/ReactToastify.css"; // Importer les styles de Toastify
-import { db } from '../../Config/firebaseConfig'; // Importer la configuration Firebase
-import { collection, addDoc, updateDoc, doc, query, where, getDocs } from "firebase/firestore"; // Importer les fonctions Firestore
+import "react-quill/dist/quill.snow.css";
+import { FaEdit, FaArchive, FaBook, FaPaperPlane } from "react-icons/fa";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { db } from '../../Config/firebaseConfig';
+import { collection, addDoc, updateDoc, doc, query, where, getDocs } from "firebase/firestore";
 
-const coursContent = () => {
-  return "<p>This is some <b>HTML</b> courseContent.</p>";
-};
+// Édition de contenu par défaut
+const defaultCourseContent = () => "<p>This is some <b>HTML</b> courseContent.</p>";
 
 function Projets() {
-  const [courseContent, setCourseContent] = useState(coursContent);
+  const [courseContent, setCourseContent] = useState(defaultCourseContent);
   const [isEditing, setIsEditing] = useState(false);
-  const [courseId, setCourseId] = useState(null); // Pour stocker l'ID du cours créé dans Firebase
-  const [courses, setCourses] = useState([]); // Etat pour stocker la liste des cours
-  const [archivedCourses, setArchivedCourses] = useState([]); // Etat pour stocker les cours archivés
-  const [loading, setLoading] = useState(true); // Etat pour gérer le chargement des cours
+  const [courses, setCourses] = useState([]);
+  const [archivedCourses, setArchivedCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Fonction pour récupérer les cours non archivés depuis Firestore
   const fetchCourses = async () => {
     const q = query(collection(db, "cours"), where("archived", "==", false));
     const querySnapshot = await getDocs(q);
     const fetchedCourses = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    setCourses(fetchedCourses); // Mettre à jour l'état avec les cours non archivés
-    setLoading(false); // Fin du chargement
+    setCourses(fetchedCourses);
+    setLoading(false);
   };
 
-  // Fonction pour récupérer les cours archivés depuis Firestore
   const fetchArchivedCourses = async () => {
     const q = query(collection(db, "cours"), where("archived", "==", true));
     const querySnapshot = await getDocs(q);
     const fetchedArchivedCourses = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    setArchivedCourses(fetchedArchivedCourses); // Mettre à jour l'état avec les cours archivés
+    setArchivedCourses(fetchedArchivedCourses);
   };
 
-  // Charger les cours au démarrage
   useEffect(() => {
     fetchCourses();
     fetchArchivedCourses();
   }, []);
 
-  const handleEditorChange = (value) => {
-    setCourseContent(value);
-  };
+  const handleEditorChange = (value) => setCourseContent(value);
 
-  // Fonction pour archiver le contenu du cours dans Firebase
-  const archiveCourse = async () => {
-    if (courseId) {
-      const courseRef = doc(db, "cours", courseId);
+  const archiveCourse = async (courseId) => {
+    const courseRef = doc(db, "cours", courseId);
 
-      try {
-        // Mise à jour du cours en ajoutant un champ 'archived' dans Firebase
-        await updateDoc(courseRef, {
-          archived: true, // Marquer le cours comme archivé
-        });
-        toast.success("Le cours a été archivé avec succès !");
-        // Rafraîchir les cours après archivage
-        fetchCourses();
-        fetchArchivedCourses();
-      } catch (e) {
-        toast.error("Erreur lors de l'archivage du cours : " + e.message);
-        console.error("Erreur de mise à jour dans Firestore: ", e);
-      }
-    } else {
-      toast.error("Aucun cours à archiver.");
+    try {
+      await updateDoc(courseRef, { archived: true });
+      toast.success("Cours archivé avec succès !");
+      fetchCourses();
+      fetchArchivedCourses();
+    } catch (error) {
+      toast.error("Échec de l'archivage.");
+      console.error("Erreur avec Firestore:", error);
     }
   };
 
-  // Fonction pour d'archiver le contenu du cours dans Firebase
   const unarchiveCourse = async (courseId) => {
     const courseRef = doc(db, "cours", courseId);
 
     try {
-      // Mise à jour du cours en changeant le champ 'archived' à false
-      await updateDoc(courseRef, {
-        archived: false, // Marquer le cours comme non archivé
-      });
-      toast.success("Le cours a été désarchivé avec succès !");
-      // Rafraîchir les cours après désarchivage
+      await updateDoc(courseRef, { archived: false });
+      toast.success("Cours désarchivé avec succès !");
       fetchCourses();
       fetchArchivedCourses();
-    } catch (e) {
-      toast.error("Erreur lors du désarchivage du cours : " + e.message);
-      console.error("Erreur de mise à jour dans Firestore: ", e);
+    } catch (error) {
+      toast.error("Échec de la désarchivage.");
+      console.error("Erreur avec Firestore:", error);
     }
   };
 
-  const toggleEdit = () => {
-    setIsEditing(!isEditing); // Basculer entre les modes
+  const toggleEditMode = () => {
+    setIsEditing(!isEditing);
   };
 
-  // Fonction pour envoyer le contenu du cours à Firebase
   const submitCourse = async () => {
     try {
       const docRef = await addDoc(collection(db, "cours"), {
         content: courseContent,
         timestamp: new Date(),
-        archived: false, // Par défaut, le cours n'est pas archivé
+        archived: false,
       });
-      setCourseId(docRef.id); // Sauvegarder l'ID du cours
-      toast.success("Le cours a été envoyé avec succès !");
-      console.log("Document écrit avec ID: ", docRef.id);
-      // Rafraîchir la liste des cours après soumission
+      toast.success("Cours soumis avec succès !");
       fetchCourses();
-    } catch (e) {
-      toast.error("Erreur lors de l'envoi du cours : " + e.message);
-      console.error("Erreur d'ajout au Firestore: ", e);
+    } catch (error) {
+      toast.error("Échec lors de l'envoi du cours.");
     }
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
       <h1 className="text-3xl font-semibold text-center mb-6">Projets de Cours</h1>
 
-      {/* Editeur de cours */}
+      {/* Éditeur de contenu */}
       <div className="bg-white p-6 rounded-lg shadow-md mb-4">
-        <h2 className="text-xl font-bold mb-4">Editeur de Cours WYSIWYG</h2>
+        <h2 className="text-xl font-bold mb-4">Éditeur de contenu</h2>
         {isEditing ? (
           <ReactQuill
             value={courseContent}
@@ -132,77 +106,71 @@ function Projets() {
         )}
       </div>
 
-      {/* Les boutons sont maintenant sous l'éditeur */}
-      <div className="flex justify-end space-x-4 mb-4">
-        <button
-          onClick={toggleEdit}
-          className={`${isEditing ? "bg-blue-500" : "bg-yellow-500"} text-white p-2 rounded-full flex justify-center items-center`}
-          title={isEditing ? "Voir le Cours" : "Modifier le Cours"}
+      {/* Boutons principaux */}
+      <div className="flex flex-wrap justify-end space-x-4 mb-4">
+        <div
+          onClick={toggleEditMode}
+          className={`${isEditing ? "bg-blue-500" : "bg-yellow-500"} cursor-pointer text-white p-2 rounded-full flex justify-center items-center`}
+          title={isEditing ? "Voir le contenu" : "Modifier le contenu"}
         >
-          {isEditing ? <FaBook size={24} /> : <FaEdit size={24} />}
-        </button>
-
-        <button
-          onClick={archiveCourse}
-          className="bg-green-500 text-white p-2 rounded-full"
-          title="Archiver le cours"
-        >
-          <FaArchive size={24} />
-        </button>
-
-        <button
+          {isEditing ? <FaBook size={20} /> : <FaEdit size={20} />}
+        </div>
+        <div
           onClick={submitCourse}
-          className="bg-blue-500 text-white p-2 rounded-full"
+          className="bg-blue-500 cursor-pointer text-white p-2 rounded-full flex justify-center items-center"
           title="Envoyer le cours"
         >
-          <FaPaperPlane size={24} />
-        </button>
+          <FaPaperPlane size={20} />
+        </div>
       </div>
 
-      {/* Afficher la liste des cours non archivés */}
-      <div className="bg-white p-6 rounded-lg shadow-md mb-4">
-        <h2 className="text-xl font-bold mb-4">Liste des Cours Non Archivés</h2>
-        {loading ? (
-          <p>Chargement des cours...</p>
-        ) : (
-          <ul>
-            {courses.map(course => (
-              <li key={course.id} className="mb-4 p-4 border-b">
-                <div dangerouslySetInnerHTML={{ __html: course.content }} />
-                <button
-                  onClick={() => setCourseId(course.id)}
-                  className="bg-green-500 text-white p-2 rounded-full"
-                  title="Archiver le cours"
-                >
-                  <FaArchive size={24} />
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+      {/* Liste des cours avec responsivité */}
+      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+        <div className="bg-white p-4 rounded-lg shadow-md">
+          <h2 className="text-xl font-bold mb-3">Cours Non Archivés</h2>
+          {loading ? (
+            <p>Chargement...</p>
+          ) : (
+            <ul className="max-h-60 overflow-auto">
+              {courses.map(course => (
+                <li key={course.id} className="p-2 border-b flex justify-between items-center">
+                  <div
+                    className="break-words overflow-hidden"
+                    dangerouslySetInnerHTML={{ __html: course.content }}
+                  />
+                  <div
+                    onClick={() => archiveCourse(course.id)}
+                    className="cursor-pointer text-green-500 hover:text-green-700"
+                    title="Archiver"
+                  >
+                    <FaArchive size={20} />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
 
-      {/* Afficher la liste des cours archivés */}
-      <div className="bg-white p-6 rounded-lg shadow-md mb-4">
-        <h2 className="text-xl font-bold mb-4">Liste des Cours Archivés</h2>
-        {loading ? (
-          <p>Chargement des cours archivés...</p>
-        ) : (
-          <ul>
+        <div className="bg-white p-4 rounded-lg shadow-md">
+          <h2 className="text-xl font-bold mb-3">Cours Archivés</h2>
+          <ul className="max-h-60 overflow-auto">
             {archivedCourses.map(course => (
-              <li key={course.id} className="mb-4 p-4 border-b">
-                <div dangerouslySetInnerHTML={{ __html: course.content }} />
-                <button
+              <li key={course.id} className="p-2 border-b flex justify-between items-center">
+                <div
+                  className="break-words overflow-hidden"
+                  dangerouslySetInnerHTML={{ __html: course.content }}
+                />
+                <div
                   onClick={() => unarchiveCourse(course.id)}
-                  className="bg-yellow-500 text-white p-2 rounded-full"
-                  title="Désarchiver le cours"
+                  className="cursor-pointer text-yellow-500 hover:text-yellow-700"
+                  title="Désarchiver"
                 >
-                  <FaArchive size={24} />
-                </button>
+                  <FaArchive size={20} />
+                </div>
               </li>
             ))}
           </ul>
-        )}
+        </div>
       </div>
 
       <ToastContainer />
@@ -211,6 +179,205 @@ function Projets() {
 }
 
 export default Projets;
+
+
+
+
+
+
+
+
+// import React, { useState, useEffect } from "react";
+// import ReactQuill from "react-quill";
+// import "react-quill/dist/quill.snow.css";
+// import { FaEdit, FaArchive, FaBook, FaPaperPlane } from "react-icons/fa";
+// import { ToastContainer, toast } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
+// import { db } from '../../Config/firebaseConfig';
+// import { collection, addDoc, updateDoc, doc, query, where, getDocs } from "firebase/firestore";
+
+// // Édition de contenu par défaut
+// const defaultCourseContent = () => "<p>This is some <b>HTML</b> courseContent.</p>";
+
+// function Projets() {
+//   const [courseContent, setCourseContent] = useState(defaultCourseContent);
+//   const [isEditing, setIsEditing] = useState(false);
+//   const [courses, setCourses] = useState([]);
+//   const [archivedCourses, setArchivedCourses] = useState([]);
+//   const [loading, setLoading] = useState(true);
+
+//   const fetchCourses = async () => {
+//     const q = query(collection(db, "cours"), where("archived", "==", false));
+//     const querySnapshot = await getDocs(q);
+//     const fetchedCourses = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+//     setCourses(fetchedCourses);
+//     setLoading(false);
+//   };
+
+//   const fetchArchivedCourses = async () => {
+//     const q = query(collection(db, "cours"), where("archived", "==", true));
+//     const querySnapshot = await getDocs(q);
+//     const fetchedArchivedCourses = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+//     setArchivedCourses(fetchedArchivedCourses);
+//   };
+
+//   useEffect(() => {
+//     fetchCourses();
+//     fetchArchivedCourses();
+//   }, []);
+
+//   const handleEditorChange = (value) => setCourseContent(value);
+
+//   const archiveCourse = async (courseId) => {
+//     const courseRef = doc(db, "cours", courseId);
+
+//     try {
+//       await updateDoc(courseRef, {
+//         archived: true,
+//       });
+//       toast.success("Cours archivé avec succès !");
+//       fetchCourses();
+//       fetchArchivedCourses();
+//     } catch (error) {
+//       toast.error("Échec de l'archivage.");
+//       console.error("Erreur avec Firestore:", error);
+//     }
+//   };
+
+//   const unarchiveCourse = async (courseId) => {
+//     const courseRef = doc(db, "cours", courseId);
+
+//     try {
+//       await updateDoc(courseRef, {
+//         archived: false,
+//       });
+//       toast.success("Cours désarchivé avec succès !");
+//       fetchCourses();
+//       fetchArchivedCourses();
+//     } catch (error) {
+//       toast.error("Échec de la désarchivage.");
+//       console.error("Erreur avec Firestore:", error);
+//     }
+//   };
+
+//   const toggleEditMode = () => {
+//     setIsEditing(!isEditing);
+//   };
+
+//   const submitCourse = async () => {
+//     try {
+//       const docRef = await addDoc(collection(db, "cours"), {
+//         content: courseContent,
+//         timestamp: new Date(),
+//         archived: false,
+//       });
+//       toast.success("Cours soumis avec succès !");
+//       fetchCourses();
+//       console.log("ID du document : ", docRef.id);
+//     } catch (error) {
+//       toast.error("Échec lors de l'envoi du cours.");
+//       console.error("Erreur lors de l'ajout dans Firestore : ", error);
+//     }
+//   };
+
+//   return (
+//     <div className="container mx-auto p-4">
+//       <h1 className="text-3xl font-semibold text-center mb-6">Projets de Cours</h1>
+
+//       {/* Éditeur + Boutons principaux en mode Grid */}
+//       <div className="bg-white p-6 rounded-lg shadow-md mb-4">
+//         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
+//           {/* Éditeur */}
+//           <div className="p-4">
+//             <h2 className="text-xl font-bold mb-4">Éditeur de contenu</h2>
+//             {isEditing ? (
+//               <ReactQuill
+//                 value={courseContent}
+//                 onChange={handleEditorChange}
+//                 className="mb-4"
+//               />
+//             ) : (
+//               <div
+//                 className="border p-4 mt-2 rounded-md bg-gray-100"
+//                 dangerouslySetInnerHTML={{ __html: courseContent }}
+//               />
+//             )}
+//           </div>
+
+//           {/* Boutons principaux */}
+//           <div className="flex justify-end space-x-4 mb-4 md:mb-0">
+//             <button
+//               onClick={toggleEditMode}
+//               className={`${isEditing ? "bg-blue-500" : "bg-yellow-500"} text-white p-2 rounded-full`}
+//               title={isEditing ? "Voir le contenu" : "Modifier le contenu"}
+//             >
+//               {isEditing ? <FaBook size={24} /> : <FaEdit size={24} />}
+//             </button>
+
+//             <button
+//               onClick={submitCourse}
+//               className="bg-blue-500 text-white p-2 rounded-full"
+//               title="Envoyer le cours"
+//             >
+//               <FaPaperPlane size={24} />
+//             </button>
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Affichage des cours non archivés et archivés en mode Grid */}
+//       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+//         {/* Liste des cours non archivés */}
+//         <div className="bg-white p-6 rounded-lg shadow-md">
+//           <h2 className="text-xl font-bold mb-4">Cours Non Archivés</h2>
+//           {loading ? (
+//             <p>Chargement...</p>
+//           ) : (
+//             <ul>
+//               {courses.map(course => (
+//                 <li key={course.id} className="mb-4 p-4 border-b">
+//                   <div dangerouslySetInnerHTML={{ __html: course.content }} />
+//                   <button
+//                     onClick={() => archiveCourse(course.id)}
+//                     className="bg-green-500 text-white p-2 rounded-full"
+//                     title="Archiver le cours"
+//                   >
+//                     <FaArchive size={20} />
+//                   </button>
+//                 </li>
+//               ))}
+//             </ul>
+//           )}
+//         </div>
+
+//         {/* Liste des cours archivés */}
+//         <div className="bg-white p-6 rounded-lg shadow-md">
+//           <h2 className="text-xl font-bold mb-4">Cours Archivés</h2>
+//           <ul>
+//             {archivedCourses.map(course => (
+//               <li key={course.id} className="mb-4 p-4 border-b">
+//                 <div dangerouslySetInnerHTML={{ __html: course.content }} />
+//                 <button
+//                   onClick={() => unarchiveCourse(course.id)}
+//                   className="bg-yellow-500 text-white p-2 rounded-full"
+//                   title="Désarchiver le cours"
+//                 >
+//                   <FaArchive size={20} />
+//                 </button>
+//               </li>
+//             ))}
+//           </ul>
+//         </div>
+//       </div>
+
+//       <ToastContainer />
+//     </div>
+//   );
+// }
+
+// export default Projets;
+
+
 
 
 

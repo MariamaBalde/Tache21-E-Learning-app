@@ -5,7 +5,7 @@ import Profil from '../Coach/Profil';
 
 const Navbar = () => {
   return (
-    <nav className="bg-blue-800 shadow-lg px-4 py-0">
+    <nav className="bg-[#191970] shadow-lg px-4 py-0">
       <div className="container mx-auto flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center space-x-2">
