@@ -22,7 +22,17 @@ function Profil() {
   useEffect(() => {
     const storedUserData = localStorage.getItem("userData");
     if (storedUserData) {
-      setUserData(JSON.parse(storedUserData));
+      const parsedUserData = JSON.parse(storedUserData);
+      setUserData(parsedUserData);
+
+      // Pré-remplir le formulaire avec les valeurs par défaut
+      const [name, firstName] = parsedUserData.name.split(" ");
+      setFormData({
+        nom: name || "",
+        prenom: firstName || "",
+        telephone: parsedUserData.phone || "",
+        photo: null,
+      });
     }
   }, []);
 
@@ -55,7 +65,7 @@ function Profil() {
         image: formData.photo || userData.image,
       })
     );
-    toggleModal(); // Close the modal after save
+    toggleModal(); // Fermer la modal après l'enregistrement
   };
 
   const handleChange = (e) => {
@@ -97,7 +107,7 @@ function Profil() {
           <ul className="py-2">
             <li
               className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-              onClick={toggleModal} // Ouvrir le modal
+              onClick={toggleModal}
             >
               Profil
             </li>
@@ -118,7 +128,7 @@ function Profil() {
             <h2 className="text-lg font-bold mb-4">Modifier le Profil</h2>
             <form onSubmit={handleSubmit}>
               {/* Image de profil */}
-              <div className="flex justify-center mb-6">
+              <div className="flex justify-center text-white mb-6">
                 <img
                   src={formData.photo || userData.image}
                   alt="Photo actuelle"
@@ -132,9 +142,9 @@ function Profil() {
                 <input
                   type="text"
                   name="nom"
-                  value={formData.nom || userData.name.split(" ")[0]} // Pré-remplir le nom
+                  value={formData.nom} // Utilise uniquement formData
                   onChange={handleChange}
-                  className="w-2/3 border border-gray-300 rounded-md p-2"
+                  className="w-2/3 border border-gray-300  rounded-md p-2"
                 />
               </div>
 
@@ -144,7 +154,7 @@ function Profil() {
                 <input
                   type="text"
                   name="prenom"
-                  value={formData.prenom || userData.name.split(" ")[1]} // Pré-remplir le prénom
+                  value={formData.prenom} // Utilise uniquement formData
                   onChange={handleChange}
                   className="w-2/3 border border-gray-300 rounded-md p-2"
                 />
@@ -156,7 +166,7 @@ function Profil() {
                 <input
                   type="tel"
                   name="telephone"
-                  value={formData.telephone || userData.phone}
+                  value={formData.telephone}
                   onChange={handleChange}
                   className="w-2/3 border border-gray-300 rounded-md p-2"
                 />
@@ -198,8 +208,4 @@ function Profil() {
 }
 
 export default Profil;
-
-
-
-
 

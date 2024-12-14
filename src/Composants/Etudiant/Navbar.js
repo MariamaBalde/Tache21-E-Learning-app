@@ -1,35 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { FiBell, FiMail, FiX, FiSend } from "react-icons/fi";
-import ProfileEtudiant from './ProfileEtudiant';
+import Profil from "../Coach/Profil";
 
 const Navbar = ({ onAddTask }) => {
-  const [userData, setUserData] = useState({}); // Stocke les données utilisateur
-  const [showModal, setShowModal] = useState(false); // État pour afficher le modal
-  const [showMessagerie, setShowMessagerie] = useState(false); // État pour afficher la messagerie
-  const [selectedTask, setSelectedTask] = useState(""); // Tâche sélectionnée
-  const [description, setDescription] = useState(""); // Description de la tâche
-  const [file, setFile] = useState(null); // Fichier joint
+  const [userData, setUserData] = useState({});
+  const [showModal, setShowModal] = useState(false);
+  const [selectedTask, setSelectedTask] = useState("");
+  const [description, setDescription] = useState("");
+  const [file, setFile] = useState(null);
 
-  // Récupérer les données utilisateur depuis localStorage
   useEffect(() => {
     const storedUserData = localStorage.getItem("profileData");
     if (storedUserData) {
       try {
         const parsedData = JSON.parse(storedUserData);
-        setUserData(parsedData); // Mettre à jour l'état avec les données utilisateur
+        setUserData(parsedData);
       } catch (error) {
-        console.error('Erreur lors de la lecture des données utilisateur :', error);
+        console.error("Erreur lors de la lecture des données utilisateur :", error);
       }
     }
-  }, []); // Le tableau vide [] garantit que le hook est appelé une seule fois au montage
+  }, []);
 
-  // Gestion de l'affichage du modal
   const toggleModal = () => setShowModal(!showModal);
 
-  // Gestion de l'affichage de la messagerie
-  const toggleMessagerie = () => setShowMessagerie(!showMessagerie);
-
-  // Gestion de la soumission du formulaire
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!selectedTask || !description) {
@@ -37,7 +30,6 @@ const Navbar = ({ onAddTask }) => {
       return;
     }
 
-    // Ajout de la tâche via la fonction `onAddTask`
     onAddTask({
       task: selectedTask,
       description,
@@ -45,42 +37,40 @@ const Navbar = ({ onAddTask }) => {
       date: new Date().toLocaleDateString(),
     });
 
-    // Réinitialisation des champs
     setSelectedTask("");
     setDescription("");
     setFile(null);
 
-    // Fermeture du modal
     toggleModal();
   };
 
   return (
     <header className="flex justify-between items-center p-4 bg-white shadow-md">
-      {/* Bouton "Envoyer mon travail" */}
-      <button
-        onClick={toggleModal}
-        className="flex items-center space-x-2 p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-      >
-        <FiSend className="text-lg" />
-        <span>Envoyer mon travail</span>
-      </button>
+      {/* Bouton "Envoyer mon travail" centré */}
+      <div className="flex-grow flex justify-center">
+        <button
+          onClick={toggleModal}
+          className="flex items-center space-x-2 p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+        >
+          <FiSend className="text-lg" />
+          <span>Envoyer mon travail</span>
+        </button>
+      </div>
 
       {/* Icônes de messagerie, notification et profil utilisateur */}
       <div className="flex items-center space-x-4">
         <FiMail
           className="text-gray-600 cursor-pointer"
-          onClick={toggleMessagerie}
+          onClick={() => console.log("Messagerie ouverte")}
         />
         <FiBell className="text-gray-600" />
-        
-        {/* Affichage du profil utilisateur */}
-        <ProfileEtudiant userData={userData} />
+        <Profil className="text-gray-500" />
       </div>
 
       {/* Modal pour soumettre une tâche */}
       {showModal && (
         <div className="fixed inset-0 bg-gray-100 bg-opacity-75 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg relative">
+          <div className="bg-white p-6 rounded-lg shadow-lg relative w-full max-w-md">
             <button
               onClick={toggleModal}
               className="absolute top-4 right-4 text-gray-500"
@@ -125,7 +115,7 @@ const Navbar = ({ onAddTask }) => {
               </div>
               <button
                 type="submit"
-                className="w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-green-600"
+                className="w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600"
               >
                 Envoyer
               </button>
