@@ -180,7 +180,7 @@ const AdminDashboard = () => {
             title={`Coachs
                ${coaches.length}`}
             icon={UserCheck}
-            gradient="bg-gradient-to-br from-white to-blue-800"
+            gradient="bg-gradient-to-br from-blue-200 to-blue-800"
           />
         </div>
 
