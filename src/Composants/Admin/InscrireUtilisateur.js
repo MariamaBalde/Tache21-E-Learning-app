@@ -61,55 +61,55 @@ const InscrireUtilisateur = () => {
 
   return (
     <div className="flex justify-center items-center h-screen bg-blue-300">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-96">
-        <h2 className="text-2xl font-bold text-gray-700 mb-4">Inscrire un utilisateur</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="bg-white p-4 rounded-lg shadow-lg w-full max-w-md">
+        <h2 className="text-xl font-bold text-gray-700 mb-3">Inscrire un utilisateur</h2>
+        <form onSubmit={handleSubmit} className="space-y-2">
           <div>
-            <label className="block text-gray-700">Nom</label>
+            <label className="block text-gray-700 text-sm">Nom</label>
             <input
               type="text"
               value={nom}
               onChange={(e) => setNom(e.target.value)}
-              className="w-full border p-2 rounded-lg"
+              className="w-full border p-1 rounded-lg text-sm"
               placeholder="Nom complet"
             />
           </div>
           <div>
-            <label className="block text-gray-700">Prénom</label>
+            <label className="block text-gray-700 text-sm">Prénom</label>
             <input
               type="text"
               value={prenom}
               onChange={(e) => setPrenom(e.target.value)}
-              className="w-full border p-2 rounded-lg"
+              className="w-full border p-1 rounded-lg text-sm"
               placeholder="Prénom"
             />
           </div>
           <div>
-            <label className="block text-gray-700">Email</label>
+            <label className="block text-gray-700 text-sm">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full border p-2 rounded-lg"
+              className="w-full border p-1 rounded-lg text-sm"
               placeholder="Adresse email"
             />
           </div>
           <div>
-            <label className="block text-gray-700">Téléphone</label>
+            <label className="block text-gray-700 text-sm">Téléphone</label>
             <input
               type="tel"
               value={tel}
               onChange={(e) => setTel(e.target.value)}
-              className="w-full border p-2 rounded-lg"
+              className="w-full border p-1 rounded-lg text-sm"
               placeholder="Numéro de téléphone"
             />
           </div>
           <div>
-            <label className="block text-gray-700">Rôle</label>
+            <label className="block text-gray-700 text-sm">Rôle</label>
             <select
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="w-full border p-2 rounded-lg"
+              className="w-full border p-1 rounded-lg text-sm"
             >
               <option value="">Choisir un rôle</option>
               <option value="etudiant">Étudiant</option>
@@ -120,11 +120,11 @@ const InscrireUtilisateur = () => {
           {role === 'etudiant' && (
             <>
               <div>
-                <label className="block text-gray-700">Domaine</label>
+                <label className="block text-gray-700 text-sm">Domaine</label>
                 <select
                   value={domaine}
                   onChange={(e) => setDomaine(e.target.value)}
-                  className="w-full border p-2 rounded-lg"
+                  className="w-full border p-1 rounded-lg text-sm"
                 >
                   <option value="">Choisir un domaine</option>
                   <option value="Développement Web">Développement Web</option>
@@ -133,28 +133,28 @@ const InscrireUtilisateur = () => {
                 </select>
               </div>
               <div>
-                <label className="block text-gray-700">Durée de formation (en mois)</label>
+                <label className="block text-gray-700 text-sm">Durée de formation (en mois)</label>
                 <input
                   type="number"
                   value={dureeFormation}
                   onChange={(e) => setDureeFormation(e.target.value)}
-                  className="w-full border p-2 rounded-lg"
+                  className="w-full border p-1 rounded-lg text-sm"
                   placeholder="Durée"
                 />
               </div>
               <div>
-                <label className="block text-gray-700">Email du coach</label>
+                <label className="block text-gray-700 text-sm">Email du coach</label>
                 <input
                   type="email"
                   value={coachEmail}
                   onChange={(e) => setCoachEmail(e.target.value)}
-                  className="w-full border p-2 rounded-lg"
+                  className="w-full border p-1 rounded-lg text-sm"
                   placeholder="Email du coach"
                 />
               </div>
             </>
           )}
-          <button type="submit" className="bg-blue-600 text-white w-full py-2 rounded-lg hover:bg-blue-700">
+          <button type="submit" className="bg-blue-600 text-white w-full py-1 rounded-lg hover:bg-blue-700 text-sm">
             Inscrire
           </button>
         </form>

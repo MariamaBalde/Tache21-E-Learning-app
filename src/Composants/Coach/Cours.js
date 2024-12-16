@@ -234,7 +234,7 @@ const Cours = () => {
 
   return (
     <div className="p-2 sm:p-4 md:p-6">
-      <h1 className="text-sm sm:text-base md:text-2xl font-semibold mb-3 sm:mb-4 md:mb-6 text-center text-gray-800">
+      <h1 className="text-xs sm:text-sm md:text-2xl font-semibold mb-3 sm:mb-4 md:mb-6 text-center text-gray-800">
         Cours du sous-domaine
       </h1>
   
@@ -275,13 +275,12 @@ const Cours = () => {
                   <FaArchive />
                 </button>
               </div>
-              
             </div>
           </li>
         ))}
       </ul>
   
-      <h2 className="text-sm sm:text-base md:text-2xl font-semibold my-4 sm:my-6 text-center text-gray-800">
+      <h2 className="text-xs sm:text-sm md:text-2xl font-semibold my-4 sm:my-6 text-center text-gray-800">
         Quizzes associés
       </h2>
       <ul className="space-y-2 sm:space-y-4">
@@ -355,6 +354,7 @@ const Cours = () => {
       </div>
     </div>
   );
+  
   
   
    
