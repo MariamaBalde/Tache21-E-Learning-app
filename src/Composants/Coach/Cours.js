@@ -242,7 +242,7 @@ const Cours = () => {
         {cours.map((coursItem) => (
           <li
             key={coursItem.id}
-            className="p-4 bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow p-6 border border-blue-600"
+            className="p-4 bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow  border border-blue-600"
           >
             <div className="flex justify-between items-center">
               <div>
