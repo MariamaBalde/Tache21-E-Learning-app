@@ -9,6 +9,7 @@ const Navbar = ({ onAddTask }) => {
   const [description, setDescription] = useState("");
   const [file, setFile] = useState(null);
 
+  // Récupération des données utilisateur depuis le localStorage
   useEffect(() => {
     const storedUserData = localStorage.getItem("profileData");
     if (storedUserData) {
@@ -21,8 +22,10 @@ const Navbar = ({ onAddTask }) => {
     }
   }, []);
 
+  // Gestion de l'ouverture/fermeture du modal
   const toggleModal = () => setShowModal(!showModal);
 
+  // Gestion de la soumission du formulaire
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!selectedTask || !description) {
@@ -37,17 +40,20 @@ const Navbar = ({ onAddTask }) => {
       date: new Date().toLocaleDateString(),
     });
 
+    // Réinitialisation des champs après envoi
     setSelectedTask("");
     setDescription("");
     setFile(null);
-
     toggleModal();
   };
 
   return (
-    <header className="flex justify-between items-center p-4 bg-white shadow-md">
+    <header className="flex justify-between items-center p-4 bg-[#191970] shadow-md">
+      {/* Partie gauche : espace vide pour équilibrer le bouton au centre */}
+      <div className="flex-1"></div>
+
       {/* Bouton "Envoyer mon travail" centré */}
-      <div className="flex-grow flex justify-center">
+      <div className="flex-1 flex justify-center">
         <button
           onClick={toggleModal}
           className="flex items-center space-x-2 p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
@@ -58,13 +64,13 @@ const Navbar = ({ onAddTask }) => {
       </div>
 
       {/* Icônes de messagerie, notification et profil utilisateur */}
-      <div className="flex items-center space-x-4">
+      <div className="flex-1 flex justify-end items-center space-x-4 text-white">
         <FiMail
-          className="text-gray-600 cursor-pointer"
+          className="cursor-pointer"
           onClick={() => console.log("Messagerie ouverte")}
         />
-        <FiBell className="text-gray-600" />
-        <Profil className="text-gray-500" />
+        <FiBell />
+        <Profil />
       </div>
 
       {/* Modal pour soumettre une tâche */}
