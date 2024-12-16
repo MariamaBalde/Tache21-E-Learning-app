@@ -59,12 +59,12 @@ const Navbar = ({ onAddTask }) => {
           className="flex items-center space-x-2 p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
         >
           <FiSend className="text-lg" />
-          <span>Envoyer mon travail</span>
+          <span className="text-white">Envoyer mon travail</span>
         </button>
       </div>
 
       {/* Icônes de messagerie, notification et profil utilisateur */}
-      <div className="flex-1 flex justify-end items-center space-x-4 text-white">
+      <div className="flex-1 flex justify-end items-center space-x-4 text-black">
         <FiMail
           className="cursor-pointer"
           onClick={() => console.log("Messagerie ouverte")}
