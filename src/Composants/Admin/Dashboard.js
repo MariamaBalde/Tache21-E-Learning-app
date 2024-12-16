@@ -147,20 +147,23 @@ const AdminDashboard = () => {
 
         {/* Bouton pour inscrire un utilisateur */}
         <div className="bg-white rounded-lg shadow p-6 mb-8">
-          <button
-            onClick={() => navigate('/admin/inscrire-utilisateur')} // Assurez-vous que le chemin est correct
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-          >
-            Inscrire un utilisateur
-          </button>
+          <div className="flex flex-col sm:flex-row sm:space-x-5 space-y-3 sm:space-y-0">
+            <button
+              onClick={() => navigate('/admin/inscrire-utilisateur')}
+              className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+            >
+              Inscrire un utilisateur
+            </button>
 
-          <button
-            onClick={() => navigate('/admin/domaine')} // Assurez-vous que le chemin est correct
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 ml-5"
-          >
-            All domaines
-          </button>
+            <button
+              onClick={() => navigate('/admin/domaine')}
+              className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+            >
+              All domaines
+            </button>
+          </div>
         </div>
+
 
         {/* Statistiques */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
@@ -180,7 +183,7 @@ const AdminDashboard = () => {
             title={`Coachs
                ${coaches.length}`}
             icon={UserCheck}
-            gradient="bg-gradient-to-br from-white to-blue-800"
+            gradient="bg-gradient-to-br from-blue-200 to-blue-800"
           />
         </div>
 
