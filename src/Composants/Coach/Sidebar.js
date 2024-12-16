@@ -123,24 +123,15 @@ const Sidebar = () => {
               </NavLink>
             </li>
             <li>
-              {/* <NavLink
+              <NavLink
                                 to="/coach/dashboard/messagerie"
-                                className={`flex items-center py-2 px-3 ${activeLink === '/coach/dashboard/messagerie' ? 'bg-gray-400' : 'hover:bg-gray-400'} rounded`}
+                                className={`flex items-center py-2 px-3 
+                                  ${activeLink === '/coach/dashboard/messagerie' ? 'bg-gray-400' : 'hover:bg-gray-400'} rounded`}
                                 onClick={() => handleLinkClick('/coach/dashboard/messagerie')}
                             >
                                 <FaEnvelope className="mr-2" />
                                 Messagerie
-                            </NavLink> */}
-
-              <NavLink
-                to="/coach/dashboard/messagerie"
-                className="flex items-center py-2 px-3 hover:bg-gray-700 rounded"
-                activeClassName="bg-gray-700"
-                onClick={() => setIsOpen(false)}
-              >
-                <FaEnvelope className="mr-2" />
-                Messagerie
-              </NavLink>
+                            </NavLink>
             </li>
           </ul>
         </nav>
