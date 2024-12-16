@@ -78,36 +78,8 @@ const Sidebar = () => {
                 Domaines
               </NavLink>
             </li>
-            <li>
-              <NavLink
-                to="/coach/dashboard/sous-domaines"
-                className={`flex items-center py-2 px-3 ${
-                  activeLink === '/coach/dashboard/sous-domaines'
-                    ? 'bg-gray-400'
-                    : 'hover:bg-gray-400'
-                } rounded`}
-                onClick={() =>
-                  handleLinkClick('/coach/dashboard/sous-domaines')
-                }
-              >
-                <FiLayers className="mr-2" />
-                Sous-domaines
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/coach/dashboard/cours"
-                className={`flex items-center py-2 px-3 ${
-                  activeLink === '/coach/dashboard/cours'
-                    ? 'bg-gray-400'
-                    : 'hover:bg-gray-400'
-                } rounded`}
-                onClick={() => handleLinkClick('/coach/dashboard/cours')}
-              >
-                <FiClipboard className="mr-2" />
-                Cours
-              </NavLink>
-            </li>
+          
+        
             <li>
               <NavLink
                 to="/coach/dashboard/livraisons"
