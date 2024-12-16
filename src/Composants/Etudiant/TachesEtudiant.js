@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { auth,db } from "../../Config/firebaseConfig"; // Assurez-vous que le chemin est correct
-
 const TachesEtudiant = () => {
   const [studentData, setStudentData] = useState(null);
   const [subDomains, setSubDomains] = useState([]);
@@ -102,7 +101,6 @@ const TachesEtudiant = () => {
       });
   };
 
-
   return (
     <div>
       <h2 className="text-xl font-semibold mb-4">Liste de vos tâches :</h2>
@@ -154,9 +152,6 @@ const TachesEtudiant = () => {
       )}
     </div>
   );
-
-
 };
-
 export default TachesEtudiant;
 

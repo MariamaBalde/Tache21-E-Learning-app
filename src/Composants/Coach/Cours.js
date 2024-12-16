@@ -14,10 +14,8 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 import { FaPlus, FaEdit, FaTrashAlt, FaPlay, FaArchive } from 'react-icons/fa';
-
 const Cours = () => {
   const { sousDomaineId } = useParams();
-
   const [cours, setCours] = useState([]);
   const [quizzes, setQuizzes] = useState([]);
   const [associatedQuizzes, setAssociatedQuizzes] = useState([]);
@@ -436,5 +434,4 @@ const Cours = () => {
     </div>
   );
 };
-
 export default Cours;

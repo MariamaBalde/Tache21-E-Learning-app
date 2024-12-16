@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { FiBell, FiMail, FiX, FiSend } from "react-icons/fi";
 import Profil from '../Coach/Profil';
 import { storage, db } from "../../Config/firebaseConfig"; // Remplace par ton fichier de config Firebase
-
-
 const Navbar = () => {
   const [userData, setUserData] = useState({}); // Stocke les données utilisateur
   const [showModal, setShowModal] = useState(false); // État pour afficher le modal
@@ -79,11 +77,6 @@ const Navbar = () => {
       alert("Une erreur est survenue. Veuillez réessayer.");
     }
   };
-
-
-
-
-
   return (
     <header className="flex justify-between items-center p-4 bg-[#191970] shadow-md">
       {/* Bouton "Envoyer mon travail" */}
@@ -102,7 +95,7 @@ const Navbar = () => {
           onClick={toggleMessagerie}
         />
         <FiBell className="text-white text-3xl" />
-        
+
         {/* Affichage du profil utilisateur */}
         <Profil className="text-gray-500" />
       </div>
@@ -168,4 +161,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
