@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { db, auth } from '../../Config/firebaseConfig';
 import { collection, doc, setDoc } from 'firebase/firestore';
-import { getAuth, createUserWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
+import {createUserWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
 
@@ -74,7 +74,7 @@ const InscrireUtilisateur = () => {
   return (
     <>
       {showForm && (
-        <div className="flex justify-center items-center h-screen bg-blue-300">
+        <div className="flex justify-center py-3 items-center h-full bg-blue-300">
           <div className="bg-white p-8 rounded-lg shadow-lg w-96 relative">
             {/* Bouton de fermeture avec l'icône */}
             <button
@@ -88,7 +88,7 @@ const InscrireUtilisateur = () => {
               <div>
                 <label className="block text-gray-700">Nom</label>
                 <input
-                  type="text"
+                  type="text" required
                   value={nom}
                   onChange={(e) => setNom(e.target.value)}
                   className="w-full border p-2 rounded-lg"

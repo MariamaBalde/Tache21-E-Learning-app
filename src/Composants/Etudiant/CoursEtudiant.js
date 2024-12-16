@@ -80,11 +80,7 @@ const CoursEtudiant = () => {
                             )}
 
                             <h3 className="text-xl font-semibold mb-4">{subdomain.name}</h3>
-                            <p className="text-gray-600">{subdomain.description || "Aucune description disponible"}</p>
 
-                            <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200">
-                                Démarrer
-                            </button>
                         </div>
                     ))}
                 </div>

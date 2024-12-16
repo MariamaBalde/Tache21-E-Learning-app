@@ -18,5 +18,3 @@ const MessagerieCoach = () => {
 };
 
 export default MessagerieCoach;
-
-
