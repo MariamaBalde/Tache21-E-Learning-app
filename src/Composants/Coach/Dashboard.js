@@ -1,4 +1,4 @@
-// best
+
 import React, { useState, useEffect } from 'react';
 import GradientCard from './GradientCard';
 import { Users, FileText, CheckSquare } from 'lucide-react';
@@ -76,4 +76,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-// best
