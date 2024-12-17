@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react";
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
-import { auth,db } from "../../Config/firebaseConfig"; // Assurez-vous que le chemin est correct
+import { auth, db } from "../../Config/firebaseConfig"; // Assurez-vous que le chemin est correct
 const TachesEtudiant = () => {
   const [studentData, setStudentData] = useState(null);
   const [subDomains, setSubDomains] = useState([]);
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [taskStatus, setTaskStatus] = useState({}); // État pour gérer les statuts des tâches
+  const [currentTask, setCurrentTask] = useState(null); // État pour afficher la tâche démarrée dans livraison
 
   useEffect(() => {
-   
     const user = auth.currentUser;
 
     if (user) {
@@ -33,7 +34,7 @@ const TachesEtudiant = () => {
 
             const subdomainsList = subdomainsSnapshot.docs.map((doc) => ({
               id: doc.id, // Récupère l'ID du sous-domaine
-              ...doc.data()
+              ...doc.data(),
             }));
             setSubDomains(subdomainsList);
 
@@ -44,8 +45,19 @@ const TachesEtudiant = () => {
               const coursesQuery = query(coursesRef, where("sousDomaineId", "in", subdomainIds));
               const coursesSnapshot = await getDocs(coursesQuery);
 
-              const coursesList = coursesSnapshot.docs.map((doc) => doc.data());
+              const coursesList = coursesSnapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+              }));
+
               setCourses(coursesList);
+
+              // Initialiser les statuts des tâches (aucune démarrée ou terminée par défaut)
+              const initialStatus = {};
+              coursesList.forEach((course) => {
+                initialStatus[course.id] = { started: false, completed: false };
+              });
+              setTaskStatus(initialStatus);
             }
           } else {
             console.log("Aucun étudiant trouvé pour l'ID:", studentId);
@@ -64,6 +76,22 @@ const TachesEtudiant = () => {
     }
   }, []);
 
+  const handleStartTask = (courseId, courseName) => {
+    setTaskStatus((prevStatus) => ({
+      ...prevStatus,
+      [courseId]: { ...prevStatus[courseId], started: true },
+    }));
+    setCurrentTask(courseName); // Affiche le nom de la tâche dans livraison
+  };
+
+  const handleCompleteTask = (courseId) => {
+    setTaskStatus((prevStatus) => ({
+      ...prevStatus,
+      [courseId]: { ...prevStatus[courseId], completed: true },
+    }));
+    setCurrentTask(null); // Réinitialise l'affichage de livraison
+  };
+
   if (loading) {
     return <div>Chargement...</div>;
   }
@@ -71,51 +99,21 @@ const TachesEtudiant = () => {
   if (!studentData) {
     return <div>Aucun étudiant trouvé</div>;
   }
-  const handleStartTask = (sousDomaineId) => {
-    console.log(`Tâche démarrée : ${sousDomaineId}`);
-    // Exemple : Mettre à jour l'état de la tâche dans Firestore
-    db
-      .collection("cours")
-      .doc(sousDomaineId)
-      .update({ status: "started", startDate: new Date() })
-      .then(() => {
-        alert("Tâche démarrée !");
-      })
-      .catch((error) => {
-        console.error("Erreur lors du démarrage de la tâche :", error);
-      });
-  };
-
-  const handleFinishTask = (sousDomaineId) => {
-    console.log(`Tâche terminée : ${sousDomaineId}`);
-    // Exemple : Mettre à jour l'état de la tâche dans Firestore
-    db
-      .collection("cours")
-      .doc(sousDomaineId)
-      .update({ status: "finished", endDate: new Date() })
-      .then(() => {
-        alert("Tâche terminée !");
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la terminaison de la tâche :", error);
-      });
-  };
 
   return (
     <div>
       <h2 className="text-xl font-semibold mb-4">Liste de vos tâches :</h2>
       {courses.length > 0 ? (
         <div className="space-y-4">
-          {courses.map((course, index) => (
+          {courses.map((course) => (
             <div
-              key={index}
+              key={course.id}
               className="bg-white border border-gray-200 rounded-lg shadow-md p-4"
             >
               <div className="flex justify-between items-center mb-3">
                 <h3 className="text-lg font-bold">
-                  Tâche {index + 1} : {course.name}
+                  Tâche : {course.name}
                 </h3>
-             
               </div>
               <p className="text-gray-600 mb-3">{course.description}</p>
               {course.link && (
@@ -133,13 +131,15 @@ const TachesEtudiant = () => {
               <div className="flex items-center space-x-4">
                 <button
                   className="bg-blue-500 text-white text-sm px-4 py-2 rounded-md hover:bg-blue-600"
-                  onClick={() => handleStartTask(course.id)}
+                  onClick={() => handleStartTask(course.id, course.name)}
+                  disabled={taskStatus[course.id]?.started} // Désactive le bouton si déjà démarré
                 >
                   Démarrer
                 </button>
                 <button
                   className="bg-red-500 text-white text-sm px-4 py-2 rounded-md hover:bg-red-600"
-                  onClick={() => handleFinishTask(course.id)}
+                  onClick={() => handleCompleteTask(course.id)}
+                  disabled={!taskStatus[course.id]?.started || taskStatus[course.id]?.completed} // Activé seulement après Démarrer
                 >
                   Terminer
                 </button>
@@ -154,4 +154,10 @@ const TachesEtudiant = () => {
   );
 };
 export default TachesEtudiant;
+
+
+
+
+
+
 
