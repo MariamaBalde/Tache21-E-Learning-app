@@ -66,11 +66,13 @@ const Navbar = ({ onAddTask }) => {
       {/* Icônes de messagerie, notification et profil utilisateur */}
       <div className="flex-1 flex justify-end items-center space-x-4 text-white">
         <FiMail
-          className="cursor-pointer  text-3xl"
+          className="cursor-pointer text-3xl"
           onClick={() => console.log("Messagerie ouverte")}
         />
         <FiBell className="text-3xl" />
-        <Profil />
+        <div className="text-black"> {/* Changez ici la couleur de l'icône */}
+          <Profil />
+        </div>
       </div>
 
       {/* Modal pour soumettre une tâche */}
