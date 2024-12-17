@@ -43,6 +43,7 @@ const SousDomaines = () => {
   };
 
   const fetchSousDomaines = async () => {
+    setLoading(true); // Active le loader avant de récupérer les données
     try {
       const sousDomainesRef = collection(db, 'sous-domaines');
       const q = query(sousDomainesRef, where('domaineId', '==', domaineId));
@@ -53,10 +54,9 @@ const SousDomaines = () => {
       }));
       setSousDomaines(sousDomainesData);
     } catch (error) {
-      console.error(
-        'Erreur lors de la récupération des sous-domaines :',
-        error
-      );
+      console.error('Erreur lors de la récupération des sous-domaines :', error);
+    } finally {
+      setLoading(false); // Désactive le loader après avoir récupéré les données
     }
   };
 
@@ -90,7 +90,9 @@ const SousDomaines = () => {
     }
   };
 
+
   const handleDelete = async () => {
+    setLoading(true); // Active le loader pendant la suppression
     try {
       const sousDomaineRef = doc(db, 'sous-domaines', selectedSousDomaine);
       await deleteDoc(sousDomaineRef);
@@ -99,6 +101,8 @@ const SousDomaines = () => {
       setShowDeleteModal(false);
     } catch (error) {
       console.error('Erreur lors de la suppression :', error);
+    } finally {
+      setLoading(false); // Désactive le loader après la suppression
     }
   };
 
@@ -107,6 +111,12 @@ const SousDomaines = () => {
       <h1 className="text-2xl font-semibold mb-6">
         Sous-domaines pour le domaine : {domaineName || 'Chargement...'}
       </h1>
+
+      {loading && (
+        <div className="absolute inset-0 bg-gray-100 bg-opacity-50 flex justify-center items-center">
+          <div className="spinner-border animate-spin border-t-4 border-blue-600 border-8 rounded-full w-16 h-16"></div>
+        </div>
+      )}
 
       <button
         onClick={() => setShowAddModal(true)}
