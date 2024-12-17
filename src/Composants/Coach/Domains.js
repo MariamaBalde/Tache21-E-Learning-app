@@ -189,8 +189,8 @@ const Domains = () => {
   }, []);
 
   return (
-    <div className="p-6 bg-gray-50">
-      <h1 className="text-2xl font-semibold text-center mb-6 text-gray-800">
+    <div className="px-6 bg-gray-50">
+      <h1 className="text-2xl font-bold text-start mb-4 text-blue-600">
         Gestion des Domaines
       </h1>
 
