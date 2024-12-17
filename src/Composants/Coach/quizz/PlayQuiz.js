@@ -1,4 +1,3 @@
-// src/Composants/Coach/quizz/PlayQuiz.js
 import React, { useEffect, useState } from 'react';
 import { db } from '../../../Config/firebaseConfig';
 import { doc, getDoc } from 'firebase/firestore';
@@ -12,8 +11,8 @@ const PlayQuiz = () => {
   const [score, setScore] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);  // Etat pour gérer le loader
+  const [error, setError] = useState(null);      // Etat pour gérer les erreurs
   const [isArchived, setIsArchived] = useState(false);
 
   useEffect(() => {
@@ -31,17 +30,37 @@ const PlayQuiz = () => {
       } catch (err) {
         setError('Erreur lors de la récupération des données du quiz.');
       } finally {
-        setLoading(false);
+        setLoading(false);  // Lorsque les données sont récupérées, on arrête le loader
       }
     };
 
     fetchQuizData();
   }, [quizId]);
 
+  // Affichage si le quiz est archivé
   if (isArchived) {
     return (
       <div className="bg-red-100 p-4 rounded">
         <h2>Ce quiz est archivé. Vous ne pouvez pas le jouer.</h2>
+      </div>
+    );
+  }
+
+  // Affichage du loader ou message d'erreur pendant le chargement
+  if (loading) {
+    return (
+      <div className="text-center py-10">
+        <div className="animate-spin h-10 w-10 border-4 border-blue-500 border-t-transparent rounded-full"></div>
+        <p className="ml-2 text-gray-700">Chargement...</p>
+      </div>
+    );
+  }
+
+  // Affichage d'un message d'erreur en cas de problème
+  if (error) {
+    return (
+      <div className="text-center py-10 text-red-500">
+        <p>{error}</p>
       </div>
     );
   }
@@ -79,9 +98,6 @@ const PlayQuiz = () => {
     setSubmitted(false);
     setScore(null);
   };
-
-  if (loading) return <div className="text-center py-10">Chargement...</div>;
-  if (error) return <div className="text-center py-10">{error}</div>;
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-lg">
@@ -175,3 +191,4 @@ const PlayQuiz = () => {
 };
 
 export default PlayQuiz;
+

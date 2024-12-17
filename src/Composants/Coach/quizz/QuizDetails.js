@@ -1,4 +1,3 @@
-// src/Composants/Coach/quizz/QuizDetails.js
 import React, { useEffect, useState } from 'react';
 import { db } from '../../../Config/firebaseConfig';
 import { doc, getDoc } from 'firebase/firestore';
@@ -8,23 +7,48 @@ const QuizDetails = () => {
   const { quizId } = useParams();
   const [quizData, setQuizData] = useState(null);
   const [isArchived, setIsArchived] = useState(false);
+  const [loading, setLoading] = useState(true); // État pour gérer le loader
+  const [error, setError] = useState(null); // État pour gérer les erreurs
 
   useEffect(() => {
     const fetchQuizDetails = async () => {
-      const quizRef = doc(db, 'quizzes', quizId);
-      const quizSnap = await getDoc(quizRef);
-      if (quizSnap.exists()) {
-        setQuizData(quizSnap.data());
-        setIsArchived(quizSnap.data().archived); // Vérifiez si le quiz est archivé
-      } else {
-        console.log('Quiz non trouvé !');
+      try {
+        const quizRef = doc(db, 'quizzes', quizId);
+        const quizSnap = await getDoc(quizRef);
+
+        if (quizSnap.exists()) {
+          setQuizData(quizSnap.data());
+          setIsArchived(quizSnap.data().archived); // Vérifiez si le quiz est archivé
+        } else {
+          setError('Quiz non trouvé !');
+        }
+      } catch (err) {
+        console.error('Erreur lors de la récupération du quiz:', err);
+        setError("Impossible de récupérer les détails du quiz.");
+      } finally {
+        setLoading(false); // Le chargement est terminé
       }
     };
 
     fetchQuizDetails();
   }, [quizId]);
 
-  if (!quizData) return <div>Chargement...</div>;
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin h-10 w-10 border-4 border-blue-500 border-t-transparent rounded-full"></div>
+        <p className="ml-2 text-gray-700">Chargement...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-red-500">{error}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6">
