@@ -67,7 +67,7 @@
 //   );
 // };
 // export default Dashboard;
-// 2
+
 import React, { useState, useEffect } from 'react';
 import GradientCard from './GradientCard';
 import { Users, FileText, CheckSquare } from 'lucide-react';
@@ -76,45 +76,11 @@ import { db } from '../../Config/firebaseConfig';
 import { collection, getDocs, query, where, onSnapshot } from 'firebase/firestore';
 
 const Dashboard = () => {
-    const [studentCount, setStudentCount] = useState(0);
+  const [studentCount, setStudentCount] = useState(0);
   const [domainCount, setDomainCount] = useState(0);
   const [courseCount, setCourseCount] = useState(0); 
   const [domainData, setDomainData] = useState([]);
   const [courseData, setCourseData] = useState([]);
-
-
-  // useEffect(() => {
-  //   const fetchStudentCount = async () => {
-  //         const studentQuery = query(collection(db, 'users'), where('role', '==', 'etudiant'));
-  //         const snapshot = await getDocs(studentQuery);
-  //         setStudentCount(snapshot.size);
-  //       };
-
-  //   const fetchDomainData = async () => {
-  //     const monthlyData = Array(12).fill(0); // Initialise les données à 0 pour chaque mois
-  //     const domaineSnapshot = await getDocs(collection(db, 'domaines'));
-  //     domaineSnapshot.docs.forEach((doc) => {
-  //       const date = doc.data().createdAt; // Assurez-vous que chaque cours a un champ "createdAt"
-  //       const month = new Date(date).getMonth(); // Récupère le mois (0 = janvier)
-  //       monthlyData[month] += 1; // Incrémente le mois correspondant
-  //     });
-  //     setDomainData(monthlyData);
-  //   };
-  //   const fetchCourseData = async () => {
-  //     const monthlyData = Array(12).fill(0); // Initialise les données à 0 pour chaque mois
-  //     const courseSnapshot = await getDocs(collection(db, 'cours'));
-  //     courseSnapshot.docs.forEach((doc) => {
-  //       const date = doc.data().createdAt; // Assurez-vous que chaque cours a un champ "createdAt"
-  //       const month = new Date(date).getMonth(); // Récupère le mois (0 = janvier)
-  //       monthlyData[month] += 1; // Incrémente le mois correspondant
-  //     });
-  //     setCourseData(monthlyData);
-  //   };
-
-  //   fetchStudentCount()
-  //   fetchDomainData();
-  //   fetchCourseData();
-  // }, []);
 
   useEffect(() => {
     const fetchStudentCount = async () => {
@@ -166,29 +132,27 @@ const Dashboard = () => {
       unsubscribeCourse();
     };
   }, []);
-
-
   return (
     <main className="px-6 bg-gray-50">
       <h2 className="text-xl text-blue-600 font-bold mb-6">Dashboard</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <GradientCard
-          title="Étudiants Coachés"
+          title="Étudiants"
           icon={Users}
           gradient="bg-gradient-to-br from-blue-600 to-blue-300"
-          count={studentCount}
+          count={studentCount} // Passer le nombre d'étudiants
         />
         <GradientCard
-          title="Nombre de Domaines"
+          title="Syllabus créés"
           icon={FileText}
           gradient="bg-gradient-to-br from-blue-300 to-[#FF66FF]"
-          count={domainCount}
+          count={domainCount} // Passer le nombre de domaines
         />
         <GradientCard
-          title="Nombre de Cours"
+          title="Tâches"
           icon={CheckSquare}
           gradient="bg-gradient-to-br from-blue-200 to-blue-800"
-          count={courseCount}
+          count={courseCount} // Passer le nombre de cours
         />
       </div>
       <section className="mt-8 grid grid-cols-1 lg:grid-cols-1">
@@ -197,10 +161,11 @@ const Dashboard = () => {
     </main>
   );
 };
-
 export default Dashboard;
 
-// 2
+
+
+
 
 
 

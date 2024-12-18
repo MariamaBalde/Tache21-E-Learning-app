@@ -116,30 +116,8 @@ const Messagerie = () => {
 
   return (
     <div className="flex flex-col md:flex-row h-screen bg-gray-50">
-      {/* <div className="w-full md:w-1/4 bg-white shadow-md flex flex-col">
-        <h2 className="text-lg font-semibold text-center py-2 border-b">Contacts</h2>
-        <div className="flex-1 overflow-y-auto">
-          {users.map((user) => (
-            <div
-              key={user.id}
-              onClick={() => handleSelectUser(user)}
-              className={`flex items-center justify-between px-3 py-2 cursor-pointer hover:bg-blue-300 transition ${
-                selectedUser?.id === user.id ? 'bg-blue-200 text-black' : ''
-              }`}
-            >
-              <div>
-                <p className="text-sm font-medium">{user.nom} {user.prenom}</p>
-                {notifications[user.id] > 0 && (
-                  <span className="text-xs text-red-500">+{notifications[user.id]}</span>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div> */}
-
-<div className="w-full md:w-1/4 bg-white shadow-md flex flex-col">
-  <h2 className="text-lg font-semibold text-center py-2 border-b">Contacts</h2>
+    <div className="w-full md:w-1/4 bg-white shadow-md flex flex-col">
+  <h2 className="text-lg font-semibold text-center py-2 border-b text-blue-600">Contacts</h2>
   <div className="flex-1 overflow-y-auto">
     {users.map((user) => (
       <div

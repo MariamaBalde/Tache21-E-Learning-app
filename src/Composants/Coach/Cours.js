@@ -15,8 +15,6 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { FaPlus, FaEdit, FaTrashAlt, FaPlay, FaArchive, FaPlayCircle, FaTrash } from 'react-icons/fa';
 import { ClipboardDocumentIcon, PencilIcon, ArchiveBoxIcon, PlayIcon } from '@heroicons/react/24/outline';
-
-
 const Cours = () => {
   const { sousDomaineId } = useParams();
   const [cours, setCours] = useState([]);
@@ -168,6 +166,8 @@ const Cours = () => {
     try {
       await updateDoc(doc(db, 'cours', coursToEdit.id), {
         name: coursToEdit.name.trim(),
+        description: coursToEdit.description?.trim() || '',
+        link: coursToEdit.link?.trim() || '',
       });
       alert('Domaine modifié avec succès.');
       setShowEditCoursModal(false);
@@ -278,59 +278,36 @@ const Cours = () => {
       </h1>
       {/* Liste des cours */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-        {cours.map((coursItem) => (
+        {cours.map((cours) => (
           <div
-            key={coursItem.id}
+            key={cours.id}
             className="flex flex-col justify-between h-full p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow border border-blue-400"
           >
             {/* Conteneur Titre */}
             <div className="mb-2">
               <h3 className="text-sm sm:text-base font-semibold text-blue-600">
-                {coursItem.name}
+                {cours.name}
               </h3>
             </div>
 
             {/* Conteneur Description */}
             <div className="mb-2">
               <p className="text-xs sm:text-sm text-gray-600">
-                {coursItem.description}
+                {cours.description}
               </p>
             </div>
 
             {/* Conteneur Lien */}
             <div className="mb-4">
               <a
-                href={coursItem.link}
+                href={cours.link}
                 className="text-xs sm:text-sm text-blue-600 hover:text-blue-800 break-words"
               >
-                {coursItem.link}
+                {cours.link}
               </a>
             </div>
 
             {/* Conteneur Boutons */}
-            {/* <div className="flex justify-between items-center space-x-2 mt-auto">
-              <button
-                onClick={() => handleEditCours(coursItem.id, { name: '' })}
-                className="relative group p-2 text-blue-600 hover:bg-blue-100 rounded-md transition"
-                title="Modifier"
-              >
-                <FaEdit className="h-6 w-6" />
-                <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 text-sm bg-gray-800 text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                  Modifier
-                </span>
-              </button>
-              <button
-                onClick={() => handleArchiveCours(coursItem.id)}
-                className="relative group p-2 text-red-600 hover:bg-red-100 rounded-md transition"
-                title="Archiver"
-              >
-                <ArchiveBoxIcon className="h-6 w-6" />
-                <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 text-sm bg-gray-800 text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                  Archiver
-
-                </span>
-              </button>
-            </div> */}
             <div className="flex justify-between items-center space-x-2 mt-auto">
               <Link
                 onClick={() => editCours(cours)}
@@ -343,7 +320,7 @@ const Cours = () => {
                 </span>
               </Link>
               <button
-                onClick={() => handleArchiveCours(coursItem.id)}
+                onClick={() => handleArchiveCours(cours.id)}
                 className="relative group p-2 text-red-600 hover:bg-red-100 rounded-md transition"
                 title="Archiver"
               >
@@ -402,7 +379,6 @@ const Cours = () => {
         >
           Ajouter un cours <FaPlus />
         </button>
-
         {showAddCoursModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg p-6 w-full max-w-md">
@@ -493,12 +469,29 @@ const Cours = () => {
               <form onSubmit={handleEditCours}>
                 <input
                   type="text"
-                  value={coursToEdit.name}
+                  value={coursToEdit.name || ''}
                   onChange={(e) =>
                     setCoursToEdit({ ...coursToEdit, name: e.target.value })
                   }
                   className="border rounded w-full px-4 py-2 mb-4"
                   placeholder="Nom du cours"
+                />
+                <textarea
+                  value={coursToEdit.description || ''}
+                  onChange={(e) =>
+                    setCoursToEdit({ ...coursToEdit, description: e.target.value })
+                  }
+                  className="border rounded w-full px-4 py-2 mb-4"
+                  placeholder="Description du cours"
+                />
+                <input
+                  type="text"
+                  value={coursToEdit.link || ''}
+                  onChange={(e) =>
+                    setCoursToEdit({ ...coursToEdit, link: e.target.value })
+                  }
+                  className="border rounded w-full px-4 py-2 mb-4"
+                  placeholder="Lien du cours"
                 />
                 <div className="flex justify-between">
                   <button
@@ -508,6 +501,7 @@ const Cours = () => {
                     Sauvegarder
                   </button>
                   <button
+                    type="button"
                     onClick={() => setShowEditCoursModal(false)}
                     className="text-red-500 hover:text-red-700"
                   >
