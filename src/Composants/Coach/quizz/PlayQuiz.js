@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { db } from '../../../Config/firebaseConfig';
 import { doc, getDoc } from 'firebase/firestore';
 import { useParams, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify'; // Importation de Toastify
 
 const PlayQuiz = () => {
   const { quizId } = useParams();
@@ -26,9 +27,11 @@ const PlayQuiz = () => {
           setUserAnswers(new Array(quizSnap.data().questions.length).fill(null));
         } else {
           setError('Quiz non trouvé !');
+          toast.error('Quiz non trouvé !');  // Notification Toastify pour erreur
         }
       } catch (err) {
         setError('Erreur lors de la récupération des données du quiz.');
+        toast.error('Erreur lors de la récupération des données du quiz.');  // Notification Toastify pour erreur
       } finally {
         setLoading(false);  // Lorsque les données sont récupérées, on arrête le loader
       }
@@ -73,7 +76,7 @@ const PlayQuiz = () => {
 
   const handleNextQuestion = () => {
     if (userAnswers[currentQuestionIndex] === null) {
-      alert('Veuillez sélectionner une réponse avant de continuer !');
+      toast.error('Veuillez sélectionner une réponse avant de continuer !'); // Notification Toastify pour alerte
       return;
     }
 
@@ -90,6 +93,7 @@ const PlayQuiz = () => {
       return acc + (question.correctAnswer === userAnswers[index] ? 1 : 0);
     }, 0);
     setScore(correctAnswers);
+    toast.success('Quiz soumis avec succès !');  // Notification Toastify pour succès
   };
 
   const handleRestartQuiz = () => {
@@ -97,6 +101,7 @@ const PlayQuiz = () => {
     setCurrentQuestionIndex(0);
     setSubmitted(false);
     setScore(null);
+    toast.info('Le quiz a été réinitialisé.');  // Notification Toastify pour info
   };
 
   return (

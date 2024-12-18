@@ -14,6 +14,14 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 import { FaPlus, FaEdit, FaTrashAlt, FaPlay, FaArchive } from 'react-icons/fa';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Importer les styles de Toastify
+
+const Loader = () => (
+  <div className="fixed inset-0 flex items-center justify-center bg-gray-100 bg-opacity-75 z-50">
+    <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-600"></div>
+  </div>
+);
 
 const Cours = () => {
   const { sousDomaineId } = useParams();
@@ -32,6 +40,8 @@ const Cours = () => {
     link: '',
   });
 
+  const [loading, setLoading] = useState(false); // État pour le loader
+
   const navigate = useNavigate(); // Instancier la fonction navigate
 
   // Récupérer les cours du sous-domaine
@@ -47,6 +57,8 @@ const Cours = () => {
       setCours(coursData);
     } catch (error) {
       console.error('Erreur lors de la récupération des cours :', error);
+    }finally { //pour loader
+      setLoading(false);
     }
   };
 
@@ -62,11 +74,14 @@ const Cours = () => {
       setQuizzes(quizzesData);
     } catch (error) {
       console.error('Erreur lors de la récupération des quizzes :', error);
+    }finally {  //pour loader
+      setLoading(false);
     }
   };
 
   // Récupérer les quizzes associés au sous-domaine
   const fetchAssociatedQuizzes = async () => {
+    setLoading(true); //pour loader
     try {
       const assocRef = collection(db, 'sousDomainesQuizzes');
       const q = query(assocRef, where('sousDomaineId', '==', sousDomaineId));
@@ -85,6 +100,8 @@ const Cours = () => {
         'Erreur lors de la récupération des quizzes associés :',
         error
       );
+    }finally { //pour le loader
+      setLoading(false);
     }
   };
 
@@ -105,25 +122,30 @@ const Cours = () => {
         sousDomaineId,
         quizId,
       });
-      alert('Quiz associé avec succès !');
+      toast.success('Quiz associé avec succès !');
       fetchAssociatedQuizzes();
       setShowQuizModal(false);
     } catch (error) {
       console.error('Erreur lors de l’association du quiz :', error);
+      toast.error('Erreur lors de l\'association du quiz.');
     }
   };
 
   // Ajouter un cours
   const handleAddCours = async () => {
+    setLoading(true);
     try {
       const coursRef = collection(db, 'cours');
       await addDoc(coursRef, { ...newCours, sousDomaineId });
-      alert('Cours ajouté avec succès !');
+      toast.success('Cours ajouté avec succès !');
       setNewCours({ name: '', description: '', link: '' });
       setShowAddCoursModal(false);
       fetchCours();
     } catch (error) {
       console.error('Erreur lors de l’ajout du cours :', error);
+      toast.error('Erreur lors de l\'ajout du cours.');
+    } finally { //pour le loader
+      setLoading(false);
     }
   };
 
@@ -132,22 +154,27 @@ const Cours = () => {
     try {
       const coursDoc = doc(db, 'cours', coursId);
       await updateDoc(coursDoc, updatedData);
-      alert('Cours modifié avec succès !');
+      toast.success('Cours modifié avec succès !');
       fetchCours();
     } catch (error) {
       console.error('Erreur lors de la modification du cours :', error);
+      toast.error('Erreur lors de la modification du cours.');
     }
   };
 
   // Archiver un cours
   const handleArchiveCours = async (coursId) => {
+    setLoading(true);
     try {
       const coursDoc = doc(db, 'cours', coursId);
       await deleteDoc(coursDoc);
-      alert('Cours archivé avec succès !');
+      toast.success('Cours archivé avec succès !');
       fetchCours();
     } catch (error) {
       console.error('Erreur lors de l’archivage du cours :', error);
+      toast.error('Erreur lors de l\'archivage du cours.');
+    } finally { //pour le loader
+      setLoading(false);
     }
   };
 
@@ -167,7 +194,7 @@ const Cours = () => {
         const assocDocId = querySnapshot.docs[0].id;
         const assocDoc = doc(db, 'sousDomainesQuizzes', assocDocId);
         await updateDoc(assocDoc, { quizId: newQuizId });
-        alert('Quiz modifié avec succès !');
+        toast.success('Quiz modifié avec succès !');
         fetchAssociatedQuizzes(); // Recharge les quizzes associés
       }
 
@@ -176,6 +203,8 @@ const Cours = () => {
       setIsEditMode(false); // Désactive le mode édition
     } catch (error) {
       console.error('Erreur lors de la modification du quiz :', error);
+      toast.error('Erreur lors de la modification du quiz.');
+
     }
   };
 
@@ -198,13 +227,14 @@ const Cours = () => {
         // Supprime le document
         await deleteDoc(assocDoc);
 
-        alert('Quiz supprimé avec succès !');
+        toast.success('Quiz supprimé avec succès !');
         fetchAssociatedQuizzes(); // Recharge la liste des quizzes associés
       } else {
-        alert('Aucune association trouvée pour ce quiz.');
+        toast.error('Aucune association trouvée pour ce quiz.');
       }
     } catch (error) {
       console.error('Erreur lors de la suppression du quiz :', error);
+      toast.error('Erreur lors de la suppression du quiz.');
     }
   };
 
@@ -225,7 +255,7 @@ const Cours = () => {
     try {
       const quizDoc = doc(db, 'quizzes', quizId);
       await deleteDoc(quizDoc);
-      alert('Quiz archivé avec succès !');
+      toast.success('Quiz archivé avec succès !');
       fetchAssociatedQuizzes();
     } catch (error) {
       console.error('Erreur lors de l’archivage du quiz :', error);
@@ -233,7 +263,10 @@ const Cours = () => {
   };
 
   return (
+    <>
+    <ToastContainer />
     <div className="p-6">
+      {loading && <Loader />}  {/*pour le loader*/}
       <h1 className="text-2xl font-semibold mb-6 text-center text-gray-800">
         Cours du sous-domaine
       </h1>
@@ -434,6 +467,7 @@ const Cours = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 
