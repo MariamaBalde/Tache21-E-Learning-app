@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { getAuth } from "firebase/auth";
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../Config/firebaseConfig"; // Assurez-vous que le chemin est correct
+import Loader from "../Shared/Loader"; // Import du composant Loader
 
 const CoursEtudiant = () => {
     const [studentData, setStudentData] = useState(null);
@@ -56,7 +57,7 @@ const CoursEtudiant = () => {
     }, []);
 
     if (loading) {
-        return <div>Chargement...</div>;
+        return <Loader />; // Afficher le loader pendant le chargement des données
     }
 
     if (!studentData) {
@@ -65,7 +66,7 @@ const CoursEtudiant = () => {
 
     return (
         <div>
-            <h2 className="text-xl  font-semibold text-blue-800">Liste de vos Cours</h2>
+            <h2 className="text-xl font-semibold text-blue-800">Liste de vos Cours</h2>
             {subDomains.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {subDomains.map((subdomain, index) => (
@@ -90,4 +91,5 @@ const CoursEtudiant = () => {
         </div>
     );
 };
+
 export default CoursEtudiant;

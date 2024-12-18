@@ -13,6 +13,8 @@ import {
   addDoc,
 } from 'firebase/firestore';
 import { ClipboardDocumentIcon, PencilIcon, ArchiveBoxIcon, PlusIcon, UsersIcon } from '@heroicons/react/24/outline';
+import { toast } from 'react-toastify'; // Importer Toastify
+import 'react-toastify/dist/ReactToastify.css'; // Importer le CSS de Toastify
 
 const Domains = () => {
   const [domains, setDomains] = useState([]);
@@ -44,22 +46,6 @@ const Domains = () => {
     return () => unsubscribe();
   }, []);
 
-  // const fetchDomains = async () => {
-  //   setLoading(true); // Activer le loader
-  //   try {
-  //     const querySnapshot = await getDocs(collection(db, 'domaines'));
-  //     const domainsData = querySnapshot.docs.map((doc) => ({
-  //       id: doc.id,
-  //       ...doc.data(),
-  //     }));
-  //     setDomains(domainsData);
-  //   } catch (error) {
-  //     console.error('Erreur lors de la récupération des domaines :', error);
-  //   } finally {
-  //     setLoading(false); // Désactiver le loader une fois les données récupérées
-  //   }
-  // };
-  
   const fetchDomains = async () => {
     setLoading(true);
     try {
@@ -82,7 +68,6 @@ const Domains = () => {
     }
   };
 
-
   const fetchStudents = async () => {
     setLoading(true); // Activer le loader
     try {
@@ -104,11 +89,8 @@ const Domains = () => {
     }
   };
 
- 
-
   const handleSearch = (term) => {
     setSearchTerm(term);
-
     if (term.trim() === '') {
       setFilteredStudents(students);
       setSearchError(false);
@@ -132,7 +114,7 @@ const Domains = () => {
 
   const assignStudentToDomain = async (studentId) => {
     if (!selectedDomain) {
-      alert('Veuillez sélectionner un domaine avant d’assigner un étudiant.');
+      toast.error('Veuillez sélectionner un domaine avant d’assigner un étudiant.');
       return;
     }
 
@@ -140,7 +122,7 @@ const Domains = () => {
       await updateDoc(doc(db, 'users', studentId), {
         domaineId: selectedDomain,
       });
-      alert('Étudiant assigné au domaine avec succès !');
+      toast.success('Étudiant assigné au domaine avec succès !');
       fetchStudents();
       setSearchTerm('');
       setFilteredStudents(students);
@@ -155,10 +137,11 @@ const Domains = () => {
       await updateDoc(doc(db, 'domaines', domainId), {
         archived: true,
       });
-      alert(`Domaine ${domainId} archivé avec succès.`);
+      toast.success(`Domaine ${domainId} archivé avec succès.`);
       fetchDomains();
     } catch (error) {
       console.error("Erreur lors de l'archivage du domaine :", error);
+      toast.error("Erreur lors de l'archivage du domaine.");
     }
   };
 
@@ -171,7 +154,7 @@ const Domains = () => {
     e.preventDefault();
 
     if (!domainToEdit.name.trim()) {
-      alert('Le nom du domaine est obligatoire.');
+      toast.error('Le nom du domaine est obligatoire.');
       return;
     }
 
@@ -179,11 +162,12 @@ const Domains = () => {
       await updateDoc(doc(db, 'domaines', domainToEdit.id), {
         name: domainToEdit.name.trim(),
       });
-      alert('Domaine modifié avec succès.');
+      toast.success('Domaine modifié avec succès.');
       setShowEditDomainModal(false);
       fetchDomains();
     } catch (error) {
       console.error('Erreur lors de la modification du domaine :', error);
+      toast.error('Erreur lors de la modification du domaine.');
     }
   };
 
@@ -197,7 +181,7 @@ const Domains = () => {
 
   const handleAddDomain = async () => {
     if (!newDomainName.trim()) {
-      alert('Le nom du domaine est obligatoire.');
+      toast.error('Le nom du domaine est obligatoire.');
       return;
     }
 
@@ -206,12 +190,13 @@ const Domains = () => {
         name: newDomainName.trim(),
         createdAt: new Date(),
       });
-      alert('Domaine ajouté avec succès !');
+      toast.success('Domaine ajouté avec succès !');
       setShowAddDomainModal(false);
       setNewDomainName('');
       fetchDomains();
     } catch (error) {
       console.error('Erreur lors de l’ajout du domaine :', error);
+      toast.error("Erreur lors de l'ajout du domaine.");
     }
   };
 
