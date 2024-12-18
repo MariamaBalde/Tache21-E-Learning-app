@@ -313,7 +313,7 @@ const Cours = () => {
                   <FaEdit />
                 </button>
 
-                <button
+                <button 
                   onClick={() => handleArchiveQuiz(quiz.id)}
                   className="text-red-600 hover:text-red-800"
                   title="Archiver le quiz"
