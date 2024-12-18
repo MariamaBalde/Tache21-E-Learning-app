@@ -109,21 +109,12 @@ const router = createBrowserRouter([
           { path: 'quizzes/quiz-details/:quizId', element: <QuizDetails /> },
           { path: 'quizzes/edit-quiz/:quizId', element: <EditQuiz /> },
           { path: 'quizzes/edit-quiz/:id', element: <EditQuiz /> },
-          {
-            path: 'quizzes/quiz-details/:quizId/play-quiz/:playQuizId',
-            element: <PlayQuiz />,
-          },
+          { path: 'quizzes/quiz-details/:quizId/play-quiz/:playQuizId',element: <PlayQuiz />, },
           { path: 'projets', element: <Projets /> },
           { path: 'messagerie', element: <MessagerieCoach /> },
           { path: 'domains/:domaineId', element: <SousDomaines /> },
-          {
-            path: 'domains/:domaineId/sous-domaines/:sousDomaineId/cours',
-            element: <Cours />,
-          },
-          {
-            path: 'domains/:domaineId/sous-domaines/:sousDomaineId/cours/play-quiz/:quizId',
-            element: <PlayQuiz />,
-          },
+          { path: 'domains/:domaineId/sous-domaines/:sousDomaineId/cours',element: <Cours />,},
+          {path: 'domains/:domaineId/sous-domaines/:sousDomaineId/cours/play-quiz/:quizId',element: <PlayQuiz />,},
         ],
       },
       {
