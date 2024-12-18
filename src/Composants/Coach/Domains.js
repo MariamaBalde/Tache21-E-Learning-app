@@ -13,7 +13,7 @@ import {
   addDoc,
 } from 'firebase/firestore';
 import { ClipboardDocumentIcon, PencilIcon, ArchiveBoxIcon, PlusIcon, UsersIcon } from '@heroicons/react/24/outline';
-import { toast, ToastContainer } from 'react-toastify'; // Importer Toastify
+import { toast } from 'react-toastify'; // Importer Toastify
 import 'react-toastify/dist/ReactToastify.css'; // Importer le CSS de Toastify
 
 const Domains = () => {
@@ -439,7 +439,6 @@ const Domains = () => {
           )}
         </>
       )}
-      <ToastContainer />
     </div>
   );
 };
