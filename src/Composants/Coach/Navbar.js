@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { FiBell, FiMail } from 'react-icons/fi'; // Icônes de messagerie et notification
 import Profil from './Profil'; // Import du composant Profil si nécessaire
@@ -18,7 +19,7 @@ function Navbar({ initialUnreadMessages = 0, onMessageSend }) {
         {/* Icône de messagerie avec badge */}
         <div className="relative">
           <FiMail
-            className="text-white cursor-pointer"
+            className="text-white  text-3xl cursor-pointer"
             onClick={handleNewMessage}
           />
           {/* Affichage de la notification avec le nombre de messages non lus */}
@@ -30,7 +31,7 @@ function Navbar({ initialUnreadMessages = 0, onMessageSend }) {
         </div>
 
         {/* Icône de notification */}
-        <FiBell className="text-white cursor-pointer" />
+        <FiBell className="text-white  text-3xl cursor-pointer" />
 
         {/* Profil (si nécessaire) */}
         <Profil className="text-white" />

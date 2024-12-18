@@ -1,30 +1,93 @@
+import { useState, useEffect } from "react";
+import { getAuth } from "firebase/auth";
+import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
+import { db } from "../../Config/firebaseConfig"; // Assurez-vous que le chemin est correct
 
+const CoursEtudiant = () => {
+    const [studentData, setStudentData] = useState(null);
+    const [subDomains, setSubDomains] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-import React from 'react';
+    useEffect(() => {
+        const auth = getAuth();
+        const user = auth.currentUser;
 
-const CoursEtudiant = ({ title, description, image }) => {
+        if (user) {
+            const studentId = user.uid;
+            console.log("ID de l'étudiant:", studentId);
+
+            // Récupérer les données de l'étudiant
+            const fetchStudentData = async () => {
+                try {
+                    const studentRef = doc(db, "users", studentId);
+                    const studentSnapshot = await getDoc(studentRef);
+
+                    if (studentSnapshot.exists()) {
+                        const student = studentSnapshot.data();
+                        setStudentData(student);
+
+                        // Récupérer le domaineId de l'étudiant
+                        const domaineId = student.domaineId;
+                        console.log("Domaine ID de l'étudiant:", domaineId);
+
+                        // Maintenant, on va chercher les sous-domaines associés à ce domaineId
+                        const subdomainsRef = collection(db, "sous-domaines");
+                        const q = query(subdomainsRef, where("domaineId", "==", domaineId));
+                        const querySnapshot = await getDocs(q);
+
+                        const subdomainsList = querySnapshot.docs.map((doc) => doc.data());
+                        setSubDomains(subdomainsList);
+
+                    } else {
+                        console.log("Aucun étudiant trouvé pour l'ID:", studentId);
+                    }
+                } catch (error) {
+                    console.error("Erreur lors de la récupération des données de l'étudiant:", error);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            fetchStudentData();
+        } else {
+            console.log("Aucun utilisateur connecté");
+            setLoading(false);
+        }
+    }, []);
+
+    if (loading) {
+        return <div>Chargement...</div>;
+    }
+
+    if (!studentData) {
+        return <div>Aucun étudiant trouvé</div>;
+    }
+
     return (
-        <div className="max-w-sm rounded overflow-hidden shadow-lg p-4 bg-white hover:bg-gray-100 transition duration-300 flex flex-col justify-between">
-            {/* Affichage de l'image */}
-            <img src={image} alt={title} className="w-full h-48 object-cover mb-4" />
+        <div>
+            <h2 className="text-xl  font-semibold text-blue-800">Liste de vos Cours</h2>
+            {subDomains.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {subDomains.map((subdomain, index) => (
+                        <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-300">
+                            {/* Image du sous-domaine */}
+                            {subdomain.imageURL && (
+                                <img
+                                    src={subdomain.imageURL}
+                                    alt={subdomain.name}
+                                    className="w-full h-48 object-cover rounded-md mb-4"
+                                />
+                            )}
 
-            {/* Titre et description */}
-            <div className="flex-grow">
-                <h2 className="font-bold text-xl mb-2">{title}</h2>
-                <p className="text-gray-700 text-base mb-4">{description}</p>
-            </div>
+                            <h3 className="text-xl font-semibold mb-4">{subdomain.name}</h3>
 
-            {/* Progress bar et bouton d'action */}
-            <div className="mt-auto">
-                <div className="w-full bg-gray-200 rounded-full h-4 mb-4">
-                    <div className="bg-blue-600 h-4 rounded-full" style={{ width: '0%' }}></div>
+                        </div>
+                    ))}
                 </div>
-                <button className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Démarrer
-                </button>
-            </div>
+            ) : (
+                <p>Aucun sous-domaine trouvé pour votre domaine.</p>
+            )}
         </div>
     );
 };
-
 export default CoursEtudiant;

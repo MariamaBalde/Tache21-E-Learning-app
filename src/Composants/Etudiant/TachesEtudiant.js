@@ -1,110 +1,157 @@
-
-import React, { useState } from 'react';
-
+import { useState, useEffect } from "react";
+import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
+import { auth,db } from "../../Config/firebaseConfig"; // Assurez-vous que le chemin est correct
 const TachesEtudiant = () => {
-  const tasks = [
-    {
-      number: "1",
-      duration: "168h",
-      syllabus: "JavaScript",
-      syllabusLink: "https://developer.mozilla.org/fr/docs/Web/JavaScript",
-      category: "Atelier",
-      year: "2022",
-      title: "Manipulation des variables, opérateurs et conditions",
-      description: `
-        Ecrire un programme en JavaScript qui demande à l’utilisateur de saisir 5 nombres
-        successivement et qui lui dit ensuite qui est le plus grand, le plus petit et la moyenne.
-        Le programme affiche la somme du plus petit et du plus grand nombre puis affiche le
-        produit des trois nombres (le plus grand, le plus petit et la moyenne).
-      `,
-      usefulLinks: "https://developer.mozilla.org/fr/docs/Web/JavaScript",
-    },
-    {
-      number: "2",
-      duration: "72h",
-      syllabus: "React",
-      syllabusLink: "https://reactjs.org/docs/getting-started.html",
-      category: "Projet",
-      year: "2023",
-      title: "Créer une application de gestion des tâches",
-      description: `
-        Construire une application React qui permet de créer, modifier et supprimer des tâches.
-        L'application doit inclure une interface utilisateur intuitive et enregistrer les données
-        localement dans le navigateur ou via une API.
-      `,
-      usefulLinks: "https://reactjs.org/docs/getting-started.html",
-    },
-  ];
+  const [studentData, setStudentData] = useState(null);
+  const [subDomains, setSubDomains] = useState([]);
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+   
+    const user = auth.currentUser;
+
+    if (user) {
+      const studentId = user.uid;
+
+      const fetchStudentData = async () => {
+        try {
+          // Récupérer les données de l'étudiant
+          const studentRef = doc(db, "users", studentId);
+          const studentSnapshot = await getDoc(studentRef);
+
+          if (studentSnapshot.exists()) {
+            const student = studentSnapshot.data();
+            setStudentData(student);
+
+            const domaineId = student.domaineId;
+
+            // Récupérer les sous-domaines associés
+            const subdomainsRef = collection(db, "sous-domaines");
+            const subdomainsQuery = query(subdomainsRef, where("domaineId", "==", domaineId));
+            const subdomainsSnapshot = await getDocs(subdomainsQuery);
+
+            const subdomainsList = subdomainsSnapshot.docs.map((doc) => ({
+              id: doc.id, // Récupère l'ID du sous-domaine
+              ...doc.data()
+            }));
+            setSubDomains(subdomainsList);
+
+            // Récupérer les cours associés aux sous-domaines
+            const subdomainIds = subdomainsList.map((subdomain) => subdomain.id);
+            if (subdomainIds.length > 0) {
+              const coursesRef = collection(db, "cours");
+              const coursesQuery = query(coursesRef, where("sousDomaineId", "in", subdomainIds));
+              const coursesSnapshot = await getDocs(coursesQuery);
+
+              const coursesList = coursesSnapshot.docs.map((doc) => doc.data());
+              setCourses(coursesList);
+            }
+          } else {
+            console.log("Aucun étudiant trouvé pour l'ID:", studentId);
+          }
+        } catch (error) {
+          console.error("Erreur lors de la récupération des données :", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchStudentData();
+    } else {
+      console.log("Aucun utilisateur connecté");
+      setLoading(false);
+    }
+  }, []);
+
+  if (loading) {
+    return <div>Chargement...</div>;
+  }
+
+  if (!studentData) {
+    return <div>Aucun étudiant trouvé</div>;
+  }
+  const handleStartTask = (sousDomaineId) => {
+    console.log(`Tâche démarrée : ${sousDomaineId}`);
+    // Exemple : Mettre à jour l'état de la tâche dans Firestore
+    db
+      .collection("cours")
+      .doc(sousDomaineId)
+      .update({ status: "started", startDate: new Date() })
+      .then(() => {
+        alert("Tâche démarrée !");
+      })
+      .catch((error) => {
+        console.error("Erreur lors du démarrage de la tâche :", error);
+      });
+  };
+
+  const handleFinishTask = (sousDomaineId) => {
+    console.log(`Tâche terminée : ${sousDomaineId}`);
+    // Exemple : Mettre à jour l'état de la tâche dans Firestore
+    db
+      .collection("cours")
+      .doc(sousDomaineId)
+      .update({ status: "finished", endDate: new Date() })
+      .then(() => {
+        alert("Tâche terminée !");
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la terminaison de la tâche :", error);
+      });
+  };
 
   return (
-    <div className="p-6 bg-secondaryGreen min-h-screen relative">
-      {/* Titre et bouton principal */}
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-semibold text-primaryGreen">Liste de vos tâches</h2>
-        <button className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-yellow-600">
-          Tâches validées
-        </button>
-      </div>
-
-      {/* Conteneur des cartes */}
-      <div className="flex flex-col gap-6">
-        {tasks.map((task, index) => (
-          <div key={index} className="bg-white rounded-lg shadow-md p-6 flex gap-4">
-            {/* Section gauche */}
-            <div className="w-1/4 text-textDark">
-              <p className="text-lg font-bold">Tâches N° {task.number}</p>
-              <p>Durée: {task.duration}</p>
-              <p className="mt-4 font-semibold text-primaryGreen">
-                <a
-                  href={task.syllabusLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:underline"
-                >
-                  {task.syllabus}
-                </a>
-              </p>
-              <p>{task.category}</p>
-              <p>{task.year}</p>
-            </div>
-
-            {/* Ligne de séparation verticale */}
-            <div className="border-l border-gray-300 mx-4"></div>
-
-            {/* Section centrale */}
-            <div className="flex-1 flex flex-col justify-between">
-              <div>
-                <h3 className="text-xl font-semibold text-textDark">{task.title}</h3>
-                <p className="text-textLight mt-2">{task.description}</p>
+    <div>
+      <h2 className="text-xl font-semibold mb-4">Liste de vos tâches :</h2>
+      {courses.length > 0 ? (
+        <div className="space-y-4">
+          {courses.map((course, index) => (
+            <div
+              key={index}
+              className="bg-white border border-gray-200 rounded-lg shadow-md p-4"
+            >
+              <div className="flex justify-between items-center mb-3">
+                <h3 className="text-lg font-bold">
+                  Tâche {index + 1} : {course.name}
+                </h3>
+             
               </div>
-              <div className="mt-4">
-                <p className="font-semibold">Liens utiles</p>
-                {task.usefulLinks ? (
+              <p className="text-gray-600 mb-3">{course.description}</p>
+              {course.link && (
+                <p className="text-blue-500 underline mb-3">
                   <a
-                    href={task.usefulLinks}
+                    href={course.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-500 hover:underline"
+                    className="hover:text-blue-700"
                   >
-                    Voir le lien
+                    Voir le cours
                   </a>
-                ) : (
-                  <p className="text-textLight">Aucun lien disponible</p>
-                )}
+                </p>
+              )}
+              <div className="flex items-center space-x-4">
+                <button
+                  className="bg-blue-500 text-white text-sm px-4 py-2 rounded-md hover:bg-blue-600"
+                  onClick={() => handleStartTask(course.id)}
+                >
+                  Démarrer
+                </button>
+                <button
+                  className="bg-red-500 text-white text-sm px-4 py-2 rounded-md hover:bg-red-600"
+                  onClick={() => handleFinishTask(course.id)}
+                >
+                  Terminer
+                </button>
               </div>
             </div>
-
-            {/* Section droite */}
-            <div className="flex flex-col items-end">
-              <button className="bg-blue-500 text-white font-semibold py-2 px-6 rounded-lg hover:bg-green-700">
-                Démarrer
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-gray-500">Aucune tâche trouvée pour vos sous-domaines.</p>
+      )}
     </div>
   );
 };
-
 export default TachesEtudiant;
+

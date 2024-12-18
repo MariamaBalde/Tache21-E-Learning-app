@@ -11,6 +11,9 @@ const Sidebar = () => {
         <li>
           <Link to="/admin/inscrire-coach">Inscrire un utilisateur</Link>
         </li>
+        {/* <li>
+          <Link to="/admin/domaine">All domaines</Link>
+        </li> */}
       </ul>
     </div>
   );
