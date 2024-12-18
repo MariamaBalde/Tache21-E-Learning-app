@@ -1,5 +1,6 @@
-import React from 'react';
-import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { createBrowserRouter, Outlet, RouterProvider, useNavigation } from 'react-router-dom';
+import Loader from './Composants/Shared/Loader';
 import Login from './Composants/Auth/Login';
 import AdminDashboard from './Composants/Admin/Dashboard';
 import InscrireUtilisateur from './Composants/Admin/InscrireUtilisateur';
@@ -27,10 +28,26 @@ import QuizzesEtudiants from './Composants/Etudiant/QuizzesEtudiants.js';
 import MessagerieEtudiant from './Composants/Etudiant/MessagerieEtudiant.js';
 import ProjetsEtudiant from './Composants/Etudiant/ProjetsEtudiant.js';
 import DomainsList from './Composants/Admin/DomainsList.js';
+
+
+// Composant de Layout pour gérer le Loader pendant les transitions
+const AppLayout = () => {
+  const navigation = useNavigation();
+
+  return (
+    <>
+      {/* Affiche le Loader si la navigation est en cours */}
+      {navigation.state === 'loading' && <Loader />}
+      <Outlet />
+    </>
+  );
+};
+
 const router = createBrowserRouter([
   {
     path: '/', 
-    element: <Outlet />, // Conteneur pour les routes
+    // element: <Outlet />, // Conteneur pour les routes
+    element: <AppLayout />, // Utilisation d'AppLayout comme conteneur parent
     children: [
       { path: '/', element: <LandingPage /> },
       { path: 'login', element: <Login /> },
@@ -117,8 +134,22 @@ const router = createBrowserRouter([
   },
 ]);
 
+// const App = () => {
+//   return <RouterProvider router={router} />;
+// };
+
 const App = () => {
-  return <RouterProvider router={router} />;
+  const [loading, setLoading] = useState(true);
+
+  // Simule un temps de chargement initial
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false); // Désactive le Loader après 2 secondes
+    }, 200);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  return loading ? <Loader /> : <RouterProvider router={router} />;
 };
 export default App;
-

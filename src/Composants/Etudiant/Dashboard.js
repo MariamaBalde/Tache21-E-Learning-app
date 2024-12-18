@@ -26,7 +26,7 @@ const Dashboard = () => {
         <GradientCard
           title="Programmes"
           icon={Layers} // Icône pour les programmes
-          gradient="bg-gradient-to-br from-white to-blue-800"
+          gradient="bg-gradient-to-br from-blue-200 to-blue-800"
         />
       </div>
 

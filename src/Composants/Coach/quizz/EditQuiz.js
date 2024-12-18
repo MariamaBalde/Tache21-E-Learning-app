@@ -230,7 +230,7 @@ const EditQuiz = () => {
             <button
               type="submit"
               onClick={handleSaveChanges}
-              className="px-6 py-2 text-white bg-green-600 rounded-lg hover:bg-green-500"
+              className="px-6 py-2 text-white bg-blue-800 rounded-lg hover:bg-blue-800"
             >
               Sauvegarder les changements
             </button>

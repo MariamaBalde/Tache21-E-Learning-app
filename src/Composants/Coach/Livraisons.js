@@ -26,8 +26,8 @@ const Livraisons = () => {
   };
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-lg">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">Liste des livraisons</h1>
+    <div className="px-6 bg-gray-50">
+      <h1 className="text-2xl font-bold text-blue-600 mb-6">Liste des livraisons</h1>
       <div className="space-y-4">
         {livraisons.map((livraison, index) => (
           <div
@@ -90,48 +90,3 @@ const Livraisons = () => {
 };
 export default Livraisons;
 
-// import React, { useEffect, useState } from "react";
-// import { db } from "../../Config/firebaseConfig";
-// import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
-
-// const Livraisons = () => {
-//   const [deliveries, setDeliveries] = useState([]);
-
-//   const fetchDeliveries = async () => {
-//     const querySnapshot = await getDocs(collection(db, "livraisons"));
-//     setDeliveries(
-//       querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-//     );
-//   };
-
-//   const handleStatusChange = async (id, status) => {
-//     const deliveryRef = doc(db, "livraisons", id);
-//     await updateDoc(deliveryRef, { status });
-//     fetchDeliveries();
-//   };
-
-//   useEffect(() => {
-//     fetchDeliveries();
-//   }, []);
-
-//   return (
-//     <div>
-//       <h2>Livraisons des étudiants</h2>
-//       {deliveries.map((delivery) => (
-//         <div key={delivery.id}>
-//           <p>Étudiant: {delivery.studentId}</p>
-//           <p>Statut: {delivery.status}</p>
-//           <p>Liens: {delivery.links.join(", ")}</p>
-//           <button onClick={() => handleStatusChange(delivery.id, "accepté")}>
-//             Accepter
-//           </button>
-//           <button onClick={() => handleStatusChange(delivery.id, "rejeté")}>
-//             Rejeter
-//           </button>
-//         </div>
-//       ))}
-//     </div>
-//   );
-// };
-
-// export default Livraisons;
