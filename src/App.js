@@ -43,14 +43,14 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-      {
-        path: 'admin/inscrire-utilisateur',
-        element: (
-          <PrivateRoute roleRequired="admin">
-            <InscrireUtilisateur />
-          </PrivateRoute>
-        ),
-      },
+      // {
+      //   path: 'admin/inscrire-utilisateur',
+      //   element: (
+      //     <PrivateRoute roleRequired="admin">
+      //       <InscrireUtilisateur />
+      //     </PrivateRoute>
+      //   ),
+      // },
       {
         path: 'admin/domaine',
         element: (
