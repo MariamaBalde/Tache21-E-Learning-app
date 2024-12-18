@@ -76,6 +76,16 @@ const Messagerie = () => {
     return () => unsubscribeMessages();
   }, [currentUserId, recipientId]);
 
+
+  //Forcer le défilement au bas au chargement des messages
+  useEffect(() => {
+    const messageContainer = document.querySelector('.message-container');
+    if (messageContainer) {
+      messageContainer.scrollTop = messageContainer.scrollHeight;
+    }
+  }, [messages]);
+  
+
   const handleSendMessage = async () => {
     if (!message.trim() || !recipientId) return;
 
@@ -116,7 +126,7 @@ const Messagerie = () => {
 
   return (
     <div className="flex flex-col md:flex-row h-screen bg-gray-50">
-<div className="w-full md:w-1/4 bg-white shadow-md flex flex-col">
+<div className="w-full md:w-1/4 bg-white shadow-md flex flex-col max-h-[calc(100vh-180px)]">
   <h2 className="text-lg font-semibold text-center py-2 border-b">Contacts</h2>
   <div className="flex-1 overflow-y-auto">
     {users.map((user) => (
@@ -147,7 +157,7 @@ const Messagerie = () => {
               <h3 className="text-sm font-semibold">{selectedUser.nom} {selectedUser.prenom}</h3>
             </div>
 
-            <div className="flex-1 p-2 overflow-y-auto bg-gray-100">
+            <div className="flex-1 p-2 overflow-y-auto bg-gray-100 max-h-[calc(100vh-200px)]">
               {messages.length > 0 ? (
                 messages.sort((a, b) => a.timestamp - b.timestamp).map((msg) => (
                   <div

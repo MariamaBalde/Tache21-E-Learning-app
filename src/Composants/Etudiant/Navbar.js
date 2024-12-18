@@ -137,8 +137,6 @@ const Navbar = ({ onAddTask }) => {
 
 export default Navbar;
 
-
-
 // import React, { useState, useEffect } from "react";
 // import { FiBell, FiMail, FiX, FiSend } from "react-icons/fi";
 // import Profil from "../Coach/Profil";
