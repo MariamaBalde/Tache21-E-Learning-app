@@ -1,4 +1,4 @@
-// src/Composants/Coach/CoachDashboard.js
+import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
@@ -13,8 +13,28 @@ import Livraisons from './Livraisons';
 import PlayQuiz from './quizz/PlayQuiz';
 import AddQuiz from './quizz/AddQuiz';
 import QuizDetails from './quizz/QuizDetails';
+import Loader from '../Shared/Loader'; // Importez votre composant Loader
 
 const CoachDashboard = () => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulez un délai de chargement
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000); // Temps de chargement simulé (1 seconde)
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <Loader /> {/* Affichez le loader pendant le chargement */}
+      </div>
+    );
+  }
+
   return (
     <div className="flex h-screen">
       <Sidebar />
@@ -32,9 +52,7 @@ const CoachDashboard = () => {
             <Route path="sous-domaines" element={<SousDomaines />} />
             <Route path="cours" element={<Cours />} />
             <Route path="livraisons" element={<Livraisons />} />
-            <Route path="quizzes/*" element={<Quizzes />} />{' '}
-            {/* Gestion des quizzes */}
-            <Route path="quizzes" element={<Quizzes />} />
+            <Route path="quizzes/*" element={<Quizzes />} />
             <Route path="quizzes" element={<Quizzes />} />
             <Route path="quizzes/add-quiz" element={<AddQuiz />} />
             <Route
@@ -45,7 +63,6 @@ const CoachDashboard = () => {
               path="quizzes/quiz-details/:quizId/play-quiz/:playQuizId"
               element={<PlayQuiz />}
             />
-            {/* Route pour gérer les quizzes */}
             <Route path="projets" element={<Projets />} />
             <Route path="messagerie" element={<MessagerieCoach />} />
             <Route
@@ -58,4 +75,5 @@ const CoachDashboard = () => {
     </div>
   );
 };
+
 export default CoachDashboard;

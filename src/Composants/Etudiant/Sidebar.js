@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
@@ -15,13 +14,13 @@ import logo from '../../Images/ImagesAdmin/logo2.png';
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeLink, setActiveLink] = useState(''); // Gestion du lien actif
+  const [activeLink, setActiveLink] = useState('');
 
   const toggleSidebar = () => setIsOpen(!isOpen);
 
   const handleLinkClick = (link) => {
     setActiveLink(link);
-    setIsOpen(false); // Fermer la sidebar après un clic
+    setIsOpen(false);
   };
 
   return (
@@ -47,13 +46,13 @@ const Sidebar = () => {
         <img src={logo} alt="Logo" className="h-16 w-16 mb-6 mr-2" />
         <nav>
           <ul>
-            <li>
+            <li className="mb-3"> {/* Ajout d'une marge ici */}
               <NavLink
                 to="/etudiant/dashboard"
-                className={`flex items-center py-2 px-3 ${
+                className={`flex items-center py-3 px-3 ${
                   activeLink === '/etudiant/dashboard'
-                    ? 'bg-gray-400'
-                    : 'hover:bg-gray-400'
+                    ? 'bg-blue-500'
+                    : 'hover:bg-blue-500'
                 } rounded`}
                 onClick={() => handleLinkClick('/etudiant/dashboard')}
               >
@@ -61,13 +60,13 @@ const Sidebar = () => {
                 Dashboard
               </NavLink>
             </li>
-            <li>
+            <li className="mb-3"> {/* Ajout d'une marge ici */}
               <NavLink
                 to="/etudiant/dashboard/coursEtudiant"
-                className={`flex items-center py-2 px-3 ${
+                className={`flex items-center py-3 px-3 ${
                   activeLink === '/etudiant/dashboard/coursEtudiant'
-                    ? 'bg-gray-400'
-                    : 'hover:bg-gray-400'
+                    ? 'bg-blue-500'
+                    : 'hover:bg-blue-500'
                 } rounded`}
                 onClick={() => handleLinkClick('/etudiant/dashboard/coursEtudiant')}
               >
@@ -75,13 +74,13 @@ const Sidebar = () => {
                 Cours
               </NavLink>
             </li>
-            <li>
+            <li className="mb-3"> {/* Ajout d'une marge ici */}
               <NavLink
                 to="/etudiant/dashboard/tachesEtudiant"
-                className={`flex items-center py-2 px-3 ${
+                className={`flex items-center py-3 px-3 ${
                   activeLink === '/etudiant/dashboard/tachesEtudiant'
-                    ? 'bg-gray-400'
-                    : 'hover:bg-gray-400'
+                    ? 'bg-blue-500'
+                    : 'hover:bg-blue-500'
                 } rounded`}
                 onClick={() => handleLinkClick('/etudiant/dashboard/tachesEtudiant')}
               >
@@ -89,13 +88,13 @@ const Sidebar = () => {
                 Taches
               </NavLink>
             </li>
-            <li>
+            <li className="mb-3"> {/* Ajout d'une marge ici */}
               <NavLink
                 to="/etudiant/dashboard/livraisonsEtudiant"
-                className={`flex items-center py-2 px-3 ${
+                className={`flex items-center py-3 px-3 ${
                   activeLink === '/etudiant/dashboard/livraisonsEtudiant'
-                    ? 'bg-gray-400'
-                    : 'hover:bg-gray-400'
+                    ? 'bg-blue-500'
+                    : 'hover:bg-blue-500'
                 } rounded`}
                 onClick={() => handleLinkClick('/etudiant/dashboard/livraisonsEtudiant')}
               >
@@ -103,13 +102,13 @@ const Sidebar = () => {
                 Livraisons
               </NavLink>
             </li>
-            <li>
+            <li className="mb-3"> {/* Ajout d'une marge ici */}
               <NavLink
                 to="/etudiant/dashboard/quizzesEtudiants"
-                className={`flex items-center py-2 px-3 ${
+                className={`flex items-center py-3 px-3 ${
                   activeLink === '/etudiant/dashboard/quizzesEtudiants'
-                    ? 'bg-gray-400'
-                    : 'hover:bg-gray-400'
+                    ? 'bg-blue-500'
+                    : 'hover:bg-blue-500'
                 } rounded`}
                 onClick={() => handleLinkClick('/etudiant/dashboard/quizzesEtudiants')}
               >
@@ -117,13 +116,13 @@ const Sidebar = () => {
                 Quizzes
               </NavLink>
             </li>
-            <li>
+            <li className="mb-3"> {/* Ajout d'une marge ici */}
               <NavLink
                 to="/etudiant/dashboard/projetsEtudiant"
-                className={`flex items-center py-2 px-3 ${
+                className={`flex items-center py-3 px-3 ${
                   activeLink === '/etudiant/dashboard/projetsEtudiant'
-                    ? 'bg-gray-400'
-                    : 'hover:bg-gray-400'
+                    ? 'bg-blue-500'
+                    : 'hover:bg-blue-500'
                 } rounded`}
                 onClick={() => handleLinkClick('/etudiant/dashboard/projetsEtudiant')}
               >
@@ -131,13 +130,13 @@ const Sidebar = () => {
                 Projets
               </NavLink>
             </li>
-            <li>
+            <li className="mb-3"> {/* Ajout d'une marge ici */}
               <NavLink
                 to="/etudiant/dashboard/messagerieEtudiant"
-                className={`flex items-center py-2 px-3 ${
+                className={`flex items-center py-3 px-3 ${
                   activeLink === '/etudiant/dashboard/messagerieEtudiant'
-                    ? 'bg-gray-400'
-                    : 'hover:bg-gray-400'
+                    ? 'bg-blue-500'
+                    : 'hover:bg-blue-500'
                 } rounded`}
                 onClick={() => handleLinkClick('/etudiant/dashboard/messagerieEtudiant')}
               >
@@ -151,4 +150,5 @@ const Sidebar = () => {
     </>
   );
 };
+
 export default Sidebar;
