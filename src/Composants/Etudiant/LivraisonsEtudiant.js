@@ -15,7 +15,7 @@ const LivraisonsEtudiant = () => {
     const { name, value } = e.target;
     setLivraison((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: value,            
     }));
   };
 
