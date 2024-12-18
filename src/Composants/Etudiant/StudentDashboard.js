@@ -1,7 +1,5 @@
-
-
 // src/Composants/Coach/CoachDashboard.js
-import React from 'react';
+import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
@@ -12,24 +10,18 @@ import TachesEtudiant from './TachesEtudiant';
 import QuizzesEtudiants from './QuizzesEtudiants';
 import ProjetsEtudiant from './ProjetsEtudiant';
 import LivraisonsEtudiant from './LivraisonsEtudiant';
-
-
 const StudentDashboard = () => {
     return (
         <div className="flex h-screen">
             <Sidebar />
             <div className="flex-1 flex flex-col">
-                <Navbar />
+                <Navbar  />
                 <div className="flex-1 bg-gray-50 overflow-y-auto p-4">
                     <Routes>
                         <Route path="/" element={<Dashboard />} />
                         <Route path="coursEtudiant" element={<CoursEtudiant />} />
-                        {/* <Route path="domains/:domaineId" element={<SousDomaines />} /> */}
-                        {/* <Route
-                            path="domains/:domaineId/sous-domaines/:sousDomaineId/cours"
-                            element={<Cours />}
-                        /> */}
-                        <Route path="tachesEtudiant" element={<TachesEtudiant />} />
+                      
+                        <Route path="tachesEtudiant" element={<TachesEtudiant  />} />
 
                         <Route path="livraisonsEtudiant" element={<LivraisonsEtudiant />} />
                         <Route path="quizzesEtudiants" element={<QuizzesEtudiants />} />{' '}
@@ -54,6 +46,4 @@ const StudentDashboard = () => {
         </div>
     );
 };
-
-
 export default StudentDashboard;

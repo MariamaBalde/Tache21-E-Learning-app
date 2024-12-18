@@ -4,6 +4,9 @@ import { collection, doc, setDoc } from 'firebase/firestore';
 import {createUserWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';  // Importer toast
+import 'react-toastify/dist/ReactToastify.css';  // Importer le style CSS de toastify
+
 
 const InscrireUtilisateur = () => {
   const [email, setEmail] = useState('');
@@ -52,7 +55,7 @@ const InscrireUtilisateur = () => {
       await setDoc(userRef, userData);
       await sendPasswordResetEmail(auth, email);
 
-      alert(`Utilisateur ${role} créé avec succès ! Un e-mail a été envoyé à ${email} pour définir un nouveau mot de passe.`);
+      toast.success(`Utilisateur ${role} créé avec succès ! Un e-mail a été envoyé à ${email} pour définir un nouveau mot de passe.`);
       setEmail('');
       setNom('');
       setPrenom('');
@@ -63,7 +66,7 @@ const InscrireUtilisateur = () => {
       setCoachEmail('');
     } catch (error) {
       console.error('Erreur lors de la création de l’utilisateur:', error);
-      alert("Erreur lors de l'inscription : " + error.message);
+      toast.error("Erreur lors de l'inscription : " + error.message);
     }
   };
 

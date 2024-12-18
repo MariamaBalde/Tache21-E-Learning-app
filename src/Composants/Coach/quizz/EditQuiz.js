@@ -3,6 +3,10 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { db } from '../../../Config/firebaseConfig';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { toast, ToastContainer } from 'react-toastify';  // Importer ToastContainer et toast
+import 'react-toastify/dist/ReactToastify.css';  // Importer le CSS de react-toastify
+
+
 
 const EditQuiz = () => {
   const { id } = useParams(); // Récupération de l'ID du quiz
@@ -90,7 +94,7 @@ const EditQuiz = () => {
   // Enregistrer les modifications dans Firestore
   const handleSaveChanges = async () => {
     if (isArchived) {
-      alert('Ce quiz est archivé. Vous ne pouvez pas le modifier.');
+      toast.error('Ce quiz est archivé. Vous ne pouvez pas le modifier.');  // Utilisation de toast pour une erreur
       return;
     }
 
@@ -114,11 +118,11 @@ const EditQuiz = () => {
 
     try {
       await updateDoc(quizRef, quizToSave);
-      alert('Quiz modifié avec succès !');
+      toast.success('Quiz modifié avec succès !');  // Notification de succès
       navigate('/coach/dashboard/quizzes'); // Redirection vers la liste des quizzes
     } catch (error) {
       console.error('Erreur lors de la modification du quiz :', error);
-      alert('Échec de la modification du quiz');
+      toast.error('Échec de la modification du quiz');  // Notification d'erreur
     }
   };
 
@@ -230,7 +234,7 @@ const EditQuiz = () => {
             <button
               type="submit"
               onClick={handleSaveChanges}
-              className="px-6 py-2 text-white bg-green-600 rounded-lg hover:bg-green-500"
+              className="px-6 py-2 text-white bg-blue-800 rounded-lg hover:bg-blue-800"
             >
               Sauvegarder les changements
             </button>
@@ -246,6 +250,7 @@ const EditQuiz = () => {
           </div>
         </form>
       )}
+      {/* <ToastContainer />  */}
     </div>
   );
 };

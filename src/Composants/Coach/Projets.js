@@ -86,8 +86,8 @@ function Projets() {
   };
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
-      <h1 className="text-3xl font-semibold text-center mb-6">Projets de Cours</h1>
+    <div className="container mx-auto px-4 sm:px-6 lg:px-6 bg-gray-50">
+      <h1 className="text-2xl font-bold text-start mb-6 text-blue-600">Projets de Cours</h1>
 
       {/* Éditeur de contenu */}
       <div className="bg-white p-6 rounded-lg shadow-md mb-4">
