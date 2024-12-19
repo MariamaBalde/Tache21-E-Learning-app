@@ -48,15 +48,15 @@ const Navbar = ({ onAddTask }) => {
   };
 
   return (
-    <header className="flex justify-between items-center p-4 bg-[#191970] shadow-md">
+    <header className="flex justify-between items-center p-4 bg-[#191970] shadow-md md:flex-row flex-col">
       {/* Partie gauche : espace vide pour équilibrer le bouton au centre */}
-      <div className="flex-1"></div>
+      <div className="flex-1 hidden md:block"></div>
 
-      {/* Bouton "Envoyer mon travail" centré */}
-      <div className="flex-1 flex justify-center">
+      {/* Bouton "Envoyer mon travail" centré avec une petite marge à gauche pour petits écrans */}
+      <div className="flex-1 flex justify-center mb-4 md:mb-0">
         <button
           onClick={toggleModal}
-          className="flex items-center space-x-2 p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+          className="flex items-center space-x-2 p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 ml-2 md:ml-0"
         >
           <FiSend className="text-lg" />
           <span className="text-white">Envoyer mon travail</span>
@@ -64,19 +64,21 @@ const Navbar = ({ onAddTask }) => {
       </div>
 
       {/* Icônes de messagerie, notification et profil utilisateur */}
-      <div className="flex-1 flex justify-end items-center space-x-4 text-black">
+      <div className="flex-1 flex justify-end items-center space-x-4 text-white">
         <FiMail
-          className="cursor-pointer  text-3xl"
+          className="cursor-pointer text-3xl"
           onClick={() => console.log("Messagerie ouverte")}
         />
         <FiBell className="text-3xl" />
-        <Profil />
+        <div className="text-white">
+          <Profil />
+        </div>
       </div>
 
       {/* Modal pour soumettre une tâche */}
       {showModal && (
-        <div className="fixed inset-0 bg-gray-100 bg-opacity-75 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg relative w-full max-w-md">
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg relative w-full max-w-sm md:max-w-lg">
             <button
               onClick={toggleModal}
               className="absolute top-4 right-4 text-gray-500"
