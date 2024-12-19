@@ -124,7 +124,7 @@ const Navbar = () => {
                     {courses?.length > 0
                       ? courses.map((course, index) => (
                           <option key={course.id} value={course.id}>
-                            Tâche {index + 0} : {course.name}
+                            Tâche {index + 1} : {course.name}
                           </option>
                         ))
                       : (

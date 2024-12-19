@@ -33,25 +33,26 @@ const Dashboard = () => {
   // Vérification de l'authentification
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
-      console.log('Utilisateur actuel:', user);
-      if (!user) {
-        navigate('/'); // Rediriger vers la landing page si l'utilisateur n'est pas authentifié
-      } else {
-        const userRef = doc(db, 'users', user.uid);
-        const docSnap = await getDoc(userRef);
-        if (docSnap.exists()) {
-          const userData = docSnap.data();
-          if (userData.role !== 'admin') {
-            navigate('/'); // Rediriger si l'utilisateur n'est pas admin
-          }
+        console.log('Utilisateur actuel:', user);
+        if (!user) {
+            navigate(''); // Rediriger vers la landing page si l'utilisateur n'est pas authentifié
         } else {
-          navigate('/'); // Rediriger si le document utilisateur n'existe pas
+            const userRef = doc(db, 'users', user.uid);
+            const docSnap = await getDoc(userRef);
+            if (docSnap.exists()) {
+                const userData = docSnap.data();
+                if (userData.role !== 'admin') {
+                    navigate('/admin/dashboard'); // Rediriger si l'utilisateur n'est pas admin
+                }
+            } else {
+                navigate('/'); // Rediriger si le document utilisateur n'existe pas
+            }
         }
-      }
     });
 
     return () => unsubscribe(); // Nettoyage de l'abonnement
-  }, [navigate]);
+}, [navigate]);
+
 
   const handleRoleChange = (e) => {
     const selectedRole = e.target.value;
@@ -60,50 +61,66 @@ const Dashboard = () => {
       setDomaine('');
     }
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      const password = Math.random().toString(36).slice(-8);
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
+        // Créer un mot de passe temporaire
+        const password = Math.random().toString(36).slice(-8);
 
-      console.log('Nouvel utilisateur créé:', user); // Log pour débogage
+        // Créer un utilisateur avec un mot de passe temporaire sans se connecter
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        console.log('Nouvel utilisateur créé:', user);
 
-      const userRef = doc(collection(db, 'users'), user.uid);
-      const userData = {
-        email,
-        nom,
-        prenom,
-        tel,
-        role,
-        domaine: role === 'etudiant' ? domaine : null,
-        dureeFormation: role === 'etudiant' ? dureeFormation : null,
-        createdAt: new Date(),
-        isActive: true,
-      };
-      await setDoc(userRef, userData);
-      await sendPasswordResetEmail(auth, email);
+        // Enregistrer les informations de l'utilisateur dans Firestore
+        const userRef = doc(collection(db, 'users'), user.uid);
+        const userData = {
+            email,
+            nom,
+            prenom,
+            tel,
+            role,
+            domaine: role === 'etudiant' ? domaine : null,
+            dureeFormation: role === 'etudiant' ? dureeFormation : null,
+            createdAt: new Date(),
+            isActive: true,
+        };
+        await setDoc(userRef, userData);
 
-      alert(`Utilisateur ${role} créé avec succès ! Un e-mail a été envoyé à ${email} pour définir un nouveau mot de passe.`);
-      
-      // Réinitialiser les champs
-      setEmail('');
-      setNom('');
-      setPrenom('');
-      setTel('');
-      setRole('');
-      setDomaine('');
-      setDureeFormation('');
+        // Envoyer un email de réinitialisation du mot de passe
+        await sendPasswordResetEmail(auth, email);
 
-      console.log('Navigation vers /admin/dashboard'); // Log pour débogage
-      navigate('/admin/dashboard');
+        // Afficher un message de confirmation à l'admin
+        alert(`Utilisateur ${role} créé avec succès ! Un e-mail a été envoyé à ${email} pour définir un nouveau mot de passe.`);
 
+        // Réinitialiser les champs du formulaire
+        setEmail('');
+        setNom('');
+        setPrenom('');
+        setTel('');
+        setRole('');
+        setDomaine('');
+        setDureeFormation('');
+
+        // Fermer le modal sans perturber l'admin connecté
+        setModalOpen(false);
+
+        // L'admin reste sur la même page et n'est pas redirigé
+        // Si le rôle de l'utilisateur est 'admin', on le redirige, sinon on ne fait rien
+        if (role === 'admin') {
+            navigate('/admin/dashboard'); // Rediriger si l'utilisateur créé est un admin
+        }
+        
     } catch (error) {
-      console.error('Erreur lors de la création de l’utilisateur:', error);
-      alert("Erreur lors de l'inscription : " + error.message);
+        console.error('Erreur lors de la création de l’utilisateur:', error);
+        alert("Erreur lors de l'inscription : " + error.message);
     }
-  };
+};
+
+
+
+  
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -339,7 +356,7 @@ const Dashboard = () => {
                 <button
                   type="submit"
                   className="bg-blue-600 text-white w-full py-2 rounded-lg hover:bg-blue-700"
-                >
+                > 
                   Inscrire
                 </button>
               </form>
