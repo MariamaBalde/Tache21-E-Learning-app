@@ -16,7 +16,7 @@ export const useAuth = () => {
 
                 try {
                     // Récupérer les données utilisateur depuis Firestore
-                    const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
+                     const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
                     if (userDoc.exists()) {
                         const userData = userDoc.data();
                         setUser({ uid: currentUser.uid, ...userData }); // Fusion des données Firestore et Auth
