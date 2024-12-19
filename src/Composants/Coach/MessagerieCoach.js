@@ -20,8 +20,8 @@ const MessagerieCoach = () => {
   }
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Messagerie Coach</h1>
+    <div className="px-6 bg-gray-50">
+      <h1 className="text-2xl font-bold mb-6 text-blue-600">Messagerie Coach</h1>
       <Messagerie />
     </div>
   );

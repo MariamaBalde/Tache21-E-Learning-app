@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { db } from '../../Config/firebaseConfig';
 import {
   collection,
@@ -12,8 +13,8 @@ import {
   deleteDoc,
 } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
-
-import { FaPlus, FaEdit, FaTrashAlt, FaPlay, FaArchive } from 'react-icons/fa';
+import {  ArchiveBoxIcon} from '@heroicons/react/24/outline';
+import { FaPlus, FaEdit,  FaPlay } from 'react-icons/fa';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Importer les styles de Toastify
 
@@ -25,15 +26,15 @@ const Loader = () => (
 
 const Cours = () => {
   const { sousDomaineId } = useParams();
-
   const [cours, setCours] = useState([]);
   const [quizzes, setQuizzes] = useState([]);
   const [associatedQuizzes, setAssociatedQuizzes] = useState([]);
   const [showQuizModal, setShowQuizModal] = useState(false);
   const [showAddCoursModal, setShowAddCoursModal] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false); // Pour différencier entre "ajout" et "modification"
+  const [showEditCoursModal, setShowEditCoursModal] = useState(false);
+  const [coursToEdit, setCoursToEdit] = useState(null);
   const [quizToEditId, setQuizToEditId] = useState(null); // ID du quiz à modifier
-
   const [newCours, setNewCours] = useState({
     name: '',
     description: '',
@@ -62,7 +63,7 @@ const Cours = () => {
     }
   };
 
-  // Récupérer tous les quizzes
+ 
   const fetchQuizzes = async () => {
     try {
       const quizzesRef = collection(db, 'quizzes');
@@ -148,17 +149,32 @@ const Cours = () => {
       setLoading(false);
     }
   };
-
+  const editCours = (cours) => {
+    setCoursToEdit(cours);
+    setShowEditCoursModal(true);
+  };
   // Modifier un cours
-  const handleEditCours = async (coursId, updatedData) => {
+  const handleEditCours = async (e) => {
+    e.preventDefault();
+
+    if (!coursToEdit.name.trim()) {
+      alert('Le nom du domaine est obligatoire.');
+      return;
+    }
+
     try {
-      const coursDoc = doc(db, 'cours', coursId);
-      await updateDoc(coursDoc, updatedData);
+      await updateDoc(doc(db, 'cours', coursToEdit.id), {
+        name: coursToEdit.name.trim(),
+        description: coursToEdit.description?.trim() || '',
+        link: coursToEdit.link?.trim() || '',
+      });
       toast.success('Cours modifié avec succès !');
+      setShowEditCoursModal(false);
       fetchCours();
     } catch (error) {
-      console.error('Erreur lors de la modification du cours :', error);
+      console.error('Erreur lors de la modification du domaine :', error);
       toast.error('Erreur lors de la modification du cours.');
+
     }
   };
 
@@ -265,207 +281,248 @@ const Cours = () => {
   return (
     <>
     <ToastContainer />
-    <div className="p-6">
+    <div className="px-6">
       {loading && <Loader />}  {/*pour le loader*/}
-      <h1 className="text-2xl font-semibold mb-6 text-center text-gray-800">
+      <h1 className="text-2xl font-bold mb-6 text-start text-blue-600">
         Cours du sous-domaine
       </h1>
-
-      <ul className="pl-5 space-y-4">
-        {cours.map((coursItem) => (
-          <li
-            key={coursItem.id}
-            className="p-4 bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow  border border-blue-600"
+      {/* Liste des cours */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+        {cours.map((cours) => (
+          <div
+            key={cours.id}
+            className="flex flex-col justify-between h-full p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow border border-blue-400"
           >
-            <div className="flex justify-between items-center">
-              <div>
-                <h3 className="text-lg font-semibold">{coursItem.name}</h3>
-                <p className="text-md text-gray-600">{coursItem.description}</p>
-                <button
-                  className="text-lg font-semibold text-blue-600 hover:text-blue-800"
-                  onClick={() => (window.location.href = coursItem.link)} // Redirection
-                >
-                  {coursItem.link}
-                </button>
-              </div>
-              <div className="flex space-x-2">
-                <button
-                  onClick={() =>
-                    handleEditCours(coursItem.id, { name: 'Nouveau Nom' })
-                  }
-                  className="text-blue-600 hover:text-blue-800"
-                >
-                  <FaEdit />
-                </button>
-                <button
-                  onClick={() => handleArchiveCours(coursItem.id)}
-                  className="text-red-600 hover:text-red-800"
-                >
-                  <FaArchive />
-                </button>
-              </div>
+            {/* Conteneur Titre */}
+            <div className="mb-2">
+              <h3 className="text-sm sm:text-base font-semibold text-blue-600">
+                {cours.name}
+              </h3>
             </div>
-          </li>
-        ))}
-      </ul>
 
-      <h2 className="text-2xl font-semibold my-6 text-center text-gray-800">
+            {/* Conteneur Description */}
+            <div className="mb-2">
+              <p className="text-xs sm:text-sm text-gray-600">
+                {cours.description}
+              </p>
+            </div>
+
+            {/* Conteneur Lien */}
+            <div className="mb-4">
+              <a
+                href={cours.link}
+                className="text-xs sm:text-sm text-blue-600 hover:text-blue-800 break-words"
+              >
+                {cours.link}
+              </a>
+            </div>
+
+            {/* Conteneur Boutons */}
+            <div className="flex justify-between items-center space-x-2 mt-auto">
+              <Link
+                onClick={() => editCours(cours)}
+                className="relative group p-2 text-blue-600 hover:bg-blue-100 rounded-md transition"
+                title="Modifier"
+              >
+                <FaEdit className="h-6 w-6" />
+                <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 text-sm bg-gray-800 text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                  Modifier
+                </span>
+              </Link>
+              <button
+                onClick={() => handleArchiveCours(cours.id)}
+                className="relative group p-2 text-red-600 hover:bg-red-100 rounded-md transition"
+                title="Archiver"
+              >
+                <ArchiveBoxIcon className="h-6 w-6" />
+                <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 text-sm bg-gray-800 text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                  Archiver
+
+                </span>
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Section Quizzes */}
+      <p className="text-lg sm:text-xl md:text-2xl font-bold mb-3 text-start text-blue-600">
         Quizzes associés
-      </h2>
-      <ul className="pl-5 space-y-4">
+      </p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
         {associatedQuizzes.map((quiz) => (
-          <li key={quiz.id} className="p-4 bg-white rounded-lg shadow-md">
-            <div className="flex justify-between items-center">
-              <div>
-                <a
-                  href={quiz.link || '#'}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-lg font-semibold text-blue-600 hover:underline"
-                >
-                  {quiz.title}
-                </a>
-                <p className="text-sm text-gray-600">{quiz.description}</p>
-              </div>
-              <div className="flex space-x-2">
-                <div key={quiz.id}>
+          <div
+            key={quiz.id}
+            className="p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow"
+          >
+            <a
+              href={quiz.link || '#'}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-lg font-semibold text-blue-600 no-underline"
+            >
+              {quiz.title}
+            </a>
+            <p className="text-xs sm:text-sm text-gray-600 mb-2">{quiz.description}</p>
+            <button
+              onClick={() => navigate(`/domains/${sousDomaineId}/cours/play-quiz/${quiz.id}`)}
+              className="flex items-center text-blue-600 hover:text-blue-800 space-x-1"
+            >
+              <FaPlay />
+              <span>Jouer</span>
+            </button>
+          </div>
+        ))}
+      </div>
+
+      {/* Boutons */}
+      <div className="flex flex-col sm:flex-row justify-center gap-3 mt-4">
+        <button
+          onClick={() => setShowQuizModal(true)}
+          className="w-full sm:w-auto bg-blue-900 text-white px-4 py-2 rounded text-sm"
+        >
+          Associer un quiz <FaPlus />
+        </button>
+        <button
+          onClick={() => setShowAddCoursModal(true)}
+          className="w-full sm:w-auto bg-blue-600 text-white px-4 py-2 rounded text-sm"
+        >
+          Ajouter un cours <FaPlus />
+        </button>
+        {showAddCoursModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-6 w-full max-w-md">
+              <h2 className="text-lg font-semibold mb-4 text-blue-600">Ajouter un cours</h2>
+              <input
+                type="text"
+                placeholder="Nom"
+                value={newCours.name}
+                onChange={(e) =>
+                  setNewCours({ ...newCours, name: e.target.value })
+                }
+                className="w-full mb-4 p-2 border rounded"
+              />
+              <textarea
+                placeholder="Description"
+                value={newCours.description}
+                onChange={(e) =>
+                  setNewCours({ ...newCours, description: e.target.value })
+                }
+                className="w-full mb-4 p-2 border rounded"
+              ></textarea>
+              <input
+                type="text"
+                placeholder="Lien (optionnel)"
+                value={newCours.link}
+                onChange={(e) =>
+                  setNewCours({ ...newCours, link: e.target.value })
+                }
+                className="w-full mb-4 p-2 border rounded"
+              />
+              <button
+                onClick={handleAddCours}
+                className="bg-blue-600 text-white px-4 py-2 rounded mr-2"
+              >
+                Ajouter
+              </button>
+              <button
+                onClick={() => setShowAddCoursModal(false)}
+                className="bg-blue-900 text-white px-4 py-2 rounded"
+              >
+                Annuler
+              </button>
+            </div>
+          </div>
+        )}
+        {/* Modal pour afficher tous les quizzes disponibles */}
+        {showQuizModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-6 w-full max-w-md">
+              <h2 className="text-lg font-semibold mb-4 text-blue-600">
+                {isEditMode ? 'Modifier le quiz' : 'Associer un quiz'}
+              </h2>
+              <ul className="space-y-2">
+                {quizzes.map((quiz) => (
+                  <li key={quiz.id} className="flex justify-between items-center">
+                    <span>{quiz.title}</span>
+                    <button
+                      onClick={() =>
+                        isEditMode
+                          ? handleEditQuiz(quiz.id)
+                          : handleAssociateQuiz(quiz.id)
+                      }
+                      className="bg-blue-600 text-white px-4 py-1 rounded"
+                    >
+                      {isEditMode ? 'Remplacer' : 'Associer'}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+              <button
+                onClick={() => {
+                  setShowQuizModal(false);
+                  setIsEditMode(false);
+                  setQuizToEditId(null);
+                }}
+                className="mt-4 bg-blue-600 text-white px-4 py-2 rounded"
+              >
+                Fermer
+              </button>
+            </div>
+          </div>
+        )}
+        {/* Modal for Editing Cours */}
+        {showEditCoursModal && coursToEdit && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-6 w-96">
+              <h2 className="text-xl font-semibold mb-4">Modifier le Cour</h2>
+              <form onSubmit={handleEditCours}>
+                <input
+                  type="text"
+                  value={coursToEdit.name || ''}
+                  onChange={(e) =>
+                    setCoursToEdit({ ...coursToEdit, name: e.target.value })
+                  }
+                  className="border rounded w-full px-4 py-2 mb-4"
+                  placeholder="Nom du cours"
+                />
+                <textarea
+                  value={coursToEdit.description || ''}
+                  onChange={(e) =>
+                    setCoursToEdit({ ...coursToEdit, description: e.target.value })
+                  }
+                  className="border rounded w-full px-4 py-2 mb-4"
+                  placeholder="Description du cours"
+                />
+                <input
+                  type="text"
+                  value={coursToEdit.link || ''}
+                  onChange={(e) =>
+                    setCoursToEdit({ ...coursToEdit, link: e.target.value })
+                  }
+                  className="border rounded w-full px-4 py-2 mb-4"
+                  placeholder="Lien du cours"
+                />
+                <div className="flex justify-between">
                   <button
-                    onClick={() => handlePlayQuiz(quiz.id)}
-                    className="text-blue-600 hover:text-blue-800"
-                    title="Jouer au quiz"
+                    type="submit"
+                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
                   >
-                    <FaPlay />
+                    Sauvegarder
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowEditCoursModal(false)}
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    Annuler
                   </button>
                 </div>
-
-                <button
-                  onClick={() => openEditQuizModal(quiz.id)}
-                  className="text-blue-600 hover:text-blue-800"
-                  title="Editer le quiz"
-                >
-                  <FaEdit />
-                </button>
-
-                <button
-                  onClick={() => handleArchiveQuiz(quiz.id)}
-                  className="text-red-600 hover:text-red-800"
-                  title="Archiver le quiz"
-                >
-                  <FaArchive />
-                </button>
-
-                <button
-                  onClick={() => handleDeleteQuiz(quiz.id)}
-                  className="text-red-600 hover:text-red-800"
-                  title="Supprimer le quiz"
-                >
-                  <FaTrashAlt />
-                </button>
-              </div>
+              </form>
             </div>
-          </li>
-        ))}
-      </ul>
-
-      {/* Bouton pour associer un quiz */}
-      <button
-        onClick={() => setShowQuizModal(true)}
-        className="bg-green-600 text-white px-4 py-2 rounded mt-6"
-      >
-        Associer un quiz <FaPlus />
-      </button>
-
-      {/* Modal pour ajouter un cours */}
-      <button
-        onClick={() => setShowAddCoursModal(true)}
-        className="bg-blue-600 text-white px-4 py-2 rounded mt-6 ml-4"
-      >
-        Ajouter un cours <FaPlus />
-      </button>
-
-      {showAddCoursModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md">
-            <h2 className="text-lg font-semibold mb-4">Ajouter un cours</h2>
-            <input
-              type="text"
-              placeholder="Nom"
-              value={newCours.name}
-              onChange={(e) =>
-                setNewCours({ ...newCours, name: e.target.value })
-              }
-              className="w-full mb-4 p-2 border rounded"
-            />
-            <textarea
-              placeholder="Description"
-              value={newCours.description}
-              onChange={(e) =>
-                setNewCours({ ...newCours, description: e.target.value })
-              }
-              className="w-full mb-4 p-2 border rounded"
-            ></textarea>
-            <input
-              type="text"
-              placeholder="Lien (optionnel)"
-              value={newCours.link}
-              onChange={(e) =>
-                setNewCours({ ...newCours, link: e.target.value })
-              }
-              className="w-full mb-4 p-2 border rounded"
-            />
-            <button
-              onClick={handleAddCours}
-              className="bg-green-600 text-white px-4 py-2 rounded mr-2"
-            >
-              Ajouter
-            </button>
-            <button
-              onClick={() => setShowAddCoursModal(false)}
-              className="bg-gray-500 text-white px-4 py-2 rounded"
-            >
-              Annuler
-            </button>
           </div>
-        </div>
-      )}
-
-      {/* Modal pour afficher tous les quizzes disponibles */}
-      {showQuizModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md">
-            <h2 className="text-lg font-semibold mb-4">
-              {isEditMode ? 'Modifier le quiz' : 'Associer un quiz'}
-            </h2>
-            <ul className="space-y-2">
-              {quizzes.map((quiz) => (
-                <li key={quiz.id} className="flex justify-between items-center">
-                  <span>{quiz.title}</span>
-                  <button
-                    onClick={() =>
-                      isEditMode
-                        ? handleEditQuiz(quiz.id)
-                        : handleAssociateQuiz(quiz.id)
-                    }
-                    className="bg-blue-600 text-white px-4 py-1 rounded"
-                  >
-                    {isEditMode ? 'Remplacer' : 'Associer'}
-                  </button>
-                </li>
-              ))}
-            </ul>
-            <button
-              onClick={() => {
-                setShowQuizModal(false);
-                setIsEditMode(false);
-                setQuizToEditId(null);
-              }}
-              className="mt-4 bg-gray-500 text-white px-4 py-2 rounded"
-            >
-              Fermer
-            </button>
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
     </>
   );

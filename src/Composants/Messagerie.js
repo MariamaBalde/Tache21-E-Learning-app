@@ -127,7 +127,7 @@ const Messagerie = () => {
   return (
     <div className="flex flex-col md:flex-row h-screen bg-gray-50">
 <div className="w-full md:w-1/4 bg-white shadow-md flex flex-col max-h-[calc(100vh-180px)]">
-  <h2 className="text-lg font-semibold text-center py-2 border-b">Contacts</h2>
+  <h2 className="text-lg text-blue-600 font-semibold text-center py-2 border-b">Contacts</h2>
   <div className="flex-1 overflow-y-auto">
     {users.map((user) => (
       <div

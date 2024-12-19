@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Loader from "../Shared/Loader"; // Assurez-vous que le chemin est correct
+import { Link } from 'react-router-dom';
 
 const Cours = ({ title, description, image }) => {
   const [isLoading, setIsLoading] = useState(true); // État pour gérer le chargement
@@ -25,14 +26,17 @@ const Cours = ({ title, description, image }) => {
       ) : (
         <>
           {/* Affichage de l'image */}
-          <img src={image} alt={title} className="w-full h-48 object-cover mb-4" />
+          {/* <img src={image} alt={title} className="w-full h-48 object-cover mb-4" /> */}
 
+          <Link
+              to={`/etudiant/dashboard/cours/${courId}/taches/${tachesEtudiant.id}/taches`}>
+            <img src={image} alt={title} className="w-full h-48 object-cover mb-4" />
+          </Link>
           {/* Titre et description */}
           <div className="flex-grow">
             <h2 className="font-bold text-xl mb-2">{title}</h2>
             <p className="text-gray-700 text-base mb-4">{description}</p>
           </div>
-
           {/* Progress bar et bouton d'action */}
           <div className="mt-auto">
             <div className="w-full bg-gray-200 rounded-full h-4 mb-4">

@@ -51,8 +51,8 @@ const QuizDetails = () => {
   }
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-6">{quizData.title}</h2>
+    <div className="px-6 bg-gray-50">
+      <h2 className="text-2xl font-bold mb-6 text-blue-600">{quizData.title}</h2>
       <p className="mb-4">Cours: {quizData.course}</p>
 
       {isArchived ? (
@@ -61,7 +61,7 @@ const QuizDetails = () => {
         </div>
       ) : (
         <div>
-          <h4 className="text-xl font-bold">Questions :</h4>
+          <h4 className="text-xl font-bold text-blue-600">Questions :</h4>
           {quizData.questions.map((question, index) => (
             <div key={index} className="mt-4 mb-6">
               <p className="font-semibold text-gray-700">
@@ -80,7 +80,7 @@ const QuizDetails = () => {
           
           <div className="mt-6">
             <Link to={`/coach/dashboard/quizzes/quiz-details/${quizId}/play-quiz/${quizId}`}>
-              <button className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-500">
+              <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-900">
                 Jouer au Quiz
               </button>
             </Link>

@@ -47,22 +47,26 @@ const Domains = () => {
   }, []);
 
   const fetchDomains = async () => {
-    setLoading(true); // Activer le loader
+    setLoading(true);
     try {
       const querySnapshot = await getDocs(collection(db, 'domaines'));
-      const domainsData = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+      const domainsData = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          name: data.name,
+          archived: data.archived || false,
+          createdAt: data.createdAt ? data.createdAt.toDate().toLocaleString() : 'Non défini',
+        };
+      });
+
       setDomains(domainsData);
     } catch (error) {
       console.error('Erreur lors de la récupération des domaines :', error);
     } finally {
-      setLoading(false); // Désactiver le loader une fois les données récupérées
+      setLoading(false);
     }
   };
-  
-
 
   const fetchStudents = async () => {
     setLoading(true); // Activer le loader
@@ -87,7 +91,6 @@ const Domains = () => {
 
   const handleSearch = (term) => {
     setSearchTerm(term);
-
     if (term.trim() === '') {
       setFilteredStudents(students);
       setSearchError(false);
@@ -204,8 +207,8 @@ const Domains = () => {
 
 
   return (
-    <div className="p-6 bg-gray-50">
-      <h1 className="text-2xl font-bold text-center mb-6 text-blue-600">
+    <div className="px-6 bg-gray-50">
+      <h1 className="text-2xl font-bold text-start mb-6 text-blue-600">
         Gestion des Domaines
       </h1>
   
@@ -242,7 +245,7 @@ const Domains = () => {
                   <div>
                     <Link
                       to={`/coach/dashboard/domains/${domain.id}`}
-                      className="font-bold text-xl text-blue-600 hover:text-blue-800"
+                      className="font-bold text-xl text-blue-600 hover:text-blue-800 break-words"
                     >
                       {domain.name}
                     </Link>

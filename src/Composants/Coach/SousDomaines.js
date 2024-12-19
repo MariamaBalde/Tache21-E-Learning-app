@@ -109,9 +109,9 @@ const SousDomaines = () => {
   };
 
   return (
-    <div className="p-6 toto">
-      <h1 className="text-2xl font-semibold mb-6">
-        Sous-domaines pour le domaine : {domaineName || 'Chargement...'}
+    <div className="px-6 bg-gray-50">
+      <h1 className="text-2xl font-bold mb-6 text-blue-600">
+        Sous-domaines du domaine : {domaineName || 'Chargement...'}
       </h1>
 
       {loading && (
@@ -163,7 +163,7 @@ const SousDomaines = () => {
       {showAddModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-md">
-            <h2 className="text-lg font-semibold mb-4">Ajouter un sous-domaine</h2>
+            <h2 className="text-lg font-bold text-blue-600 mb-4">Ajouter un sous-domaine</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <input
                 type="text"
