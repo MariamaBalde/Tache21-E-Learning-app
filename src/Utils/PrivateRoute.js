@@ -1,13 +1,20 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../Hooks/useAuth.js';
+import { Loader } from 'lucide-react';
 
 const PrivateRoute = ({ children, roleRequired }) => {
   const { user, loading } = useAuth();
 
+  // if (loading) {
+  //   return <div>Chargement...</div>;
+  // }
+
+  // Affichage du Loader pendant le chargement
   if (loading) {
-    return <div>Chargement...</div>;
+    return <Loader />; // Afficher ton loader personnalisé ici
   }
+
 
   if (!user) {
     console.log('Aucun utilisateur connecté.');

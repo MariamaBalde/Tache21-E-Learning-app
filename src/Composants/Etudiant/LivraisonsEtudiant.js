@@ -1,116 +1,85 @@
 import React, { useState } from "react";
-import { db } from "../../Config/firebaseConfig"; // Import Firestore
-import { collection, addDoc } from "firebase/firestore";
+import Modal from "./Modal";
 
 const LivraisonsEtudiant = () => {
-  const [livraison, setLivraison] = useState({
-    projet: "",
-    description: "",
-    images: [],
-  });
+  // Génération de 6 tâches avec des titres et des descriptions personnalisés
+  const initialTasks = [
+    { id: 1, titleText: "Tâche 1 : SQL", description: "Les Bases de SQL", comments: [] },
+    { id: 2, titleText: "Tâche 2 : Firebase", description: "Les bases de Firebase", comments: [] },
+    { id: 3, titleText: "Tâche 3 : Laravel", description: "Découverte du framework PHP Laravel", comments: [] },
+    { id: 4, titleText: "Tâche 4 : Github", description: "Comment travailler avec GitHub", comments: [] },
+    { id: 5, titleText: "Tâche 5 : Javascript", description: "Apprendre le JavaScript", comments: [] },
+    { id: 6, titleText: "Tâche 6 : React", description: "Apprendre le React", comments: [] },
+  ];
 
-  const [confirmation, setConfirmation] = useState(false);
+  const [tasks, setTasks] = useState(initialTasks);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setLivraison((prev) => ({
-      ...prev,
-      [name]: value,            
-    }));
+  const handleModalOpen = (task) => {
+    setSelectedTask(task);
+    setShowModal(true);
   };
 
-  const handleImageUpload = (e) => {
-    const files = Array.from(e.target.files);
-    setLivraison((prev) => ({
-      ...prev,
-      images: [...prev.images, ...files],
-    }));
+  const handleModalClose = () => {
+    setShowModal(false);
+    setSelectedTask(null);
   };
 
-  const handleSubmit = async () => {
-    if (!livraison.projet || !livraison.description || livraison.images.length === 0) {
-      alert("Veuillez remplir tous les champs et ajouter au moins une image.");
-      return;
-    }
-
-    try {
-      // Ajouter la livraison dans Firestore
-      await addDoc(collection(db, "livraisons"), {
-        ...livraison,
-        statut: "En attente", // Initialiser avec le statut "En attente"
-        date: new Date().toISOString(), // Ajouter une date
-      });
-      setConfirmation(true);
-    } catch (error) {
-      console.error("Erreur lors de l'envoi :", error);
+  const handleSubmitComment = (comment) => {
+    if (selectedTask) {
+      const updatedTasks = tasks.map(task => 
+        task.id === selectedTask.id 
+          ? { ...task, comments: [...task.comments, comment] }
+          : task
+      );
+      setTasks(updatedTasks);
+      handleModalClose();
     }
   };
 
   return (
-    <div className="p-6 bg-gray-50 rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold text-gray-800 mb-4">Soumission de votre travail</h1>
-      {!confirmation ? (
-        <div>
-          <div className="mb-4">
-            <label htmlFor="projet" className="block text-gray-700 font-medium">
-              Sélectionnez une tâche :
-            </label>
-            <select
-              id="projet"
-              name="projet"
-              className="mt-2 p-2 w-full border rounded-md"
-              value={livraison.projet}
-              onChange={handleInputChange}
-            >
-              <option value="">-- Choisir une tâche --</option>
-              <option value="Tâche 1">Tâche 1</option>
-              <option value="Tâche 2">Tâche 2</option>
-              <option value="Tâche 3">Tâche 3</option>
-            </select>
-          </div>
-
-          <div className="mb-4">
-            <label htmlFor="description" className="block text-gray-700 font-medium">
-              Description :
-            </label>
-            <textarea
-              id="description"
-              name="description"
-              rows="4"
-              className="mt-2 p-2 w-full border rounded-md"
-              placeholder="Décrivez votre travail ici..."
-              value={livraison.description}
-              onChange={handleInputChange}
-            />
-          </div>
-
-          <div className="mb-4">
-            <label htmlFor="images" className="block text-gray-700 font-medium">
-              Ajoutez des images :
-            </label>
-            <input
-              type="file"
-              id="images"
-              multiple
-              accept="image/*"
-              className="mt-2 p-2 w-full border rounded-md"
-              onChange={handleImageUpload}
-            />
-          </div>
-
-          <button
-            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-            onClick={handleSubmit}
+    <div className="p-8 bg-blue-50 min-h-screen">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {tasks.map((task) => (
+          <div
+            key={task.id}
+            className="bg-white rounded-xl shadow-md p-6 border border-gray-200 flex flex-col justify-between"
           >
-            Soumettre mon travail
-          </button>
-        </div>
-      ) : (
-        <div className="mt-6 p-4 bg-green-50 border-l-4 border-green-500 text-green-700">
-          <p className="font-semibold">Votre travail a été soumis avec succès !</p>
-          <p>Vous serez notifié lorsque votre coach l'aura validé ou rejeté.</p>
-        </div>
-      )}
+            <h3 className="text-lg font-bold text-center text-gray-800 mb-4">
+              {task.titleText}
+            </h3>
+            <div className="flex justify-center mb-4">
+              <img
+                src="bine.jpg "
+                alt="Tâche visuel"
+                className="rounded-md border border-gray-300 w-full h-36 object-cover"
+              />
+            </div>
+            <p className="text-gray-600 text-center mb-6">{task.description}</p>
+            <div className="flex justify-between items-end mt-auto">
+              <button
+                onClick={() => handleModalOpen(task)}
+                className="w-[48%] py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition duration-300"
+              >
+                Commentaires ({task.comments.length})
+              </button>
+              <button
+                className="w-[48%] py-2 bg-indigo-700 text-white font-semibold rounded-lg hover:bg-indigo-800 transition duration-300"
+              >
+                Livrables
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <Modal 
+        show={showModal} 
+        onClose={handleModalClose} 
+        taskTitle={selectedTask?.titleText}
+        onSubmitComment={handleSubmitComment}
+      />
     </div>
   );
 };
