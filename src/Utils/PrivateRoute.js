@@ -6,10 +6,6 @@ import { Loader } from 'lucide-react';
 const PrivateRoute = ({ children, roleRequired }) => {
   const { user, loading } = useAuth();
 
-  // if (loading) {
-  //   return <div>Chargement...</div>;
-  // }
-
   // Affichage du Loader pendant le chargement
   if (loading) {
     return <Loader />; // Afficher ton loader personnalisé ici
