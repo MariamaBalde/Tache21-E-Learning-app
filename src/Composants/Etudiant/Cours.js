@@ -26,15 +26,14 @@ const Cours = ({ title, description, image }) => {
       ) : (
         <>
           {/* Affichage de l'image */}
-          {/* <img src={image} alt={title} className="w-full h-48 object-cover mb-4" /> */}
+          <img src={image} alt={title} className="w-full h-48 object-cover mb-4" />
 
-          <Link
-              to={`/etudiant/dashboard/cours/${courId}/taches/${tachesEtudiant.id}/taches`}>
-            <img src={image} alt={title} className="w-full h-48 object-cover mb-4" />
-          </Link>
+          
           {/* Titre et description */}
           <div className="flex-grow">
-            <h2 className="font-bold text-xl mb-2">{title}</h2>
+            
+                <h2 className="font-bold text-xl mb-2">{title}</h2>
+            
             <p className="text-gray-700 text-base mb-4">{description}</p>
           </div>
           {/* Progress bar et bouton d'action */}
@@ -53,3 +52,6 @@ const Cours = ({ title, description, image }) => {
 };
 
 export default Cours;
+
+
+
