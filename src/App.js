@@ -28,26 +28,42 @@ import QuizzesEtudiants from './Composants/Etudiant/QuizzesEtudiants.js';
 import MessagerieEtudiant from './Composants/Etudiant/MessagerieEtudiant.js';
 import ProjetsEtudiant from './Composants/Etudiant/ProjetsEtudiant.js';
 import DomainsList from './Composants/Admin/DomainsList.js';
+import { ToastContainer } from 'react-toastify'; // Importer le ToastContainer pour gérer les notifications
+import 'react-toastify/dist/ReactToastify.css'; // Import des styles Toastify
 
 
-// Composant de Layout pour gérer le Loader pendant les transitions
+// Composant de Layout pour gérer le Loader pendant les transitions et au démarrage
 const AppLayout = () => {
   const navigation = useNavigation();
+  const [initialLoading, setInitialLoading] = useState(true);
+
+  // Simule un temps de chargement initial
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setInitialLoading(false); // Désactive le chargement initial après 1 seconde
+    }, 1000);
+
+    return () => clearTimeout(timer); // Nettoyage du timer
+  }, []);
+
+  // Le Loader est actif si le chargement initial ou une navigation est en cours
+  const isLoading = initialLoading || navigation.state === 'loading';
 
   return (
     <>
-      {/* Affiche le Loader si la navigation est en cours */}
-      {navigation.state === 'loading' && <Loader />}
+    <ToastContainer />
+
+      {isLoading && <Loader />}
       <Outlet />
     </>
   );
 };
 
+// Définition des routes
 const router = createBrowserRouter([
   {
-    path: '/', 
-    // element: <Outlet />, // Conteneur pour les routes
-    element: <AppLayout />, // Utilisation d'AppLayout comme conteneur parent
+    path: '/',
+    element: <AppLayout />,
     children: [
       { path: '/', element: <LandingPage /> },
       { path: 'login', element: <Login /> },
@@ -89,28 +105,16 @@ const router = createBrowserRouter([
           { path: 'cours', element: <Cours /> },
           { path: 'livraisons', element: <Livraisons /> },
           { path: 'quizzes', element: <Quizzes /> },
-
-          { path: 'quizzes', element: <Quizzes /> },
           { path: 'quizzes/add-quiz', element: <AddQuiz /> },
           { path: 'quizzes/quiz-details/:quizId', element: <QuizDetails /> },
           { path: 'quizzes/edit-quiz/:quizId', element: <EditQuiz /> },
           { path: 'quizzes/edit-quiz/:id', element: <EditQuiz /> },
-
-          {
-            path: 'quizzes/quiz-details/:quizId/play-quiz/:playQuizId',
-            element: <PlayQuiz />,
-          },
+          { path: 'quizzes/quiz-details/:quizId/play-quiz/:playQuizId',element: <PlayQuiz />, },
           { path: 'projets', element: <Projets /> },
           { path: 'messagerie', element: <MessagerieCoach /> },
           { path: 'domains/:domaineId', element: <SousDomaines /> },
-          {
-            path: 'domains/:domaineId/sous-domaines/:sousDomaineId/cours',
-            element: <Cours />,
-          },
-          {
-            path: 'domains/:domaineId/sous-domaines/:sousDomaineId/cours/play-quiz/:quizId',
-            element: <PlayQuiz />,
-          },
+          { path: 'domains/:domaineId/sous-domaines/:sousDomaineId/cours',element: <Cours />,},
+          {path: 'domains/:domaineId/sous-domaines/:sousDomaineId/cours/play-quiz/:quizId',element: <PlayQuiz />,},
         ],
       },
       {
@@ -134,22 +138,10 @@ const router = createBrowserRouter([
   },
 ]);
 
-// const App = () => {
-//   return <RouterProvider router={router} />;
-// };
-
 const App = () => {
-  const [loading, setLoading] = useState(true);
-
-  // Simule un temps de chargement initial
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false); // Désactive le Loader après 2 secondes
-    }, 200);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  return loading ? <Loader /> : <RouterProvider router={router} />;
+  return <RouterProvider router={router} />;
 };
+
 export default App;
+
+
