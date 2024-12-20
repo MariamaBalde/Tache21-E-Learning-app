@@ -144,6 +144,20 @@ const Sidebar = () => {
                 Messagerie
               </NavLink>
             </li>
+            <li className="mb-3"> {/* Ajout d'une marge ici */}
+              <NavLink
+                to="/etudiant/dashboard/certification"
+                className={`flex items-center py-3 px-3 ${
+                  activeLink === '/etudiant/dashboard/certification'
+                    ? 'bg-blue-500'
+                    : 'hover:bg-blue-500'
+                } rounded`}
+                onClick={() => handleLinkClick('/etudiant/dashboard/certification')}
+              >
+                <FiHelpCircle className="mr-2" />
+                Certification
+              </NavLink>
+            </li>
           </ul>
         </nav>
       </div>

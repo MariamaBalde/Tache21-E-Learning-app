@@ -1,44 +1,18 @@
-import React, { useState } from 'react';
-
-// Modal Component
-const Modal = ({ show, onClose, taskTitle }) => {
-  if (!show) return null;
-
-  return (
-    <div className="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-lg w-1/2 p-6 relative">
-        <button
-          onClick={onClose}
-          className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-3xl"
-        >
-          &times;
-        </button>
-        <h2 className="text-2xl font-semibold mb-4 text-center text-blue-900">{taskTitle}</h2>
-        <textarea
-          className="w-full p-3 border rounded-md focus:outline-none focus:border-blue-500"
-          rows="4"
-          placeholder="Votre commentaire..."
-        />
-        <div className="flex justify-center mt-4">
-          <button
-            onClick={onClose}
-            className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300"
-          >
-            Soumettre
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
+import React, { useState } from "react";
+import Modal from "./Modal";
 
 const LivraisonsEtudiant = () => {
-  const tasks = [
-    { id: 1, titleText: "Tâche 01", description: "Apprendre la structure de base d'une page web avec HTML." },
-    { id: 2, titleText: "Tâche 02", description: "Découvrir les styles et la mise en page avec CSS." },
-    { id: 3, titleText: "Tâche 03", description: "Comprendre les bases de la programmation avec JavaScript." },
+  // Génération de 6 tâches avec des titres et des descriptions personnalisés
+  const initialTasks = [
+    { id: 1, titleText: "Tâche 1 : SQL", description: "Les Bases de SQL", comments: [] },
+    { id: 2, titleText: "Tâche 2 : Firebase", description: "Les bases de Firebase", comments: [] },
+    { id: 3, titleText: "Tâche 3 : Laravel", description: "Découverte du framework PHP Laravel", comments: [] },
+    { id: 4, titleText: "Tâche 4 : Github", description: "Comment travailler avec GitHub", comments: [] },
+    { id: 5, titleText: "Tâche 5 : Javascript", description: "Apprendre le JavaScript", comments: [] },
+    { id: 6, titleText: "Tâche 6 : React", description: "Apprendre le React", comments: [] },
   ];
 
+  const [tasks, setTasks] = useState(initialTasks);
   const [showModal, setShowModal] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
 
@@ -52,39 +26,46 @@ const LivraisonsEtudiant = () => {
     setSelectedTask(null);
   };
 
+  const handleSubmitComment = (comment) => {
+    if (selectedTask) {
+      const updatedTasks = tasks.map(task =>
+        task.id === selectedTask.id
+          ? { ...task, comments: [...task.comments, comment] }
+          : task
+      );
+      setTasks(updatedTasks);
+      handleModalClose();
+    }
+  };
+
   return (
     <div className="p-8 bg-blue-50 min-h-screen">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {tasks.map((task) => (
           <div
             key={task.id}
-            className="bg-white rounded-lg shadow-lg p-4 border-t-4 border-blue-900 flex flex-col justify-between"
+            className="bg-white rounded-xl shadow-md p-6 border border-gray-200 flex flex-col justify-between"
           >
-            {/* Header */}
-            <h3 className="text-lg font-bold text-center text-blue-900 mb-4">{task.titleText}</h3>
-
-            {/* Image placeholder */}
+            <h3 className="text-lg font-bold text-center text-gray-800 mb-4">
+              {task.titleText}
+            </h3>
             <div className="flex justify-center mb-4">
               <img
-                src="https://via.placeholder.com/150"
-                alt="Icon"
-                className="w-16 h-16"
+                src="bine.jpg "
+                alt="Tâche visuel"
+                className="rounded-md border border-gray-300 w-full h-36 object-cover"
               />
             </div>
-
-            {/* Task Description */}
             <p className="text-gray-600 text-center mb-6">{task.description}</p>
-
-            {/* Buttons */}
-            <div className="flex justify-between">
+            <div className="flex justify-between items-end mt-auto">
               <button
                 onClick={() => handleModalOpen(task)}
-                className="w-1/2 py-2 mx-1 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-700 transition duration-300"
+                className="w-[48%] py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition duration-300"
               >
-                Commentaires
+                Commentaires ({task.comments.length})
               </button>
               <button
-                className="w-1/2 py-2 mx-1 bg-blue-900 text-white font-semibold rounded-lg hover:bg-blue-700 transition duration-300"
+                className="w-[48%] py-2 bg-indigo-700 text-white font-semibold rounded-lg hover:bg-indigo-800 transition duration-300"
               >
                 Livrables
               </button>
@@ -93,8 +74,12 @@ const LivraisonsEtudiant = () => {
         ))}
       </div>
 
-      {/* Modal */}
-      <Modal show={showModal} onClose={handleModalClose} taskTitle={selectedTask?.titleText} />
+      <Modal
+        show={showModal}
+        onClose={handleModalClose}
+        taskTitle={selectedTask?.titleText}
+        onSubmitComment={handleSubmitComment}
+      />
     </div>
   );
 };

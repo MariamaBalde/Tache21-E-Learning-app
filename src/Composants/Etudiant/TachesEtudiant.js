@@ -188,7 +188,7 @@ const TachesEtudiant = () => {
                     rel="noopener noreferrer"
                     className="hover:text-blue-700"
                   >
-                    Voir le cours
+                    Voir le cours 
                   </a>
                 </p>
               )}
