@@ -3,7 +3,6 @@ import { doc, getDoc, collection, query, where, getDocs, updateDoc } from "fireb
 import { auth, db } from "../../Config/firebaseConfig"; // Assurez-vous que le chemin est correct
 import Loader from "../Shared/Loader"; // Import du composant Loader
 import Toastify from "toastify-js";
-
 import { toast } from "react-toastify"; // Import de Toastify pour les notifications
 import { PlayIcon } from "@heroicons/react/24/solid";
 // Fonction utilitaire pour les notifications Toastify
@@ -204,5 +203,4 @@ const TachesEtudiant = () => {
     </div>
   );
 };
-
 export default TachesEtudiant;
