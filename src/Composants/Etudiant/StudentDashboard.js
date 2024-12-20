@@ -10,6 +10,7 @@ import TachesEtudiant from './TachesEtudiant';
 import QuizzesEtudiants from './QuizzesEtudiants';
 import ProjetsEtudiant from './ProjetsEtudiant';
 import LivraisonsEtudiant from './LivraisonsEtudiant';
+import Certification from './Certification';
 const StudentDashboard = () => {
     return (
         <div className="flex h-screen">
@@ -40,6 +41,9 @@ const StudentDashboard = () => {
                         {/* Route pour gérer les quizzes */}
                         <Route path="projetsEtudiant" element={<ProjetsEtudiant />} />
                         <Route path="messagerieEtudiant" element={<MessagerieEtudiant />} />
+
+                        {/* Certification */}
+                        <Route path="certification" element={<Certification />} />
                     </Routes>
                 </div>
             </div>

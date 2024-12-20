@@ -41,4 +41,4 @@ const CourseItem = ({ course }) => {
     );
 };
 
-export default CourseItem;
+export default CourseItem; 

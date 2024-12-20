@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Navbar from './Navbar'; // Assurez-vous que le chemin vers Navbar est correct.
 import { db } from '../../Config/firebaseConfig';
 import {
   collection,
@@ -65,7 +66,7 @@ const DomainsList = () => {
       await updateDoc(domainRef, { archived: !isArchived });
       fetchDomains();
     } catch (err) {
-      console.error("Erreur lors de l'archivage du domaine:", err);
+      console.error('Erreur lors de l\'archivage du domaine:', err);
     }
   };
 
@@ -106,76 +107,91 @@ const DomainsList = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6">
-      <h1 className="text-2xl font-bold mb-6 text-center text-blue-600">
-        Liste des Domaines
-      </h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {domains.map((domain) => (
-          <div
-            key={domain.id}
-            className={`bg-white p-4 rounded-lg shadow-md border ${domain.archived ? 'border-gray-400' : 'border-blue-600'}`}
-          >
-            <h2 className="text-xl font-semibold mb-2 text-blue-600">{domain.name}</h2>
-            <p className="text-gray-600">{domain.description}</p>
+    <div>
+      {/* Navbar */}
+      <Navbar />
 
-            <button
-              className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
-              onClick={() => handleSelectDomain(domain)}
+      {/* Contenu principal */}
+      <div className="container mx-auto px-4 py-6">
+        <h1 className="text-2xl font-bold mb-6 text-center text-blue-600">
+          Liste des Domaines
+        </h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {domains.map((domain) => (
+            <div
+              key={domain.id}
+              className={`bg-white p-4 rounded-lg shadow-md border ${
+                domain.archived ? 'border-gray-400' : 'border-blue-600'
+              }`}
             >
-              Voir Détails
-            </button>
+              <h2 className="text-xl font-semibold mb-2 text-blue-600">
+                {domain.name}
+              </h2>
+              <p className="text-gray-600">{domain.description}</p>
 
-            <div className="mt-4 flex justify-between items-center">
-              <div className="group relative">
-                <button
-                  onClick={() => toggleArchiveDomain(domain.id, domain.archived)}
-                  className={`p-2 rounded-lg text-white hover:bg-opacity-80 transition duration-300 ${domain.archived ? 'bg-green-500' : 'bg-yellow-500'}`}
-                >
-                  <ArchiveBoxIcon className="h-6 w-6 text-white" />
-                </button>
-                <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 mb-6 opacity-0 group-hover:opacity-100 transition duration-300 text-sm bg-black text-white p-1 rounded">
-                  {domain.archived ? 'Désarchiver' : 'Archiver'}
-                </span>
-              </div>
+              <button
+                className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
+                onClick={() => handleSelectDomain(domain)}
+              >
+                Voir Détails
+              </button>
 
-              <div className="group relative">
-                <button
-                  onClick={() => deleteDomain(domain.id)}
-                  className="p-2 bg-red-500 text-white rounded-lg hover:bg-red-700 transition duration-300"
-                >
-                  <TrashIcon className="h-6 w-6 text-white" />
-                </button>
-                <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 mb-6 opacity-0 group-hover:opacity-100 transition duration-300 text-sm bg-black text-white p-1 rounded">
-                  Supprimer
-                </span>
+              <div className="mt-4 flex justify-between items-center">
+                <div className="group relative">
+                  <button
+                    onClick={() =>
+                      toggleArchiveDomain(domain.id, domain.archived)
+                    }
+                    className={`p-2 rounded-lg text-white hover:bg-opacity-80 transition duration-300 ${
+                      domain.archived ? 'bg-green-500' : 'bg-yellow-500'
+                    }`}
+                  >
+                    <ArchiveBoxIcon className="h-6 w-6 text-white" />
+                  </button>
+                  <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 mb-6 opacity-0 group-hover:opacity-100 transition duration-300 text-sm bg-black text-white p-1 rounded">
+                    {domain.archived ? 'Désarchiver' : 'Archiver'}
+                  </span>
+                </div>
+
+                <div className="group relative">
+                  <button
+                    onClick={() => deleteDomain(domain.id)}
+                    className="p-2 bg-red-500 text-white rounded-lg hover:bg-red-700 transition duration-300"
+                  >
+                    <TrashIcon className="h-6 w-6 text-white" />
+                  </button>
+                  <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 mb-6 opacity-0 group-hover:opacity-100 transition duration-300 text-sm bg-black text-white p-1 rounded">
+                    Supprimer
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
-
-      {selectedDomain && (
-        <div className="mt-6">
-          <h2 className="text-2xl font-bold mb-4">
-            Sous-domaines de {selectedDomain.name}
-          </h2>
-          <ul className="list-disc pl-5">
-            {subDomains.length > 0 ? (
-              subDomains.map((subDomain, index) => (
-                <li key={index}>{subDomain.name}</li>
-              ))
-            ) : (
-              <li>Aucun sous-domaine disponible.</li>
-            )}
-          </ul>
+          ))}
         </div>
-      )}
+
+        {selectedDomain && (
+          <div className="mt-6">
+            <h2 className="text-2xl font-bold mb-4">
+              Sous-domaines de {selectedDomain.name}
+            </h2>
+            <ul className="list-disc pl-5">
+              {subDomains.length > 0 ? (
+                subDomains.map((subDomain, index) => (
+                  <li key={index}>{subDomain.name}</li>
+                ))
+              ) : (
+                <li>Aucun sous-domaine disponible.</li>
+              )}
+            </ul>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
 
 export default DomainsList;
+
 
 
 
