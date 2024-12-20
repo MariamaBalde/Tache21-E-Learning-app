@@ -57,15 +57,15 @@ const LivraisonsEtudiant = () => {
               />
             </div>
             <p className="text-gray-600 text-center mb-6">{task.description}</p>
-            <div className="flex justify-between items-end mt-auto">
+            <div className="flex justify-between  items-end mt-auto">
               <button
                 onClick={() => handleModalOpen(task)}
-                className="w-[48%] py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition duration-300"
+                className="py-2  bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition duration-300"
               >
-                Commentaires ({task.comments.length})
+                commentaire 
               </button>
               <button
-                className="w-[48%] py-2 bg-indigo-700 text-white font-semibold rounded-lg hover:bg-indigo-800 transition duration-300"
+                className="py-2  bg-indigo-700 text-white font-semibold rounded-lg hover:bg-indigo-800 transition duration-300"
               >
                 Livrables
               </button>

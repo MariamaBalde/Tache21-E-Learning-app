@@ -43,7 +43,7 @@ const Sidebar = () => {
           isOpen ? 'translate-x-0' : '-translate-x-full'
         } lg:translate-x-0 lg:static lg:h-screen lg:w-56`}
       >
-        <img src={logo} alt="Logo" className="h-16 w-16 mb-6 mr-2" />
+        <img src={logo} alt="Logo" className="h-20 w-20 mb-6 mr-2" />
         <nav>
           <ul>
             <li className="mb-3"> {/* Ajout d'une marge ici */}

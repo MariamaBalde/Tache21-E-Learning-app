@@ -32,7 +32,7 @@ const Dashboard = () => {
         setDomainData(monthlyData);
         setDomainCount(snapshot.size);
       });
-
+      
       return unsubscribe;
     };
 
@@ -77,13 +77,13 @@ const Dashboard = () => {
           icon={FileText}
           gradient="bg-gradient-to-br from-blue-300 to-[#FF66FF]"
           count={domainCount} // Passer le nombre de domaines
-        />
+          />
         <GradientCard
           title="Tâches"
           icon={CheckSquare}
           gradient="bg-gradient-to-br from-blue-200 to-blue-800"
           count={courseCount} // Passer le nombre de cours
-        />
+          />
       </div>
       <section className="mt-8 grid grid-cols-1 lg:grid-cols-1">
         <Statistics domainData={domainData} courseData={courseData} />
