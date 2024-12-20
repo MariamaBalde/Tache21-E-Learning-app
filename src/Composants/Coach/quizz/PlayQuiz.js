@@ -17,6 +17,7 @@ const PlayQuiz = () => {
   const [isArchived, setIsArchived] = useState(false);
 
   useEffect(() => {
+    console.log(`Quiz ID from params: ${quizId}`);
     const fetchQuizData = async () => {
       try {
         const quizRef = doc(db, 'quizzes', quizId);

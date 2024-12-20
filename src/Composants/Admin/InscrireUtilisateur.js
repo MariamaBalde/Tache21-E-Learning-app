@@ -1,7 +1,80 @@
+// import React, { useState } from 'react';
+// import { db, auth } from '../../Config/firebaseConfig';
+// import { collection, doc, setDoc } from 'firebase/firestore';
+// import {createUserWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
+// import { XMarkIcon } from '@heroicons/react/24/outline';
+// import { useNavigate } from 'react-router-dom';
+// import { toast } from 'react-toastify';  // Importer toast
+// import 'react-toastify/dist/ReactToastify.css';  // Importer le style CSS de toastify
+// const InscrireUtilisateur = () => {
+//   const [modalOpen, setModalOpen] = useState(false);
+//   const [email, setEmail] = useState('');
+//   const [nom, setNom] = useState('');
+//   const [prenom, setPrenom] = useState('');
+//   const [tel, setTel] = useState('');
+//   const [role, setRole] = useState('');
+//   const [domaine, setDomaine] = useState('');
+//   const [dureeFormation, setDureeFormation] = useState('');
+
+//   const handleRoleChange = (e) => {
+//     const selectedRole = e.target.value;
+//     setRole(selectedRole);
+
+//     if (selectedRole !== 'etudiant') {
+//       setDomaine('');
+//     }
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     try {
+//       const password = Math.random().toString(36).slice(-8);
+
+//       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+//       const user = userCredential.user;
+
+//       const userRef = doc(collection(db, 'users'), user.uid);
+//       const userData = {
+//         email,
+//         nom,
+//         prenom,
+//         tel,
+//         role,
+//         domaine: role === 'etudiant' ? domaine : null,
+//         dureeFormation: role === 'etudiant' ? dureeFormation : null,
+//         createdAt: new Date(),
+//         isActive: true,
+//       };
+//       await setDoc(userRef, userData);
+//       await sendPasswordResetEmail(auth, email);
+
+//       toast.success(`Utilisateur ${role} créé avec succès ! Un e-mail a été envoyé à ${email} pour définir un nouveau mot de passe.`);
+//       setEmail('');
+//       setNom('');
+//       setPrenom('');
+//       setTel('');
+//       setRole('');
+//       setDomaine('');
+//       setDureeFormation('');
+//     } catch (error) {
+//       console.error('Erreur lors de la création de l’utilisateur:', error);
+//       toast.error("Erreur lors de l'inscription : " + error.message);
+//     }
+//   };
+
+
+
+//   return (
+//   <>
+//   </>
+//   );
+// };
+// export default InscrireUtilisateur;
+
 import React, { useState } from 'react';
 import { db, auth } from '../../Config/firebaseConfig';
 import { collection, doc, setDoc } from 'firebase/firestore';
-import {createUserWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
+import { createUserWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';  // Importer toast
@@ -179,3 +252,8 @@ const InscrireUtilisateur = () => {
 };
 
 export default InscrireUtilisateur;
+
+
+
+
+

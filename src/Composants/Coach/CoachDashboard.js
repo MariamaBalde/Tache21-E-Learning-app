@@ -63,7 +63,7 @@ const CoachDashboard = () => {
               path="quizzes/quiz-details/:quizId/play-quiz/:playQuizId"
               element={<PlayQuiz />}
             />
-            <Route path="projets" element={<Projets />} />
+            <Route path="projets" element={<Projets  />} />
             <Route path="messagerie" element={<MessagerieCoach />} />
             <Route
               path="/coach/dashboard/messagerie"

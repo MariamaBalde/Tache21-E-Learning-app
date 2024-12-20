@@ -46,22 +46,44 @@ const Cours = () => {
   const navigate = useNavigate(); // Instancier la fonction navigate
 
   // Récupérer les cours du sous-domaine
+  // const fetchCours = async () => {
+  //   try {
+  //     const coursRef = collection(db, 'cours');
+  //     const q = query(coursRef, where('sousDomaineId', '==', sousDomaineId));
+  //     const querySnapshot = await getDocs(q);
+  //     const coursData = querySnapshot.docs.map((doc) => ({
+  //       id: doc.id,
+  //       ...doc.data(),
+  //     }));
+  //     setCours(coursData);
+  //   } catch (error) {
+  //     console.error('Erreur lors de la récupération des cours :', error);
+  //   }finally { //pour loader
+  //     setLoading(false);
+  //   }
+  // };
   const fetchCours = async () => {
+    setLoading(true); // Active le loader au début
     try {
       const coursRef = collection(db, 'cours');
       const q = query(coursRef, where('sousDomaineId', '==', sousDomaineId));
       const querySnapshot = await getDocs(q);
-      const coursData = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+      const coursData = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          ...data,
+          createdAt: data.createdAt ? data.createdAt.toDate().toLocaleString() : 'Non défini',
+        };
+      });
       setCours(coursData);
     } catch (error) {
       console.error('Erreur lors de la récupération des cours :', error);
-    }finally { //pour loader
-      setLoading(false);
+    } finally {
+      setLoading(false); // Désactive le loader à la fin
     }
   };
+
 
  
   const fetchQuizzes = async () => {

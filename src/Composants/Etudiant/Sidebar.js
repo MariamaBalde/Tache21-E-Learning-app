@@ -43,7 +43,7 @@ const Sidebar = () => {
           isOpen ? 'translate-x-0' : '-translate-x-full'
         } lg:translate-x-0 lg:static lg:h-screen lg:w-56`}
       >
-        <img src={logo} alt="Logo" className="h-16 w-16 mb-6 mr-2" />
+        <img src={logo} alt="Logo" className="h-20 w-20 mb-6 mr-2" />
         <nav>
           <ul>
             <li className="mb-3"> {/* Ajout d'une marge ici */}
@@ -142,6 +142,20 @@ const Sidebar = () => {
               >
                 <FaEnvelope className="mr-2" />
                 Messagerie
+              </NavLink>
+            </li>
+            <li className="mb-3"> {/* Ajout d'une marge ici */}
+              <NavLink
+                to="/etudiant/dashboard/certification"
+                className={`flex items-center py-3 px-3 ${
+                  activeLink === '/etudiant/dashboard/certification'
+                    ? 'bg-blue-500'
+                    : 'hover:bg-blue-500'
+                } rounded`}
+                onClick={() => handleLinkClick('/etudiant/dashboard/certification')}
+              >
+                <FiHelpCircle className="mr-2" />
+                Certification
               </NavLink>
             </li>
           </ul>

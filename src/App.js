@@ -30,7 +30,7 @@ import ProjetsEtudiant from './Composants/Etudiant/ProjetsEtudiant.js';
 import DomainsList from './Composants/Admin/DomainsList.js';
 import { ToastContainer } from 'react-toastify'; // Importer le ToastContainer pour gérer les notifications
 import 'react-toastify/dist/ReactToastify.css'; // Import des styles Toastify
-
+import Certification from './Composants/Etudiant/Certification.js';
 
 // Composant de Layout pour gérer le Loader pendant les transitions et au démarrage
 const AppLayout = () => {
@@ -131,6 +131,7 @@ const router = createBrowserRouter([
           { path: 'quizzesEtudiants', element: <QuizzesEtudiants /> },
           { path: 'projetsEtudiant', element: <ProjetsEtudiant /> },
           { path: 'messagerieEtudiant', element: <MessagerieEtudiant /> },
+          { path: 'certification', element: <Certification /> },
         ],
       },
       { path: '*', element: <NotFound /> },

@@ -1,92 +1,61 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
+import { db } from "../../Config/firebaseConfig";
+import { collection, query, where, getDocs } from "firebase/firestore";
 
-const ProjetsEtudiant = () => {
-    const [projectDetails, setProjectDetails] = useState({
-        title: 'Projet de Validation : Création d’un Site Web',
-        description: 'Créer un site web responsive en utilisant HTML, CSS et JavaScript.',
-        deadline: '15 décembre 2024',
-    });
+function ProjetsEtudiant() {
+    const [projets, setProjets] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const [files, setFiles] = useState([]);
-    const [description, setDescription] = useState('');
-    const [isSubmitted, setIsSubmitted] = useState(false);
-
-    // Gestion des fichiers
-    const handleFileChange = (event) => {
-        setFiles([...event.target.files]);
-    };
-
-    // Gestion de la soumission
-    const handleSubmit = (event) => {
-        event.preventDefault();
-
-        if (files.length === 0) {
-            alert('Veuillez ajouter au moins un fichier avant de soumettre.');
-            return;
+    // Récupérer les projets actifs depuis Firebase
+    const fetchProjets = async () => {
+        setLoading(true);
+        try {
+            const q = query(collection(db, "projet"), where("archived", "==", false));
+            const querySnapshot = await getDocs(q);
+            const fetchedProjets = querySnapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+            setProjets(fetchedProjets);
+        } catch (error) {
+            console.error("Erreur lors de la récupération des projets :", error);
+        } finally {
+            setLoading(false);
         }
-
-        // Exemple de gestion de soumission (envoi vers une API)
-        console.log('Description:', description);
-        console.log('Fichiers soumis:', files);
-
-        setIsSubmitted(true);
     };
+
+    useEffect(() => {
+        fetchProjets();
+    }, []);
 
     return (
-        <div className="projets-etudiant-container p-6">
-            <h1 className="text-2xl font-bold mb-4 text-center text-blue-700">
-                Projet de Validation
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 bg-gray-50">
+            <h1 className="text-2xl font-bold text-start mb-6 text-blue-600">
+                Projets de validations
             </h1>
 
-            <div className="project-details bg-gray-100 p-4 rounded shadow mb-6">
-                <h2 className="text-xl font-semibold">{projectDetails.title}</h2>
-                <p className="text-gray-600 mt-2">{projectDetails.description}</p>
-                <p className="text-gray-500 mt-2">
-                    <strong>Date limite : </strong> {projectDetails.deadline}
-                </p>
-            </div>
-
-            {!isSubmitted ? (
-                <form onSubmit={handleSubmit} className="bg-white p-4 rounded shadow">
-                    <label className="block mb-2 text-sm font-semibold text-gray-700">
-                        Description de votre travail (facultatif)
-                    </label>
-                    <textarea
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        placeholder="Ajoutez des notes ou des explications sur votre travail..."
-                        className="w-full border border-gray-300 rounded px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-
-                    <label className="block mb-2 text-sm font-semibold text-gray-700">
-                        Téléchargez vos livrables (captures d’écran, fichiers zip, etc.)
-                    </label>
-                    <input
-                        type="file"
-                        multiple
-                        onChange={handleFileChange}
-                        className="w-full mb-4"
-                    />
-
-                    <button
-                        type="submit"
-                        className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
-                    >
-                        Soumettre le projet
-                    </button>
-                </form>
+            {loading ? (
+                <p>Chargement des projets...</p>
+            ) : projets.length === 0 ? (
+                <p>Aucun projet disponible pour le moment.</p>
             ) : (
-                <div className="bg-green-100 p-4 rounded text-center">
-                    <h2 className="text-lg font-semibold text-green-700">
-                        Projet soumis avec succès !
-                    </h2>
-                    <p className="text-green-600 mt-2">
-                        Votre projet a été envoyé. Vous serez informé dès qu’il sera évalué.
-                    </p>
-                </div>
+                <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {projets.map((projet) => (
+                        <li
+                            key={projet.id}
+                            className="bg-white p-4 rounded-lg shadow-md border border-gray-200"
+                        >
+                            <h1 className="font-bold text-lg text-blue-500">{projet.title}</h1>
+                            <div
+                                className="mt-2 text-gray-700 break-words"
+                                dangerouslySetInnerHTML={{ __html: projet.content }}
+                            />
+                        </li>
+                    ))}
+                </ul>
             )}
         </div>
     );
-};
+}
 
 export default ProjetsEtudiant;
