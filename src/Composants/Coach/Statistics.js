@@ -26,7 +26,17 @@ function Statistics({ domainData, courseData }) {
                 tension: 0.4,
                 fill: true,
             },
+            {
+                label: 'Nombre de Cours',
+                data: courseData,
+                backgroundColor: 'rgba(59, 130, 246, 0.5)',
+                borderColor: 'rgba(59, 130, 246, 1)',
+                borderWidth: 2,
+                tension: 0.4,
+                fill: true,
+            },
         ],
+        
     };
 
     const options = {
