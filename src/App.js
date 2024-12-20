@@ -118,20 +118,21 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: 'etudiant/dashboard',
-        element: (
-          <PrivateRoute roleRequired="etudiant">
-            <StudentDashboard />
-          </PrivateRoute>
-        ),
-        children: [
-          { path: 'coursEtudiant', element: <CoursEtudiant /> },
-          { path: 'tachesEtudiant', element: <TachesEtudiant /> },
-          { path: 'livraisonsEtudiant', element: <LivraisonsEtudiant /> },
-          { path: 'quizzesEtudiants', element: <QuizzesEtudiants /> },
-          { path: 'projetsEtudiant', element: <ProjetsEtudiant /> },
-          { path: 'messagerieEtudiant', element: <MessagerieEtudiant /> },
-        ],
+        path: 'etudiant/dashboard/*',
+  element: (
+    <PrivateRoute roleRequired="etudiant">
+      <StudentDashboard />
+    </PrivateRoute>
+  ),
+  children: [
+    { path: 'quizzes/quiz-details/:quizId/play-quiz', element: <PlayQuiz /> },
+    { path: 'coursEtudiant', element: <CoursEtudiant /> },
+    { path: 'tachesEtudiant', element: <TachesEtudiant /> },
+    { path: 'livraisonsEtudiant', element: <LivraisonsEtudiant /> },
+    { path: 'quizzesEtudiants', element: <QuizzesEtudiants /> },
+    { path: 'projetsEtudiant', element: <ProjetsEtudiant /> },
+    { path: 'messagerieEtudiant', element: <MessagerieEtudiant /> },
+  ],
       },
       { path: '*', element: <NotFound /> },
     ],
