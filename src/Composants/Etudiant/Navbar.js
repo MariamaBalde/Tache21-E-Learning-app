@@ -2,10 +2,13 @@ import React, { useState, useEffect } from "react";
 import { FiBell, FiMail, FiX, FiSend } from "react-icons/fi";
 import Profil from "../Coach/Profil";
 import { toast } from "react-toastify"; // Importation de Toastify
+import { db } from "../../Config/firebaseConfig"; // Importation de Firebase
+import { collection, getDocs, query, where } from "firebase/firestore";
 
 const Navbar = ({ onAddTask }) => {
   const [userData, setUserData] = useState({});
   const [showModal, setShowModal] = useState(false);
+  const [tasks, setTasks] = useState([]);
   const [selectedTask, setSelectedTask] = useState("");
   const [description, setDescription] = useState("");
   const [file, setFile] = useState(null);
@@ -21,6 +24,26 @@ const Navbar = ({ onAddTask }) => {
         console.error("Erreur lors de la lecture des données utilisateur :", error);
       }
     }
+  }, []);
+
+  // Charger les tâches démarrées depuis Firebase
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const tasksRef = collection(db, "tasks"); // Remplacez "tasks" par le nom de votre collection
+        const q = query(tasksRef, where("status", "==", "démarrée")); // Filtrez les tâches démarrées
+        const querySnapshot = await getDocs(q);
+        const fetchedTasks = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setTasks(fetchedTasks);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des tâches :", error);
+      }
+    };
+
+    fetchTasks();
   }, []);
 
   // Gestion de l'ouverture/fermeture du modal
@@ -41,8 +64,7 @@ const Navbar = ({ onAddTask }) => {
       date: new Date().toLocaleDateString(),
     });
 
-    // Affichage de la notification de succès
-    toast.success("Travail envoyé avec succès!");
+    toast.success("Travail envoyé avec succès!"); // Notification de succès
 
     // Réinitialisation des champs après envoi
     setSelectedTask("");
@@ -96,8 +118,11 @@ const Navbar = ({ onAddTask }) => {
                   required
                 >
                   <option value="">-- Sélectionnez une tâche --</option>
-                  <option value="Tâche 1">Tâche 1</option>
-                  <option value="Tâche 2">Tâche 2</option>
+                  {tasks.map((task) => (
+                    <option key={task.id} value={task.id}>
+                      {task.title}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div className="mb-4">
@@ -136,6 +161,7 @@ const Navbar = ({ onAddTask }) => {
 };
 
 export default Navbar;
+
 
 // import React, { useState, useEffect } from "react";
 // import { FiBell, FiMail, FiX, FiSend } from "react-icons/fi";

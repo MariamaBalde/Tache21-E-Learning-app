@@ -26,15 +26,6 @@ function Statistics({ domainData, courseData }) {
                 tension: 0.4,
                 fill: true,
             },
-            {
-                label: 'Nombre de Cours',
-                data: courseData,
-                backgroundColor: 'rgba(59, 130, 246, 0.5)',
-                borderColor: 'rgba(59, 130, 246, 1)',
-                borderWidth: 2,
-                tension: 0.4,
-                fill: true,
-            },
         ],
     };
 
@@ -51,11 +42,9 @@ function Statistics({ domainData, courseData }) {
 
     return (
         <div className="bg-white p-6 rounded-lg shadow">
-            <h2 className="text-xl text-blue-600 font-bold mb-4">Statistiques des Domaines et Cours</h2>
+            <h2 className="text-xl text-blue-600 font-bold mb-4">Statistiques des Domaines</h2>
             <Line data={data} options={options} />
         </div>
     );
 }
 export default Statistics;
-
-
